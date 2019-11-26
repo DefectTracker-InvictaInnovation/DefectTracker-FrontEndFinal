@@ -21,12 +21,12 @@ const store = createStore(allReducers, applyMiddleware(thunk));
 
 ReactDOM.render(
     <Provider store={store}>
-        {/* <Router  history={history}>
+        <Router  history={history}>
             <App />
-        </Router> */}
-        <HashRouter>
+        </Router>
+        {/* <HashRouter>
             <App />
-        </HashRouter>
+        </HashRouter> */}
     </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
