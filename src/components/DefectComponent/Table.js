@@ -1604,7 +1604,7 @@ class TableFilter extends React.Component {
                     name="defectAbbr"
                     type="text"
                     onChange={this.handlechange}
-
+                    disabled
                   />
                 </Form.Item>
               </Col>
@@ -1696,29 +1696,20 @@ class TableFilter extends React.Component {
                 </Form.Item>
               </Col>
 
-              <Col span={8} style={{ padding: "5px" }}>
+              {/* <Col span={8} style={{ padding: "5px" }}>
                 <Form.Item label="Entered By">
                   <Select
-
-
                     id="enteredBy"
                     placeholder="Entered By"
-                    //  value={this.state.enteredBy}
                     onChange={this.handleChangeEnterrdBy}
                     name="enteredBy"
                     type="text"
                     value={this.state.enteredBy}
                     disabled
                   >
-                    {/* <Option value="user1">User 1</Option>
-                    <Option value="user2">User 2</Option>
-                    <Option value="user3">User 3</Option> */}
                   </Select>
-
-
-
                 </Form.Item>
-              </Col>
+              </Col> */}
 
 
               <Col span={8} style={{ padding: "5px" }}>
@@ -1741,6 +1732,30 @@ class TableFilter extends React.Component {
 
 
 
+                </Form.Item>
+              </Col>
+              <Col span={8} style={{ padding: "5px" }}>
+                <Form.Item label="Fixed In ">
+                  <Select
+
+                    id="fixedIn"
+                    placeholder="Fixed In "
+                    //value={this.state.foundIn}
+                    //onChange={this.handlechange}
+                    //  name="foundIn"
+                    type="text"
+                    value={this.state.fixedIn}
+                    onChange={this.onChangeFixedIn}
+
+                  >
+                    {this.state.defectfixedIn.map(function (item, index) {
+                      return (
+                        <Option key={index} value={item.releaseName}>
+                          {item.releaseName}
+                        </Option>
+                      );
+                    })}
+                  </Select>
                 </Form.Item>
               </Col>
               <Col span={8} style={{ padding: "5px" }}>
@@ -1867,34 +1882,6 @@ class TableFilter extends React.Component {
 
                   </Form.Item>}
               </Col>
-              <Col span={8} style={{ padding: "5px" }}>
-                <Form.Item label="Fixed In ">
-                  <Select
-
-                    id="fixedIn"
-                    placeholder="Fixed In "
-                    //value={this.state.foundIn}
-                    //onChange={this.handlechange}
-                    //  name="foundIn"
-                    type="text"
-                    value={this.state.fixedIn}
-                    onChange={this.onChangeFixedIn}
-
-                  >
-                    {this.state.defectfixedIn.map(function (item, index) {
-                      return (
-                        <Option key={index} value={item.releaseName}>
-                          {item.releaseName}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-
-
-
-                </Form.Item>
-              </Col>
-
             </Row>
           </Form>
         </Modal>

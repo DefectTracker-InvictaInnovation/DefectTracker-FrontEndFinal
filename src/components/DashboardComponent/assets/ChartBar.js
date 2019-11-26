@@ -29,7 +29,7 @@ export default class ChartBar extends Component {
     }
     getHigh() {
         axios
-            .get(API_BASE_URL + '/getseverityhigcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getpriorityhighcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
                 console.log(res.data)
                 this.setState({
@@ -40,7 +40,7 @@ export default class ChartBar extends Component {
 
     getMedium() {
         axios
-            .get(API_BASE_URL + '/getseveritymediumcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getprioritymediumcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
                 console.log(res.data)
                 this.setState({
@@ -52,7 +52,7 @@ export default class ChartBar extends Component {
 
 
     getlow() {
-        const url = API_BASE_URL + '/getseveritylowcount';
+        const url = API_BASE_URL + '/getprioritylowcount';
         axios.get(url, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(response => this.setState({
                 lowsev: response.data,

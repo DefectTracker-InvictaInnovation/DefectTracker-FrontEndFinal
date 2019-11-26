@@ -317,7 +317,7 @@ class ProjectManagerDashboard extends React.Component {
     }
     getDefectRatio() {
         axios
-            .get(API_BASE_URL + '/getCount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getremarksratio', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
 
                 this.setState({
@@ -558,7 +558,7 @@ class ProjectManagerDashboard extends React.Component {
                                     title="Severity Index"
                                     value={this.state.severityindex}
                                     valueStyle={{ color: '#007673' }}
-                                    precision={2}
+                                    precision={3}
                                     prefix={<Icon type="sync" spin />}
                                 />
                             </Card></Col>
@@ -567,7 +567,7 @@ class ProjectManagerDashboard extends React.Component {
                                 <Statistic
                                     title="Defect to Remarks Ratio"
                                     value={this.state.ratio}
-                                    precision={2}
+                                    precision={3}
                                     valueStyle={{ color: '#3f8600' }}
                                     prefix={<Icon type="safety-certificate" theme="filled" />}
                                     suffix="%"
@@ -579,7 +579,7 @@ class ProjectManagerDashboard extends React.Component {
                                 <Statistic
                                     title="Defect Density"
                                     value={this.state.density}
-                                    precision={2}
+                                    precision={3}
                                     valueStyle={{ color: '#3f8600' }}
                                     prefix={<Icon type="fund" theme="filled" />}
                                     suffix="%"

@@ -685,7 +685,7 @@ this.fetchModules(value)
               </Col>
 
 
-              <Col span={8} style={{ padding: "5px" }}>
+              {/* <Col span={8} style={{ padding: "5px" }}>
                 <Form.Item label="Entered By">
                   <Select
                     id="enteredBy"
@@ -703,7 +703,7 @@ this.fetchModules(value)
 
 
                 </Form.Item>
-              </Col>
+              </Col> */}
 
 
               <Col span={8} style={{ padding: "5px" }}>
@@ -729,6 +729,29 @@ this.fetchModules(value)
                 </Form.Item>
               </Col>
               <Col span={8} style={{ padding: "5px" }}>
+                <Form.Item label="Priority">
+                  {getFieldDecorator("gender3", {
+                    rules: [
+                      { required: true, message: "Please select Priority!" }
+                    ]
+                  })(
+                    <Select
+                      id="Priority"
+                      placeholder="Priority"
+                      onChange={this.onChangePriority}
+                    >
+                      {this.state.prioritys.map(function (item, index) {
+                        return (
+                          <Option key={index} value={item.name}>
+                            {item.name}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={8} style={{ padding: "5px" }}>
                 <Form.Item label="Status">
                   {getFieldDecorator("gender7", {
                     rules: [
@@ -739,11 +762,11 @@ this.fetchModules(value)
                       id="Status"
                       placeholder="Status"
                       onChange={this.onChangeStatus}
-                      defaultValue="New"
+                      selectedValue="New"
                     >
                       {this.state.defectStatus.map(function (item, index) {
                         return (
-                          <Option key={index} value={item.name}>
+                          <Option key={index} value={item.name} selectedValue="New">
                             {item.name}
                           </Option>
                         );
@@ -791,29 +814,6 @@ this.fetchModules(value)
                       onChange={this.onChangeSeverity}
                     >
                       {this.state.severitys.map(function (item, index) {
-                        return (
-                          <Option key={index} value={item.name}>
-                            {item.name}
-                          </Option>
-                        );
-                      })}
-                    </Select>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={8} style={{ padding: "5px" }}>
-                <Form.Item label="Priority">
-                  {getFieldDecorator("gender3", {
-                    rules: [
-                      { required: true, message: "Please select Priority!" }
-                    ]
-                  })(
-                    <Select
-                      id="Priority"
-                      placeholder="Priority"
-                      onChange={this.onChangePriority}
-                    >
-                      {this.state.prioritys.map(function (item, index) {
                         return (
                           <Option key={index} value={item.name}>
                             {item.name}
