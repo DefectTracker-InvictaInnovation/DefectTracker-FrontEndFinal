@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import allReducers from './reducers';
-import { Router } from 'react-router-dom'
+import { Router,HashRouter } from 'react-router-dom'
 import {Provider} from 'react-redux';
 import App from './components/App/App';
 //import Apps from './components/App/Dashboard/index';
@@ -21,12 +21,12 @@ const store = createStore(allReducers, applyMiddleware(thunk));
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router  history={history}>
+        {/* <Router  history={history}>
             <App />
-        </Router>
-        {/* <HashRouter>
-            <Apps />
-        </HashRouter> */}
+        </Router> */}
+        <HashRouter>
+            <App />
+        </HashRouter>
     </Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
