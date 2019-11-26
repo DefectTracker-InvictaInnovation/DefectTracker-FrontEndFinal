@@ -90,7 +90,7 @@ export default class SeverityConfig extends React.Component {
 
   deleteDefectSeverity(id) {
     console.log(id)
-    fetch(API_BASE_URL_PRODUCT+`/Severity/` + id, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}},{
+    fetch(API_BASE_URL_PRODUCT+`/Severity/` + id,{
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -171,12 +171,13 @@ export default class SeverityConfig extends React.Component {
   handleEditOk = (id) => {
     let colorString = '#' + rgbHex(this.state.color.r, this.state.color.g, this.state.color.b);
     const obj = {
+      id: this.state.id,
       name: this.state.name,
       value: this.state.value,
       icon: this.state.icon,
       color: colorString
     }
-    axios.put(API_BASE_URL_PRODUCT+`/Severity/${id}`, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.put(API_BASE_URL_PRODUCT+"/Severity/"+id, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => this.getDefectSeverity());
     this.setState({
       name: '',
@@ -186,6 +187,8 @@ export default class SeverityConfig extends React.Component {
       visibleEditModal: false
     })
   };
+
+
 
 
   handleCancel = e => {

@@ -97,7 +97,7 @@ export default class PriorityConfig extends React.Component {
 
   deleteDefectPriority(id) {
     console.log(id)
-    fetch(API_BASE_URL_PRODUCT + '/defectpriority/' + id, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } }, {
+    fetch(API_BASE_URL_PRODUCT+`/defectpriority/` + id,{
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -181,7 +181,7 @@ export default class PriorityConfig extends React.Component {
       icon: this.state.icon,
       color: colorString
     }
-    axios.put(API_BASE_URL_PRODUCT + '/defectpriority' + id, obj, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    axios.put(API_BASE_URL_PRODUCT + '/defectpriority/' + id, obj, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(res => this.getDefectPriority());
     this.setState({
       name: '',

@@ -48,6 +48,7 @@ export default class App extends React.Component {
   componentDidMount() {
     // page refresh
     this.getAllProjects();
+    
   }
   //DELETE-METHOD 1 = WORKING
   handleDelete = projectId => {
@@ -66,25 +67,25 @@ export default class App extends React.Component {
 
 
   getAllProjects=()=> {
-    const obj = {
-      projectName: this.state.projectName,
-      duration: this.state.duration,
-      status: this.state.status,
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-      type: this.state.type
+    // const obj = {
+    //   projectName: this.state.projectName,
+    //   duration: this.state.duration,
+    //   status: this.state.status,
+    //   startDate: this.state.startDate,
+    //   endDate: this.state.endDate,
+    //   type: this.state.type
 
 
-    }
+    // }
     axios
       .get(API_BASE_URL+`/GetAllproject`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => {
         this.setState({ projects: res.data });
         console.log(this.state.projects);
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      // .catch(function (error) {
+      //   console.log(error);
+      // });
   }
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({
@@ -233,7 +234,7 @@ export default class App extends React.Component {
 
     return(
       <div>
-        <Model/>
+        <Model  />
      <br/>
       <Table id="countData" columns={columns} dataSource={this.state.projects} pagination={{
         total: this.state.Total,
@@ -242,7 +243,7 @@ export default class App extends React.Component {
         pageSize: 10,
         showSizeChanger: true
       }} 
-      reload={this.getAllProjects()}/>
+      />
        </div>
     )
   }

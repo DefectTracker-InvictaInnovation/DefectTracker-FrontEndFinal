@@ -113,7 +113,7 @@ export default class DefectTypeConfic extends React.Component {
 
     console.log(id)
 
-    fetch(API_BASE_URL_PRODUCT+'/defecttype/' + id,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}, {
+    fetch(API_BASE_URL_PRODUCT+'/defecttype/' + id, {
 
       method: "DELETE",
       headers: {
@@ -129,7 +129,7 @@ export default class DefectTypeConfic extends React.Component {
       DefectType
     })
     this.getCountDefectType();
-    message.error("Defect Type Successfully Deleted");
+    message.success("Defect Type Successfully Deleted");
   }
 
   handleOk = e => {

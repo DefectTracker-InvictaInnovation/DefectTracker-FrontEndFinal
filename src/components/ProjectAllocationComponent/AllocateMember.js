@@ -7,6 +7,9 @@ import { API_BASE_URL, ACCESS_TOKEN } from './../../constants/index'
 
 const { TreeNode } = TreeSelect;
 const { Option, OptGroup } = Select;
+const d = [];
+const z = [];
+
 
 function onSearch(val) {
   console.log('search:', val);
@@ -79,12 +82,16 @@ export default class AllocateMember extends React.Component {
     value3: '',
     module: [],
     submodule: [],
+    projectroleId: '',
+    moduleId: '',
+    subModuleList: []
+
   };
 
   componentDidMount() {
     this.fetchRoleallocation();
     this.fetchProjects();
-    this.fetchModules();
+    // this.fetchModules();
     // this.fetchfindallmain();
     this.fetchSubModules();
   }
@@ -146,6 +153,7 @@ export default class AllocateMember extends React.Component {
         })
       }
     });
+    this.fetchModules(value);
 
   }
 
@@ -190,7 +198,7 @@ export default class AllocateMember extends React.Component {
           }
 
           console.log(data1)
-
+          d.push(post.projectroleId);
           this.state = {
             data1: data1
           }
@@ -199,21 +207,46 @@ export default class AllocateMember extends React.Component {
     })
 
   }
-  fetchModules() {
+  fetchModules(projectid) {
     var _this = this;
-    axios.get(API_BASE_URL+'/FindallMain',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-      .then(function (response) {
+    axios.get(API_BASE_URL + '/GetAllmodule/' + projectid, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+      .then(response => {
         // handle success
         console.log(response.data);
         _this.setState({ module: response.data });
         console.log(_this.state.module);
 
-      });
+        let opt = response.data.map((post, index) => {
+
+          return <TreeNode value={post.moduleName} title={post.moduleName} key={index}>
+            {post.subModule.map((x, k) => {
+              return <TreeNode value={x.subModuleName} title={x.subModuleName} key={index.key}>
+              </TreeNode>
+            })}
+
+          </TreeNode>
+        }
+
+        )
+        _this.setState({ opt });
+      }
+      );
   }
 
+  onChange1 = (nextTargetKeys, value) => {
+    this.setState({ targetKeys: nextTargetKeys });
+    console.log(value);
+    console.log(nextTargetKeys);
+    z.push(nextTargetKeys)
+    this.setState({
+      value
+    });
+  };
   onChange = (nextTargetKeys, value) => {
     this.setState({ targetKeys: nextTargetKeys });
     console.log(value);
+    console.log(nextTargetKeys);
+
     this.setState({
       value
     });
@@ -234,6 +267,21 @@ export default class AllocateMember extends React.Component {
 
   handleOk = e => {
     console.log(e);
+
+    const mod = {
+      projectRoleAllocation: {
+        projectroleId: d[0]
+      },
+      module: {
+        moduleId: "M001"
+      },
+
+      subModuleList: z.pop()
+    }
+
+    axios.post(API_BASE_URL + "/savemoduleallocation", mod, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    console.log(mod)
+
     this.setState({
       visible: false,
     });
@@ -346,7 +394,7 @@ export default class AllocateMember extends React.Component {
             top: 20
           }}
           visible={this.state.modal3Visible}
-          onOk={() => this.setModal3Visible(false)}
+          onOk={this.handleOk}
           onCancel={() => this.setModal3Visible(false)}>
           <Select
             showSearch
@@ -369,18 +417,15 @@ export default class AllocateMember extends React.Component {
           <TreeSelect
             showSearch
             style={{ width: '20%' }}
-            value={this.state.value}
+            // value={this.state.value}
             dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
             placeholder="Please select"
             allowClear
             multiple
             treeDefaultExpandAll
-            onChange={this.onChange}
+            onChange={this.onChange1}
           >
-            <TreeNode value="parent 1" title="parent 1" key="0-1">
-              <TreeNode value="parent 1-0" title="parent 1-0" key="0-1-1">
-              </TreeNode>
-            </TreeNode>
+            {this.state.opt}
           </TreeSelect>
           {/* <Select
             showSearch

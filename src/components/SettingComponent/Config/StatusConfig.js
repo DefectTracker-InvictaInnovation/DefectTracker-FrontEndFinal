@@ -103,7 +103,7 @@ export default class StatusConfig extends React.Component {
 
     console.log(id)
 
-    fetch(API_BASE_URL_PRODUCT+`/defectstatus/` + id,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}, {
+    fetch(API_BASE_URL_PRODUCT+`/defectstatus/` + id, {
 
       method: "DELETE",
       headers: {
@@ -118,7 +118,7 @@ export default class StatusConfig extends React.Component {
     this.setState({
       DefectStatus
     })
-    message.error("Defect Status Successfully Deleted");
+    message.success("Defect Status Successfully Deleted");
     this.getCountDefectStatus();
   }
   showEditModal = () => {

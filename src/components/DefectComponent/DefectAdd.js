@@ -1,7 +1,7 @@
 import { Modal, Button, Form, message, Input, Select, Row, Col, Upload, Icon } from "antd";
 import React from "react";
 import axios from "axios";
-import { API_BASE_URL, API_BASE_URL_EMP } from '../../constants/index';
+import { API_BASE_URL, API_BASE_URL_EMP,API_BASE_URL_PRODUCT,ACCESS_TOKEN } from '../../constants/index';
 import { getcuruser } from './../App/Login/util/ApiUtil'
 
 const { Option } = Select;
@@ -129,7 +129,7 @@ class DefectAdd extends React.Component {
     this.fetchStatus();
     this.fetchTypes();
     this.fetchProjects();
-    // this.fetchModules();
+    this.fetchModules();
     this.fetchPrioritys();
     this.fetchSeveritys();
     this.enteredBy();
@@ -141,7 +141,7 @@ class DefectAdd extends React.Component {
   fetchStatus() {
     var _this = this;
     axios
-      .get("http://localhost:8083/productservice/defectstatuses")
+      .get(API_BASE_URL_PRODUCT+"/defectstatuses",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         console.log(response);
         _this.setState({ defectStatus: response.data });
