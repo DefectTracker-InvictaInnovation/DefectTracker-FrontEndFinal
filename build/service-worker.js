@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "%20DefectTracker-InvictaInnovation.github.io/DefectTrackerSystem-Frontend/precache-manifest.e701e4e29c0364b24a3e1e10eaf359cd.js"
+  "/DefectTracker-InvictaInnovation/DefectTracker-FrontEndFinal/precache-manifest.1d65af252e94e0b63d2d9f941e9cf0a9.js"
 );
 
 self.addEventListener('message', (event) => {
@@ -33,7 +33,7 @@ workbox.core.clientsClaim();
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("%20DefectTracker-InvictaInnovation.github.io/DefectTrackerSystem-Frontend/index.html"), {
+workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("/DefectTracker-InvictaInnovation/DefectTracker-FrontEndFinal/index.html"), {
   
-  blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
+  blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
 });
