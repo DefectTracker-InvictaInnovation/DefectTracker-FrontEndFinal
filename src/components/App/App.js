@@ -127,26 +127,32 @@ class App extends React.Component {
 
       if (localStorage.getItem(ROLE_NAME) === 'ROLE_HR') {
         console.log("ROLE_ADMIN")
-        history.push('/home');
+        history.push('/#/home');
+        window.location.reload();
       } else if (localStorage.getItem(ROLE_NAME) === 'ROLE_QA') {
-        history.push('/dashboard/defect');
+        history.push('/#/dashboard/defect');
         console.log("ROLE_QA")
+        window.location.reload();
       }
       else if (localStorage.getItem(ROLE_NAME) === 'ROLE_PM') {
-        history.push('/dashboard/projectmanager/');
+        history.push('/#/dashboard/projectmanager/');
         console.log("ROLE_PM")
+        window.location.reload();
       }
       else if (localStorage.getItem(ROLE_NAME) === 'ROLE_DEVELOPER') {
-        history.push('/dashboard/developer');
+        history.push('/#/dashboard/developer');
         console.log("ROLE_DEVELOPER")
+        window.location.reload();
       }
       else if (localStorage.getItem(ROLE_NAME) === 'ROLE_PRODUCT_ADMIN') {
-        history.push('/productadministration');
+        history.push('/#/productadministration');
         console.log("ROLE_DEVELOPER")
+        window.location.reload();
       }
       else if (localStorage.getItem(ROLE_NAME) === 'ROLE_ADMIN') {
-        history.push('/home');
+        history.push('/#/home');
         console.log("ROLE_ADMIN")
+        window.location.reload();
       }
     }
   }
@@ -173,15 +179,15 @@ class App extends React.Component {
           <Route path="/Reset">
             <Reset />
           </Route>
-          {/* <Route path='/' component={Dashboard}/> */}
+          <Route path='/' component={Dashboard}/>
 
-          <PrivateRoute
+          {/* <PrivateRoute
             authenticated={this.state.isAuthenticated}
             path="/"
             component={Dashboard}
             currentUser={this.state.currentUser}
             handleLogout={this.handleLogout} >
-          </PrivateRoute>
+          </PrivateRoute> */}
 
 
 
