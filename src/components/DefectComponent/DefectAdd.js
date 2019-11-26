@@ -1,7 +1,7 @@
 import { Modal, Button, Form, message, Input, Select, Row, Col, Upload, Icon } from "antd";
 import React from "react";
 import axios from "axios";
-import { API_BASE_URL, API_BASE_URL_EMP,API_BASE_URL_PRODUCT,ACCESS_TOKEN } from '../../constants/index';
+import { API_BASE_URL, API_BASE_URL_EMP,API_BASE_URL_PRODUCT,ACCESS_TOKEN,CURRENT_USER } from '../../constants/index';
 import { getcuruser } from './../App/Login/util/ApiUtil'
 
 const { Option } = Select;
@@ -432,7 +432,7 @@ this.fetchModules(value)
         stepsToRecreate: this.state.stepsToRecreate,
         assignTo: this.state.assignTo,
         reassignTo: this.state.reassignTo,
-        enteredBy: this.state.enteredBy,
+        enteredBy: localStorage.getItem(CURRENT_USER),
         fixedBy: this.state.fixedBy,
         availableIn: this.state.availableIn,
         foundIn: this.state.foundIn,
