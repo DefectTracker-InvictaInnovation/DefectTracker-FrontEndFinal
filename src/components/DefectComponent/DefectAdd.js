@@ -46,7 +46,7 @@ class DefectAdd extends React.Component {
       priority: "",
       severity: "",
       type: "",
-      status: "",
+      status: "New",
       defectDescription: "",
       stepsToRecreate: "",
       assignTo: "",
@@ -174,7 +174,7 @@ class DefectAdd extends React.Component {
   fetchProjects() {
     var _this = this;
     axios
-      .get(API_BASE_URL + "/GetAllproject")
+      .get(API_BASE_URL + "/getallresource")
       .then(function (response) {
         console.log(response.data);
         _this.setState({ projects: response.data });
@@ -564,7 +564,7 @@ this.fetchModules(value)
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Button id="addDefect" type="primary" onClick={this.showModal}>
+        <Button id="addDefect" type="primary" onClick={this.showModal} disabled={this.props.qastatus}>
           Add Defect
         </Button>
         <Modal
@@ -589,7 +589,8 @@ this.fetchModules(value)
                       defaultValue="Select Project"
                       onChange={this.onChangeProject}
                     >
-                      {this.state.projects.map(function (item, index) {
+                      {this.state.projects.map(function(item, index) {
+                        if(item.firstname==localStorage.getItem(CURRENT_USER))
                         return (
                           <Option key={index} value={item.projectId}>
                             {item.projectName}
@@ -711,10 +712,12 @@ this.fetchModules(value)
                   <Select
                     id="foundIn"
                     placeholder="Found In "
+                    
                     name="foundIn"
                     type="text"
                     onChange={this.onChangeFoundIn}
                   >
+                    
                     {this.state.defectfoundIn.map(function (item, index) {
                       return (
                         <Option key={index} value={item.releaseName}>
@@ -760,13 +763,13 @@ this.fetchModules(value)
                   })(
                     <Select
                       id="Status"
-                      placeholder="Status"
+                      placeholder="New"
                       onChange={this.onChangeStatus}
-                      selectedValue="New"
+                      // defaultActiveFirstOptio={true} 
                     >
                       {this.state.defectStatus.map(function (item, index) {
                         return (
-                          <Option key={index} value={item.name} selectedValue="New">
+                          <Option defaultValue="New" key={index} value={item.name}>
                             {item.name}
                           </Option>
                         );

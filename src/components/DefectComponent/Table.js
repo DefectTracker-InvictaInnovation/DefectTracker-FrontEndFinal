@@ -9,6 +9,8 @@ import { API_BASE_URL, API_BASE_URL_EMP, CURRENT_USER, API_BASE_URL_PRODUCT, ACC
 import { ROLE_NAME } from '../../constants/index';
 import DefectLog from "./DefectLog";
 import DefectAdd from "./DefectAdd";
+import {getQaPrivilegeByName,getAllQaPrivilege,getAllPrivileges,notificationmsg} from '../../services/PrivilegeConfig';
+
 const TreeNode = TreeSelect.TreeNode;
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -213,6 +215,11 @@ class TableFilter extends React.Component {
     this.onChangeFixedIn = this.onChangeFixedIn.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
+  state={
+    AddDefectStatus:false,
+    DeleteDefectStatus:true,
+    EditDefectStatus:true
+  }
 
   fetchStatus() {
     var _this = this;
@@ -238,6 +245,36 @@ class TableFilter extends React.Component {
     this.fetchStatus();
     this.fetchFoundIn();
     this.fetchFixedIn();
+    this.privilegeconfig();
+  }
+
+  privilegeconfig(){
+  
+    getAllPrivileges()
+    .then(res=>{
+      console.log(res)
+     res.map(post=>{
+        if(!post.status){
+        console.log("debug"+post.privilegeName)
+        if(post.privilegeName=="AddDefect"){
+          console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
+        this.setState({
+          AddDefectStatus:true
+        })
+      }else if(post.privilegeName=="EditDefect"){
+        this.setState({
+          EditDefectStatus:true
+        })
+      }else if(post.privilegeName=="DeleteDefect"){
+        console.log("debug"+post.privilegeName)
+        this.setState({
+          DeleteDefectStatus:true
+        })
+      }
+        }
+     });
+    });
+ console.log(this.state.AddDefectStatus)
   }
 
   fetchFoundIn() {
@@ -1436,7 +1473,8 @@ class TableFilter extends React.Component {
             <Icon
               id="edit"
               type="edit"
-              onClick={this.handleEdit.bind(this, data.defectId, data.projectId)}
+              // onClick={this.handleEdit.bind(this, data.defectId, data.projectId)}
+              onClick={this.state.EditDefectStatus ?notificationmsg.bind(this,'warning','Edit'):this.handleEdit.bind(this, data.defectId,data.projectId) }
               style={{ fontSize: "18px", color: "green" }}
             />
 
@@ -1516,7 +1554,7 @@ class TableFilter extends React.Component {
         <EditorIn />
         <Row>
           <Col span={4}>
-            <DefectAdd />
+            <DefectAdd qastatus={this.state.AddDefectStatus}/>
           </Col>
           <Col span={8}>
 

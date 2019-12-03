@@ -20,6 +20,8 @@ import Profile from './Profile';
 import ProfileScreen from '../SettingComponent/ProfileScreen';
 import EmployeeAddModal from "./EmployeeAddModal";
 import ImportEmployee from "./ImportEmployee";
+import {getAllPrivileges,notificationmsg} from '../../services/PrivilegeConfig';
+import {getAllEmployees,deleteEmployee,fetchDesignations} from '../../services/NewApiUtil';
 
 const { Option } = Select;
 
@@ -114,6 +116,12 @@ class App extends React.Component {
     };
   }
 
+  state={
+    AddEmployee:false,
+    EditEmployee:true,
+    DeleteEmployee:true
+  }
+
   onChangeEmployeeId(e) {
     this.setState({
       employeeId: e.target.value
@@ -162,6 +170,35 @@ class App extends React.Component {
     console.log("mounting");
     this.getAllEmployees();
     this.getTotalEmployee();
+    this.privilegeconfig();
+  }
+
+  privilegeconfig(){
+  
+    getAllPrivileges()
+    .then(res=>{
+     res.map(post=>{
+        if(!post.status){
+        console.log("debug"+post.privilegeName)
+        if(post.privilegeName=="AddEmployee"){
+          console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
+        this.setState({
+          AddEmployee:true
+        })
+      }else if(post.privilegeName=="EditEmployee"){
+        this.setState({
+          EditEmployee:true
+        })
+      }else if(post.privilegeName=="DeleteEmployee"){
+        console.log("debug"+post.privilegeName)
+        this.setState({
+          DeleteEmployee:true
+        })
+      }
+        }
+     });
+    });
+//  console.log(this.state.AddDefectStatus)
   }
 
   fetchDesignations() {
@@ -562,7 +599,8 @@ class App extends React.Component {
             <Icon
               id="edit"
               type="edit"
-              onClick={this.handleEdit.bind(this, data.empId)}
+              // onClick={this.handleEdit.bind(this, data.empId)}
+              onClick={this.state.EditEmployee  ?notificationmsg.bind(this,'warning','Edit') :this.handleEdit.bind(this, data.empId)}
               style={{ fontSize: "18px", color: "green" }}
             />
           </a>
@@ -588,7 +626,7 @@ class App extends React.Component {
       <React.Fragment>
         <div>
           <Col span={4}>
-            <EmployeeAddModal reload={this.getAllEmployees} />
+            <EmployeeAddModal reload={this.getAllEmployees} addstatus={this.state.AddEmployee}/>
           </Col>
           <Col span={4}>
             <ImportEmployee reload={this.getAllEmployees} />

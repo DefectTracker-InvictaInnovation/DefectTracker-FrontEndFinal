@@ -84,7 +84,11 @@ class AuditLog extends React.Component {
             fixDate: post.fixDate,
             user: post.user,
             status: post.status,
-            defectId: post.defect.defectId
+            defectId: post.defect.defectId,
+            type:post.defect.type,
+            severity:post.defect.severity,
+            priority:post.defect.priority,
+            reassignTo:post.defect.reassignTo
           });
         });
 

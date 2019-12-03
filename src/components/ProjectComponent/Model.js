@@ -12,6 +12,7 @@ import {
 import React from "react";
 import axios from "axios";
 import {  API_BASE_URL, ACCESS_TOKEN } from '../../constants/index';
+import moment from 'moment';
 
 const { Option } = Select;
 function confirm(e) {
@@ -30,6 +31,11 @@ const config = {
 const rangeConfig = {
   rules: [{ type: "array", required: true, message: "Please select time!" }]
 };
+
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current < moment().endOf('day');
+}
 
 const formValid = ({ formerrors, ...rest }) => {
   let valid = true;
@@ -262,6 +268,7 @@ class Model extends React.Component {
         message.success("Successfully Added!!!");
         this.setState({ visible: false });
       } else {
+       
       }
     });
     if (formValid(this.state)) {
@@ -295,7 +302,7 @@ class Model extends React.Component {
           API_BASE_URL + "/createproject", projectData, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
         .then(res => {
           console.log(res.data)
-          this.props.reload()
+          // this.props.reload()
 
         })
         .catch(error => {
@@ -486,6 +493,7 @@ class Model extends React.Component {
                         id="startDate"
                         placeholder="Start Date"
                         name="startDate"
+                        disabledDate={disabledDate}
                         value={this.state.startDate}
                         onChange={this.onChangeStartDate}
                       />
@@ -521,6 +529,7 @@ class Model extends React.Component {
                         name="endDate"
                         onChange={this.onChangeEndDate}
                         value={this.state.endDate}
+                        disabledDate={disabledDate}
                       />
                     )}
                   </div>

@@ -64,7 +64,19 @@ const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
 );
 
 const mockData = [];
-
+const { SHOW_PARENT } = TreeSelect;
+const treeData = [
+  {
+    title: 'Node1',
+    value: '0-0',
+    key: '0-0',
+  },
+  {
+    title: 'Node2',
+    value: '0-1',
+    key: '0-1',
+  },
+];
 const originTargetKeys = mockData.filter(item => +item.key % 3 > 1).map(item => item.key);
 export default class AllocateMember extends React.Component {
   state = {
@@ -84,7 +96,10 @@ export default class AllocateMember extends React.Component {
     submodule: [],
     projectroleId: '',
     moduleId: '',
-    subModuleList: []
+    subModuleList: [],
+    mod:[],
+    value4: ['0-0'],
+
 
   };
 
@@ -94,6 +109,7 @@ export default class AllocateMember extends React.Component {
     // this.fetchModules();
     // this.fetchfindallmain();
     this.fetchSubModules();
+    this.getAllModule();
   }
 
   fetchRoleallocation() {
@@ -127,7 +143,7 @@ export default class AllocateMember extends React.Component {
 
   handleChange = (value) => {
     this.setState({
-      value1: value
+      value1: value,
     })
     var _this = this;
     console.log(value);
@@ -153,7 +169,8 @@ export default class AllocateMember extends React.Component {
         })
       }
     });
-    this.fetchModules(value);
+    // this.fetchModules(value);
+    this.getAllModule(value);
 
   }
 
@@ -169,6 +186,17 @@ export default class AllocateMember extends React.Component {
       });
   }
 
+  getAllModule() {
+    var _this = this;
+    axios.get(API_BASE_URL + '/GetAllmodule', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+      .then(function (response) {
+        // handle success
+        console.log(response.data);
+        _this.setState({ mod: response.data });
+        console.log(_this.state.mod);
+
+      });
+  }
 
   fetchSubModules() {
     var _this = this;
@@ -248,7 +276,7 @@ export default class AllocateMember extends React.Component {
     console.log(nextTargetKeys);
 
     this.setState({
-      value
+      value,
     });
   };
 
@@ -263,6 +291,11 @@ export default class AllocateMember extends React.Component {
     this.setState({
       visible: true,
     });
+  };
+
+  onChange2 = value4 => {
+    console.log("onChange ", value4);
+    this.setState({ value4 });
   };
 
   handleOk = e => {
@@ -332,6 +365,17 @@ export default class AllocateMember extends React.Component {
 
 
   render() {
+    const tProps = {
+      treeData,
+      value: this.state.value4,
+      onChange: this.onChange2,
+      treeCheckable: true,
+      showCheckedStrategy: SHOW_PARENT,
+      searchPlaceholder: 'Please select',
+      style: {
+        width: '20%',
+      },
+    };
     const { targetKeys } = this.state;
     const leftTableColumns = [
       {
@@ -414,7 +458,7 @@ export default class AllocateMember extends React.Component {
 
           </Select>
           &nbsp;&nbsp;
-          <TreeSelect
+          {/* <TreeSelect
             showSearch
             style={{ width: '20%' }}
             // value={this.state.value}
@@ -426,7 +470,7 @@ export default class AllocateMember extends React.Component {
             onChange={this.onChange1}
           >
             {this.state.opt}
-          </TreeSelect>
+          </TreeSelect> */}
           {/* <Select
             showSearch
             style={{ width: 200, marignBottom: '20px' }}
@@ -444,7 +488,25 @@ export default class AllocateMember extends React.Component {
             </OptGroup>
 
           </Select> */}
+          <Select
+            showSearch
+            style={{ width: 200, marignBottom: '20px' }}
+            placeholder="Select a Module"
+            optionFilterProp="children"
+            onChange={this.handleChange}
+            // onFocus={onFocus}
+            // onBlur={onBlur}
+            onSearch={onSearch}
+            filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
+            <OptGroup label="Modules">
+              {this.state.mod.map((item, index) => {
+                return <Option key={index} value={item.moduleId}> {item.moduleName}</Option>
+              })}
+            </OptGroup>
 
+          </Select>
+          &nbsp;&nbsp;
+          <TreeSelect {...tProps} />
           <br /><br />
 
           <TableTransfer

@@ -163,7 +163,7 @@ class HeaderComponent extends React.Component {
         if (this.props.currentUser) {
             menuItems = [
                 <Menu.Item key="/">
-                    <Link to="/">
+                    <Link to="/home">
                         <Icon type="home" className="nav-icon" />
                     </Link>
                 </Menu.Item>,

@@ -5,7 +5,10 @@ import axios from "axios";
 import moment from "moment";
 import {API_BASE_URL,ACCESS_TOKEN} from './../../constants/index'
 const { Option } = Select;
-
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current < moment().endOf('day');
+}
 function confirm(e) {
   console.log(e)
   message.success("Edit Successfully!");
@@ -72,15 +75,15 @@ export default class Model extends React.Component {
     });
     console.log(this.state.type);
   };
-  onChangeProjectAbbre(value) {
+  // onChangeProjectAbbre(value) {
+  //   this.setState({
+  //     projectAbbr: `${value}`
+  //   });
+  //   console.log(this.state.projectAbbr);
+  // }
+  onChangeProjectAbbr(e) {
     this.setState({
-      projectAbbr: `${value}`
-    });
-    console.log(this.state.projectAbbr);
-  }
-  onChangeProjectAbbr(value) {
-    this.setState({
-     projectAbbr: `${value}`
+     projectAbbr: e.target.value
    });
     console.log(this.state.projectAbbr);
   }
@@ -156,7 +159,7 @@ export default class Model extends React.Component {
       )
       .then(response => {
 
-        console.log("dsdss"+response.data)
+        console.log(response.data)
         this.setState({
           projectId:response.data.projectId,
           projectName: response.data.projectName,
@@ -257,11 +260,11 @@ export default class Model extends React.Component {
             </Row>
             <Row gutter={16}>
             <Col span={24}>
-                <Form.Item label="Project Name">
+                <Form.Item label="Project Abbrevation">
                 <Input
                         id="projectAbbr"
                         placeholder="Project Abbrevation"
-                        name="projectAbbr"
+                        // name="projectAbbr"
                         value={this.state.projectAbbr}
                         onChange={this.onChangeProjectAbbr}
                       />
@@ -297,6 +300,7 @@ export default class Model extends React.Component {
                       value={moment(this.state.startDate)}
                       onChange={this.onChangeStartDate}
                       placeholder="Start Date"
+                      disabledDate={disabledDate}
                     />
                   </Form.Item>
                 </Form.Item>
@@ -309,6 +313,7 @@ export default class Model extends React.Component {
                       value={moment(this.state.endDate)}
                       onChange={this.onChangeEndDate}
                       placeholder="End Date"
+                      disabledDate={disabledDate}
                     />
                   </Form.Item>
                 </Form.Item>

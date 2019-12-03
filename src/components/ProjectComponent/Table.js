@@ -78,7 +78,7 @@ export default class App extends React.Component {
 
     // }
     axios
-      .get(API_BASE_URL+`/GetAllproject`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .get(API_BASE_URL+`/getallproject`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => {
         this.setState({ projects: res.data });
         console.log(this.state.projects);
@@ -234,7 +234,7 @@ export default class App extends React.Component {
 
     return(
       <div>
-        <Model  />
+        <Model />
      <br/>
       <Table id="countData" columns={columns} dataSource={this.state.projects} pagination={{
         total: this.state.Total,

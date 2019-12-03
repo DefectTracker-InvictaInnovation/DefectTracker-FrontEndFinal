@@ -241,7 +241,7 @@ class EmployeeAddModal extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Button id="addEmployee" type="primary" onClick={this.showModal}>
+        <Button id="addEmployee" type="primary" onClick={this.showModal} disabled={this.props.addstatus}>
           Add Employee
         </Button>
         <Modal

@@ -3,7 +3,7 @@ import { Breadcrumb, Statistic, Card, Row, Col, Icon, Timeline, Select, Progress
 import ChartBar from './assets/ChartBar';
 import ChartPolar from './assets/ChartPolar';
 import { Chart } from 'primereact/chart';
-import { API_BASE_URL, CURRENT_USER, API_BASE_URL_PRODUCT, ACCESS_TOKEN } from '../../../src/constants/index';
+import { API_BASE_URL, CURRENT_USER, API_BASE_URL_PRODUCT, ACCESS_TOKEN, LOGIN_API_BASE_URL,EXISTING_EMAIL } from '../../../src/constants/index';
 import DeveloperDefectDetail from './Elements/DeveloperDefectDetail';
 import DeveloperDefectPercentage from './Elements/DeveloperDefectPercentage';
 import DeveloperDefectStatusChart from './Elements/DeveloperDefectStatusChart';
@@ -13,7 +13,7 @@ import DeveloperLineChart from './Elements/DeveloperLineChart';
 import DashboardConfig from './DashboardConfig';
 import axios from 'axios';
 const Option = Select.Option;
-
+const currentuser = localStorage.getItem(CURRENT_USER);
 class ProjectManagerDashboard extends React.Component {
     state = {
         filteredInfo: null,
@@ -41,7 +41,9 @@ class ProjectManagerDashboard extends React.Component {
         name4: '',
         name5: '',
         role: '',
-        projectid: ''
+        projectid: '',
+        getall:'',
+        email:''
     };
 
     getHigh() {
@@ -78,22 +80,7 @@ class ProjectManagerDashboard extends React.Component {
             })
     }
 
-    getallRole() {
-        const drop = []
-        var _this = this;
-        axios
-            .get(API_BASE_URL + "/getAllRole", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
-            .then(function (response) {
-                console.log(response.data);
-                let d = response.data.map(post => {
-                    if (localStorage.getItem(CURRENT_USER) == post.name) {
-                        return <Option value={post.projectId}>{post.projectName}</Option>
-                    }
-                })
-                _this.setState({ d })
-                console.log(drop)
-            })
-    }
+
 
     onChangeRole = (value) => {
 
@@ -293,6 +280,8 @@ class ProjectManagerDashboard extends React.Component {
     }
 
     componentDidMount() {
+        this.getAllUsers();
+
         this.getConfiguration();
         this.getHigh1();
         this.getHigh();
@@ -313,8 +302,57 @@ class ProjectManagerDashboard extends React.Component {
         this.getDefectRatio();
         this.gettotaldefectwithRe();
         this.getallRole();
-
+        
     }
+    getAllUsers=()=> {
+        var _this = this;
+        axios.get(LOGIN_API_BASE_URL + '/getAllUsers', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .then(function (response) {
+                // handle success
+                console.log(response.data);
+                 _this.setState({ getall: response.data });
+                // console.log(_this.state.mod);
+            });
+    }
+
+    getallRole() {
+        const drop = []
+        var _this = this;
+        axios
+            .get(API_BASE_URL + "/getallresource", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .then(function (response) {
+                console.log(response.data);
+                let d = response.data.map(post => {
+                    console.log(post.name + "keerthi");
+                    console.log(currentuser);
+                    if ( currentuser ) {
+                        console.log(currentuser);
+                        return <Option value={post.projectId}>{post.projectName}</Option>
+                    }
+                    // localStorage.getItem(CURRENT_USER)
+                })
+                _this.setState({ d })
+                console.log(drop)
+            })
+        // const drop = []
+        // var _this = this;
+        // axios
+        //     .get(API_BASE_URL + "/getallresource", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+        //     .then(function (response) {
+        //         console.log(response.data);        
+        //         let d = response.data.map(post => {
+        //             console.log(post.name + "keerthi");
+        //             console.log(currentuser);
+        //             if (currentuser == post.name) {
+        //                 return <Option value={post.projectId}>{post.projectName}</Option>
+        //             }
+        //         })
+        //         _this.setState({ d })
+        //         console.log(drop)
+        //     })
+    }
+
+  
     getDefectRatio() {
         axios
             .get(API_BASE_URL + '/getremarksratio', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
@@ -505,7 +543,6 @@ class ProjectManagerDashboard extends React.Component {
                             placeholder="Select the Project"
                             style={{ width: 120 }}
                             onChange={this.onChangeRole}
-
                         >
                             {this.state.d}
                         </Select>
@@ -599,7 +636,7 @@ class ProjectManagerDashboard extends React.Component {
                         <Col span={6}>
                             <Card style={{ margin: "10px 5px 0 -2px", borderRadius: "5px" }}>
                                 <Statistic
-                                    title="Total Open High"
+                                    title="Total Open Severity High"
                                     value={this.state.openHigh}
                                     valueStyle={{ color: '#3f8600' }}
                                     prefix={<Icon type="safety-certificate" theme="filled" style={{ color: '#e30931' }} />}
@@ -685,7 +722,7 @@ class ProjectManagerDashboard extends React.Component {
                     </div>
                     <Row style={{ margin: "-10px 0 0 0 " }}>
                         <Col span={10} key="3">
-                            <Card title="Priority Defect Types" style={{ minHeight: '22.4rem', height: '22.4rem', borderRadius: "5px", margin: "0 0 0 5px", background: "#fff" }} >
+                            <Card title="Severity Defect Types" style={{ minHeight: '22.4rem', height: '22.4rem', borderRadius: "5px", margin: "0 0 0 5px", background: "#fff" }} >
                                 <Chart type="pie" data={data5} style={{ padding: "0 0 70px 0" }} />
                             </Card>
                         </Col>
