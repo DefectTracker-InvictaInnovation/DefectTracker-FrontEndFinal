@@ -64,7 +64,6 @@ export class Allocate extends Component {
                     console.log(response.data)
                     _this.setState({
                         employee: response.data,
-
                     })
                 });
         }

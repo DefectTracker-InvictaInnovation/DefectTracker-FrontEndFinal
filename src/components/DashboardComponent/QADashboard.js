@@ -15,6 +15,7 @@ class QADashboard extends Component {
     return (
       <React.Fragment>
         <Row>
+          <br></br>
           <Col span={23}>
             <Breadcrumb
               style={{
@@ -22,7 +23,7 @@ class QADashboard extends Component {
                 marginTop: "-10px"
               }}
             >
-              <Breadcrumb.Item>Dashboard Component</Breadcrumb.Item>
+              <Breadcrumb.Item><b>Dashboard Component</b></Breadcrumb.Item>
               <Breadcrumb.Item>QA Dashboard</Breadcrumb.Item>
             </Breadcrumb>
           </Col>
@@ -70,7 +71,7 @@ class QADashboard extends Component {
           </Col>
 
           <Col span={8}>
-            <Col span={24}>
+            {/* <Col span={24}>
               <PageHeader title="Defect Details" />
               <div style={{ padding: 24, background: "#fff", minHeight: 50 }}>
                 <Row>
@@ -86,19 +87,19 @@ class QADashboard extends Component {
                   </Col>
                 </Row>
               </div>
-            </Col>
+            </Col> */}
             <Col span={24}>
               <div
                 style={{
-                  padding: 24,
+                  padding: 20,
                   background: "#fff",
-                  minHeight: 50,
-                  marginTop: "20px"
+                  minHeight: 475,
+                  marginTop: "0px"
                 }}
               >
                 <PageHeader
                   title="Defect"
-                  style={{ padding: 0, minHeight: 30 }}
+                  style={{ marginRight: "20px" }}
                 />
                 <Row>
                   <Col span={24}>
@@ -109,6 +110,10 @@ class QADashboard extends Component {
                     <h3>Reject</h3>
                     <Progress percent={10} />
                     <h3>Closed</h3>
+                    <Progress percent={30} />
+                    <h3>Fixed</h3>
+                    <Progress percent={30} />
+                    <h3>ReOpened</h3>
                     <Progress percent={30} />
                   </Col>
                 </Row>

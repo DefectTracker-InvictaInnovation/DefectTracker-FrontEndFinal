@@ -4,6 +4,8 @@ import React from "react";
 import axios from "axios";
 import moment from "moment";
 import {API_BASE_URL,ACCESS_TOKEN} from './../../constants/index'
+import {notificationmsg} from '../../services/PrivilegeConfig';
+
 const { Option } = Select;
 function disabledDate(current) {
   // Can not select days before today and today
@@ -222,7 +224,8 @@ export default class Model extends React.Component {
       <div>
         <Icon
           type="edit"
-          onClick={this.showEditModal}
+          // onClick={this.showEditModal}
+          onClick={this.props.EditProject?notificationmsg.bind(this,'warning','Edit'):this.showEditModal}
           style={{ fontSize: "18px", color: "Blue" }}
         />
         <br />

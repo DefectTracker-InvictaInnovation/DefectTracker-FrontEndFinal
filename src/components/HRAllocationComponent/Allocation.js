@@ -1,10 +1,21 @@
 import { Modal, Button, Select, Transfer, Switch, Table, Tag, message } from 'antd';
 import React from 'react';
+
 import axios from "axios";
 import difference from 'lodash/difference';
-import { API_BASE_URL_EMP, API_BASE_URL, ACCESS_TOKEN } from '../../constants/index';
+import {API_BASE_URL,ACCESS_TOKEN} from './../../constants/index'
+
 
 const { Option, OptGroup } = Select;
+
+
+
+// axios.get("http://localhost:8081/defectservices/GetAllresources")
+// .then(function (response) {
+// console.log(response.data);
+// });
+
+
 const employee = []
 const originTargetKeys = employee.filter(item => +item.key % 5 > 1).map(item => item.key);
 
@@ -82,23 +93,30 @@ const rightTableColumns = [
 export default class Allocation extends React.Component {
 
 
-  constructor(props) {
-    super(props);
+  // constructor(props){
+  // super(props);
 
-    this.state = {
-      loading: false,
-      visible: false,
-      project: [],
-      employee: [],
-      targetKeys: originTargetKeys,
-      disabled: false,
-      showSearch: false,
-      value1: '',
-      visible1: false
-    }
-    this.handleOk = this.handleOk.bind(this);
-  }
-  state = { visible: false };
+  // this.state = {
+  // resourceId:"",
+  // employeeId:"",
+  // projectId:""
+  // }
+  // this.handleOk = this.handleOk.bind(this);
+  // }
+
+  state = {
+    loading: false,
+    visible: false,
+    project: [],
+    employee: [],
+    targetKeys: originTargetKeys,
+    disabled: false,
+    showSearch: false,
+    value1: '',
+    visible1:false
+
+
+  };
 
   handleChange = (value) => {
     this.setState({
@@ -113,20 +131,24 @@ export default class Allocation extends React.Component {
 
   showModal = () => {
     this.setState({
-      visible: true,
+      visible1: true,
     });
   };
 
   componentDidMount() {
+
     this.fetchProjects();
+    console.log("mounting");
+    // this.GetAllproject();
     this.fetchEmployee();
     this.fetchEmployee1();
   }
 
   fetchProjects() {
     var _this = this;
-    axios.get(API_BASE_URL + '/GetAllproject', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    axios.get(API_BASE_URL+'/GetAllproject',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
+        // handle success
         console.log(response.data);
         _this.setState({ project: response.data });
         console.log(_this.state.project);
@@ -136,29 +158,69 @@ export default class Allocation extends React.Component {
 
   fetchEmployee() {
     var _this = this;
-    axios.get(API_BASE_URL + '/GetAllresources', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    axios.get(API_BASE_URL+'/GetAllresources',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
+        // handle success
         console.log(response.data);
         _this.setState({ employee: response.data });
         console.log(_this.state.employee);
+
         _this.state.employee.map((post) => {
           console.log(post.empId)
+          // if(targetKeys==post.key){
+          // console.log(post.empId)
+          // }
+
         });
 
       });
   }
 
-  handleOk = () => {
-    this.close();
+
+
+  handleOk = (e) => {
+
+    // this.setState({ visible1: false });
+    // setTimeout(() => {
+    //   this.setState({ loading: false, visible1: false });
+    // }, 3000);
+    
+    e.preventDefault();
+
+    const empdata = {
+      resourceId: this.state.resourceId,
+      empId: this.state.empId,
+      projectId: this.state.projectId
+    }
+    console.log(this.state.data1)
+
+    //  axios
+    //             .post(
+    //               "http://localhost:8081/defectservices/saveresourceTable",
+    //               this.state.data1
+    //             )
+    //             .then(res => console.log(res.data))
+    //             .catch(error => {
+    //               console.log(error);
+    //             });
+
+
   };
 
   handleCancel = () => {
-    var _this = this;
-    _this.setState({
-      visible: false,
+    var _this=this;
+    _this.setState({ 
+      
+      visible1: false ,
     })
   };
 
+  //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  // show=(targetKeys)=>{
+  // console.log(targetKeys)
+
+  // console.log(this.state.list[0]);
+  // }
 
   onChange1 = nextTargetKeys => {
     this.setState({ targetKeys: nextTargetKeys });
@@ -171,8 +233,9 @@ export default class Allocation extends React.Component {
 
   fetchEmployee1() {
     var _this = this;
-    axios.get(API_BASE_URL + '/GetAllresources', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    axios.get(API_BASE_URL+'/GetAllresources',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
+        // handle success
         console.log(response.data);
         let emp = response.data
         _this.setState({ emp: emp });
@@ -188,11 +251,14 @@ export default class Allocation extends React.Component {
             email: post.email,
             designationname: post.designationname,
             availability: post.availability,
+
           });
           _this.setState({
             list: list
           })
         })
+
+
       });
   }
   triggerShowSearch = showSearch => {
@@ -211,24 +277,24 @@ export default class Allocation extends React.Component {
       for (var i = 0; i < 11; i++) {
         if (targetKeys[i] == index) {
           console.log(post.empId)
-          let data1 = {
+          let data1 = [{
             empId: post.empId,
             projectId: this.state.value1
-          }
+          }]
 
           this.setState = {
             data1
           }
-          console.log(data1)
+          console.log(this.state.data1)
           axios
             .post(
-              API_BASE_URL + "/saveresource",
-              data1, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } }
+              API_BASE_URL+"/saveresourceTable", data1,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}},
+             
             )
-            .then(res => {
-              console.log(res.data)
-
-            }
+            .then(res => {console.log(res.data)
+            
+            
+             }
             )
             .catch(error => {
               console.log(error);
@@ -240,13 +306,7 @@ export default class Allocation extends React.Component {
     });
 
   }
-
-  close = () => {
-    this.setState({
-      visible: false,
-    });
-  }
-  
+  //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   render() {
     const { visible, loading, targetKeys, disabled, showSearch } = this.state;
 
@@ -312,32 +372,39 @@ export default class Allocation extends React.Component {
       <div>
         <Button id="allocate" type="primary" onClick={this.showModal}>
           Allocate
-        </Button>
+ </Button>
         <br />
         <Modal
 
           style={{ top: 20 }}
 
-          visible={this.state.visible}
+          visible={this.state.visible1}
           title="Allocating Members for Project"
           width="99%"
-          height="45%"
+          height="40%"
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={[
             <Button id="back" key="back" onClick={this.handleCancel}>
               Cancel
-            </Button>,
+ </Button>,
             <Button id="submit" key="submit" type="primary" onClick={this.handleOk} theme="filled">
               Submit
-            </Button>,
+ </Button>,
           ]}
-        >
+>
           <div><Select id="projects" defaultValue="Project" style={{ width: 200 }} onChange={this.handleChange}>
             <OptGroup label="Projects">
               {this.state.project.map((item, index) => {
                 return <Option key={index} value={item.projectId}> {item.projectName}</Option>
               })}
+              {/* <Select>
+ 
+ </Select> */}
+              {/* <Option value="School Management System">School Management System</Option>
+ <Option value="Defect Tracker System">Defect Tracker System</Option>
+ <Option value="Library Management System">Library Management System</Option>
+ <Option value="Wedding Hall System">Wedding Hall System</Option> */}
             </OptGroup>
           </Select></div>
           <br />
@@ -357,13 +424,22 @@ export default class Allocation extends React.Component {
             leftColumns={leftTableColumns}
             rightColumns={rightTableColumns}
             selectedKeys={this.show(targetKeys)}
+
+
+          />
+          <Switch
+            unCheckedChildren="disabled"
+            checkedChildren="disabled"
+            checked={disabled}
+            onChange={this.triggerDisable}
+            style={{ marginTop: 10 }}
           />
           <Switch
             unCheckedChildren="showSearch"
             checkedChildren="showSearch"
             checked={showSearch}
             onChange={this.triggerShowSearch}
-            style={{ marginTop: 10, marginBottom: 5, size: 20 }}
+            style={{ marginTop: 10 }}
           />
         </Modal>
       </div>

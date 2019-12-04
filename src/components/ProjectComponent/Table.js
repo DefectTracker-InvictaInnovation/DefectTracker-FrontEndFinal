@@ -5,6 +5,7 @@ import EditModel from "./EditModel";
 import axios from "axios";
 import Model from './Model';
 import { API_BASE_URL,ACCESS_TOKEN } from "../../constants";
+import {getAllPrivileges,notificationmsg} from '../../services/PrivilegeConfig';
 
 function confirm(e) {
   console.log(e)
@@ -34,7 +35,11 @@ export default class App extends React.Component {
     type: this.props.type
   };
 
-
+  state={
+    AddProject:false,
+    EditProject:true,
+    DeleteProject:true
+  }
   handleSubmit = event => {
     console.log(this.state.handleSubmit);
     event.preventDefault();
@@ -48,8 +53,38 @@ export default class App extends React.Component {
   componentDidMount() {
     // page refresh
     this.getAllProjects();
+    this.privilegeconfig();
     
   }
+
+  privilegeconfig(){
+  
+    getAllPrivileges()
+    .then(res=>{
+     res.map(post=>{
+        if(!post.status){
+        console.log("debug"+post.privilegeName)
+        if(post.privilegeName=="AddProject"){
+          console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
+        this.setState({
+          AddProject:true
+        })
+      }else if(post.privilegeName=="EditProject"){
+        this.setState({
+          EditProject:true
+        })
+      }else if(post.privilegeName=="DeleteProject"){
+        console.log("debug"+post.privilegeName)
+        this.setState({
+          DeleteProject:true
+        })
+      }
+        }
+     });
+    });
+ console.log(this.state.AddDefectStatus)
+  }
+
   //DELETE-METHOD 1 = WORKING
   handleDelete = projectId => {
     axios.delete(API_BASE_URL+`/deleteById/` + projectId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
@@ -225,7 +260,7 @@ export default class App extends React.Component {
         render: (text, data = this.state.patients) => (
           <span>
             <a>
-              <EditModel id="editProject" projectProps={data.projectId} />
+              <EditModel id="editProject" projectProps={data.projectId} editstatus={this.state.EditProject}/>
             </a>
           </span>
         )
@@ -234,7 +269,7 @@ export default class App extends React.Component {
 
     return(
       <div>
-        <Model />
+        <Model pmstatus={this.state.AddProject}/>
      <br/>
       <Table id="countData" columns={columns} dataSource={this.state.projects} pagination={{
         total: this.state.Total,

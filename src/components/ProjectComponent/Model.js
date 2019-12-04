@@ -326,7 +326,7 @@ class Model extends React.Component {
     const { formerrors } = this.state;
     return (
       <div>
-        <Button id="addProject" type="primary" onClick={this.showModal}>
+        <Button id="addProject" type="primary" onClick={this.showModal} disabled={this.props.pmstatus}>
           Add Project
         </Button>
         <br />
