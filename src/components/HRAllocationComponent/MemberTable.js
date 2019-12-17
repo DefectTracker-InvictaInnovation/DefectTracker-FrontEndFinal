@@ -64,6 +64,7 @@ export class Allocate extends Component {
                     console.log(response.data)
                     _this.setState({
                         employee: response.data,
+
                     })
                 });
         }
@@ -116,9 +117,21 @@ export class Allocate extends Component {
         return (
 
             <div className="gutter-example">
+                
                 <Row gutter={16}>
-                    <div style={{ float: "right" }}> <Allocation /></div>
-                    <div>
+                <Col span={24}>
+                <div
+                            style={{
+                                padding: 24,
+                                background: '#fff',
+                                minHeight: 360,
+                                marginRight: '0px'
+                            }}>
+                <Col span={3}>
+                
+                    
+                    <div > <Allocation /></div> </Col>
+                    <div style={{ float: "right" }}>
                         <Select
                             placeholder="Select the Project"
                             style={{ width: 220 }}
@@ -142,6 +155,8 @@ export class Allocate extends Component {
                         <div className="gutter-box">
                             <Table columns={columns} dataSource={this.state.employee} />
                         </div>
+                    </Col>
+                    </div>
                     </Col>
                 </Row>
             </div >

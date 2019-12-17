@@ -20,8 +20,6 @@ import Profile from './Profile';
 import ProfileScreen from '../SettingComponent/ProfileScreen';
 import EmployeeAddModal from "./EmployeeAddModal";
 import ImportEmployee from "./ImportEmployee";
-import {getAllPrivileges,notificationmsg} from '../../services/PrivilegeConfig';
-import {getAllEmployees,deleteEmployee,fetchDesignations} from '../../services/NewApiUtil';
 
 const { Option } = Select;
 
@@ -116,12 +114,6 @@ class App extends React.Component {
     };
   }
 
-  state={
-    AddEmployee:false,
-    EditEmployee:true,
-    DeleteEmployee:true
-  }
-
   onChangeEmployeeId(e) {
     this.setState({
       employeeId: e.target.value
@@ -170,35 +162,6 @@ class App extends React.Component {
     console.log("mounting");
     this.getAllEmployees();
     this.getTotalEmployee();
-    this.privilegeconfig();
-  }
-
-  privilegeconfig(){
-  
-    getAllPrivileges()
-    .then(res=>{
-     res.map(post=>{
-        if(!post.status){
-        console.log("debug"+post.privilegeName)
-        if(post.privilegeName=="AddEmployee"){
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
-        this.setState({
-          AddEmployee:true
-        })
-      }else if(post.privilegeName=="EditEmployee"){
-        this.setState({
-          EditEmployee:true
-        })
-      }else if(post.privilegeName=="DeleteEmployee"){
-        console.log("debug"+post.privilegeName)
-        this.setState({
-          DeleteEmployee:true
-        })
-      }
-        }
-     });
-    });
-//  console.log(this.state.AddDefectStatus)
   }
 
   fetchDesignations() {
@@ -599,8 +562,7 @@ class App extends React.Component {
             <Icon
               id="edit"
               type="edit"
-              // onClick={this.handleEdit.bind(this, data.empId)}
-              onClick={this.state.EditEmployee  ?notificationmsg.bind(this,'warning','Edit') :this.handleEdit.bind(this, data.empId)}
+              onClick={this.handleEdit.bind(this, data.empId)}
               style={{ fontSize: "18px", color: "green" }}
             />
           </a>
@@ -624,9 +586,19 @@ class App extends React.Component {
     ];
     return (
       <React.Fragment>
+         <Row gutter={16}>
+                <Col span={24}>
+                <div
+                            style={{
+                                padding: 24,
+                                background: '#fff',
+                                minHeight: 360,
+                                marginRight: '0px'
+                            }}>
         <div>
+          
           <Col span={4}>
-            <EmployeeAddModal reload={this.getAllEmployees} addstatus={this.state.AddEmployee}/>
+            <EmployeeAddModal reload={this.getAllEmployees} />
           </Col>
           <Col span={4}>
             <ImportEmployee reload={this.getAllEmployees} />
@@ -680,18 +652,22 @@ class App extends React.Component {
                       onChange={this.handlechange}
                       disabled
                     />
-                    {formerrors.employeeId.length > 0 && (
+                    {getFieldDecorator("Value", {
+          rules: [{ required: true, message: "Please input your Name!" }]
+        })}
+                    {/* {formerrors.employeeId.length > 0 && (
                       <span
                         className="error"
                         style={{ color: "red", fontSize: "14px" }}
                       >
                         {formerrors.employeeId}
                       </span>
-                    )}
+                    )} */}
                   </Form.Item>
                 </Col>
                 <Col span={8} style={{ padding: "5px" }}>
                   <Form.Item label="Employee Name">
+                 
 
                     <Input
                       id="employeeName"
@@ -704,6 +680,9 @@ class App extends React.Component {
                       name="employeeName"
                       type="text"
                     />
+                     {/* {getFieldDecorator("Value", {
+          rules: [{ required: true, message: "Please input your Name!" }]
+        })} */}
 
                     {formerrors.employeeName.length > 0 && (
                       <span
@@ -795,6 +774,9 @@ class App extends React.Component {
             };
           }}
         />
+        </div>
+        </Col>
+        </Row>
       </React.Fragment>
     );
   }

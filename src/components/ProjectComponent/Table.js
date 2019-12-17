@@ -1,11 +1,11 @@
-import { Table, Icon, Popconfirm, message, Input, Button, Pagination } from "antd";
+import { Table, Icon, Popconfirm, message, Input,Row, Col, Button, Pagination } from "antd";
 import Highlighter from "react-highlight-words";
 import React from "react";
 import EditModel from "./EditModel";
 import axios from "axios";
 import Model from './Model';
+import PmAllocation from './PmAllocation';
 import { API_BASE_URL,ACCESS_TOKEN } from "../../constants";
-import {getAllPrivileges,notificationmsg} from '../../services/PrivilegeConfig';
 
 function confirm(e) {
   console.log(e)
@@ -35,11 +35,7 @@ export default class App extends React.Component {
     type: this.props.type
   };
 
-  state={
-    AddProject:false,
-    EditProject:true,
-    DeleteProject:true
-  }
+
   handleSubmit = event => {
     console.log(this.state.handleSubmit);
     event.preventDefault();
@@ -53,38 +49,7 @@ export default class App extends React.Component {
   componentDidMount() {
     // page refresh
     this.getAllProjects();
-    this.privilegeconfig();
-    
   }
-
-  privilegeconfig(){
-  
-    getAllPrivileges()
-    .then(res=>{
-     res.map(post=>{
-        if(!post.status){
-        console.log("debug"+post.privilegeName)
-        if(post.privilegeName=="AddProject"){
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
-        this.setState({
-          AddProject:true
-        })
-      }else if(post.privilegeName=="EditProject"){
-        this.setState({
-          EditProject:true
-        })
-      }else if(post.privilegeName=="DeleteProject"){
-        console.log("debug"+post.privilegeName)
-        this.setState({
-          DeleteProject:true
-        })
-      }
-        }
-     });
-    });
- console.log(this.state.AddDefectStatus)
-  }
-
   //DELETE-METHOD 1 = WORKING
   handleDelete = projectId => {
     axios.delete(API_BASE_URL+`/deleteById/` + projectId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
@@ -102,25 +67,25 @@ export default class App extends React.Component {
 
 
   getAllProjects=()=> {
-    // const obj = {
-    //   projectName: this.state.projectName,
-    //   duration: this.state.duration,
-    //   status: this.state.status,
-    //   startDate: this.state.startDate,
-    //   endDate: this.state.endDate,
-    //   type: this.state.type
+    const obj = {
+      projectName: this.state.projectName,
+      duration: this.state.duration,
+      status: this.state.status,
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      type: this.state.type
 
 
-    // }
+    }
     axios
-      .get(API_BASE_URL+`/getallproject`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .get(API_BASE_URL+`/GetAllproject`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => {
         this.setState({ projects: res.data });
         console.log(this.state.projects);
       })
-      // .catch(function (error) {
-      //   console.log(error);
-      // });
+      .catch(function (error) {
+        console.log(error);
+      });
   }
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({
@@ -260,7 +225,7 @@ export default class App extends React.Component {
         render: (text, data = this.state.patients) => (
           <span>
             <a>
-              <EditModel id="editProject" projectProps={data.projectId} editstatus={this.state.EditProject}/>
+              <EditModel id="editProject" projectProps={data.projectId} />
             </a>
           </span>
         )
@@ -269,8 +234,26 @@ export default class App extends React.Component {
 
     return(
       <div>
-        <Model pmstatus={this.state.AddProject}/>
-     <br/>
+         
+         <Row gutter={16}>
+                <Col span={24}>
+                <div
+                            style={{
+                                padding: 24,
+                                background: '#fff',
+                                minHeight: 360,
+                                marginRight: '0px'
+                            }}>
+          <Col span={3}>
+          <div ><Model/></div> 
+          </Col>
+          <Col span={3}>
+         <div > <PmAllocation/></div> 
+         </Col>
+        
+       
+
+     <br/><br/>
       <Table id="countData" columns={columns} dataSource={this.state.projects} pagination={{
         total: this.state.Total,
         showTotal: (total, range) =>
@@ -278,7 +261,10 @@ export default class App extends React.Component {
         pageSize: 10,
         showSizeChanger: true
       }} 
-      />
+      reload={this.getAllProjects()}/>
+      </div>
+                    </Col>
+                </Row>
        </div>
     )
   }

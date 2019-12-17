@@ -29,8 +29,8 @@ class CompanyAdministration extends React.Component {
                 <Breadcrumb style={{
                     margin: '16px 0'
                 }}>
-                    <Breadcrumb.Item>Sample Component</Breadcrumb.Item>
-                    <Breadcrumb.Item>Sample SubComponent</Breadcrumb.Item>
+                    {/* <Breadcrumb.Item>Sample Component</Breadcrumb.Item>
+                    <Breadcrumb.Item>Sample SubComponent</Breadcrumb.Item> */}
                 </Breadcrumb>
                 <div
                     style={{

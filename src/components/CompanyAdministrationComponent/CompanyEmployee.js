@@ -184,16 +184,10 @@ export default class CompanyEmployee extends React.Component {
                 <UploadEmployee />
               </Col>
 
-              <Button onClick={this.clearAll} style={{ marginLeft: "10px" }}>More View</Button>
+              
 
             </Col>
-            <Col span={5}>
-              <Search
-                placeholder=" search ......"
-                onSearch={value => console.log(value)}
-                style={{ width: 215 }}
-                enterButton
-              /></Col>
+           
 
           </Row>
         </div>

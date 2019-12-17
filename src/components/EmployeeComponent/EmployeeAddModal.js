@@ -241,7 +241,7 @@ class EmployeeAddModal extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Button id="addEmployee" type="primary" onClick={this.showModal} disabled={this.props.addstatus}>
+        <Button id="addEmployee" type="primary" onClick={this.showModal}>
           Add Employee
         </Button>
         <Modal
@@ -416,7 +416,10 @@ class EmployeeAddModal extends React.Component {
             <Row>
               <Col span={6} style={{ padding: "5px" }}>
                 <Form.Item label="Profile Picture">
-                  <input type="file" className="form-control" name="file" multiple onChange={this.onFileChangeHandler} />
+                {getFieldDecorator("Value", {
+          rules: [{ required: true, message: "Please Upload Profile Picture!" }]
+        })(<input type="file" className="form-control" name="file" multiple onChange={this.onFileChangeHandler} />)}
+                  
                 </Form.Item>
               </Col>
             </Row>
