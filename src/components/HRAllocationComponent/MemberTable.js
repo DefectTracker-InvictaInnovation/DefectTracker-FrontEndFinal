@@ -59,7 +59,7 @@ export class Allocate extends Component {
             this.fetchEmployee()
         } else {
             axios
-                .get(API_BASE_URL+"/getprojectbyresource/" + value,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+                .get(API_BASE_URL+"/getprojectbyId/" + value,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
                 .then(function (response) {
                     console.log(response.data)
                     _this.setState({

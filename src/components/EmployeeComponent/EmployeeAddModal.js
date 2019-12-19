@@ -254,7 +254,7 @@ class EmployeeAddModal extends React.Component {
           <Form>
             <Row>
               <Col span={6} style={{ padding: "5px" }}>
-                <Form.Item label="Employee Id">
+                <Form.Item label="Id">
                   <div>
                     {getFieldDecorator("employeeId", {
                       rules: [
@@ -289,7 +289,7 @@ class EmployeeAddModal extends React.Component {
                 </Form.Item>
               </Col>
               <Col span={9} style={{ padding: "5px" }}>
-                <Form.Item label="Employee Name">
+                <Form.Item label="Firstname">
                   {getFieldDecorator("employeeName", {
                     rules: [
                       {
@@ -321,7 +321,7 @@ class EmployeeAddModal extends React.Component {
                 </Form.Item>
               </Col>
               <Col span={9} style={{ padding: "5px" }}>
-                <Form.Item label="Employee FirstName">
+                <Form.Item label="Surname">
                   {getFieldDecorator("employeeFirstName", {
                     rules: [
                       {
@@ -416,8 +416,16 @@ class EmployeeAddModal extends React.Component {
             <Row>
               <Col span={6} style={{ padding: "5px" }}>
                 <Form.Item label="Profile Picture">
-               (<input type="file" className="form-control" name="file" multiple onChange={this.onFileChangeHandler} />)
-                  
+                  {getFieldDecorator("profilePicPath", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please input profile!"
+                      }
+                    ]
+                  })(
+                   ( <input type="file" className="form-control" name="file" multiple onChange={this.onFileChangeHandler} />)
+                  )}
                 </Form.Item>
               </Col>
             </Row>

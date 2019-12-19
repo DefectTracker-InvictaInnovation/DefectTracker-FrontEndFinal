@@ -247,12 +247,6 @@ export default class SeverityConfig extends React.Component {
 
     const columns = [
       {
-        title: 'Severity Id',
-        dataIndex: 'id',
-        key: 'id',
-
-      },
-      {
         title: 'Severity',
         dataIndex: 'name',
         key: 'name',
