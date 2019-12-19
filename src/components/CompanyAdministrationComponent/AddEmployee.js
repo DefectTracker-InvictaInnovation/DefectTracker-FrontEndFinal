@@ -1,7 +1,7 @@
-import { Modal, Button, Form, message, Input, Select, Row, Col, Upload, Icon } from "antd";
+import { Modal, Button, Form, message, Input, Select, Row, Col, Upload, Icon, Mentions } from "antd";
 import React from "react";
 import axios from "axios";
-import { API_BASE_URL_EMP, ACCESS_TOKEN } from '../../constants/index';
+import { LOGIN_API_BASE_URL, ACCESS_TOKEN } from '../../constants/index';
 
 const { Option } = Select;
 const emailRegex = RegExp(
@@ -31,56 +31,27 @@ class AddEmployee extends React.Component {
     super(props);
 
     this.state = {
-      employeeId: "",
-      employeeName: "",
-      employeeFirstName: "",
-      employeeDesignation: "HR",
-      employeeEmail: "",
-      employeePicture: "",
+      name: "",
+      lastname: "",
+      role: "HR",
+      email: "",
+      password: "",
+      username: "",
       visible: false,
       formerrors: {
-        employeeId: "",
-        employeeName: "",
-        employeeFirstName: "",
-        employeeEmail: ""
+        firstname: "",
+        lastname: "",
+        email: "",
       },
-      designations: [],
-      username: "",
-      email: "",
-      role: "",
-      password: ""
     };
 
     this.handlechange = this.handlechange.bind(this);
-    this.fetchDesignations = this.fetchDesignations.bind(this);
-    this.onChangeEmployeeDesignation = this.onChangeEmployeeDesignation.bind(this);
     this.handleOk = this.handleOk.bind(this);
+    this.onChangeDesignation = this.onChangeDesignation.bind(this);
+    this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
   }
 
-  componentDidMount() {
-    this.fetchDesignations();
-    console.log("mounting");
-  }
-
-
-
-  fetchDesignations() {
-    var _this = this;
-    axios
-      .get(API_BASE_URL_EMP + "/getAllDesignation", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
-      .then(function (response) {
-        console.log(response.data);
-        _this.setState({ designations: response.data });
-        console.log(_this.state.designations);
-      });
-  }
-
-  onChangeEmployeeDesignation(value) {
-    this.setState({
-      employeeDesignation: `${value}`
-    });
-    console.log(this.state.employeeDesignation);
-  }
   handlechange = e => {
     e.preventDefault();
 
@@ -88,36 +59,25 @@ class AddEmployee extends React.Component {
     let formerrors = { ...this.state.formerrors };
 
     switch (name) {
-      case "employeeId":
-        if (!ValidRegex.test(value)) {
-          formerrors.employeeId = "Invalid Id";
-        } else if (value.length > 8) {
-          formerrors.employeeId = "Should be less than 8 characters";
-        } else if (value.length < 2) {
-          formerrors.employeeId = "Should be greater than 2 characters";
+      case "firstname":
+        if (!NameRegex.test(value)) {
+          formerrors.firstname = "Invalid Name";
+        } else if (value.length > 30) {
+          formerrors.firstname = "Should be less than 30 characters";
         } else {
-          formerrors.employeeId = "";
+          formerrors.firstname = "";
+        }
+      case "lastname":
+        if (!NameRegex.test(value)) {
+          formerrors.lastname = "Invalid Name";
+        } else if (value.length > 30) {
+          formerrors.lastname = "Should be less than 30 characters";
+        } else {
+          formerrors.lastname = "";
         }
         break;
-      case "employeeName":
-        if (!NameRegex.test(value)) {
-          formerrors.employeeName = "Invalid Name";
-        } else if (value.length > 30) {
-          formerrors.employeeName = "Should be less than 30 characters";
-        } else {
-          formerrors.employeeName = "";
-        }
-      case "employeeFirstName":
-        if (!NameRegex.test(value)) {
-          formerrors.employeeFirstName = "Invalid Name";
-        } else if (value.length > 30) {
-          formerrors.employeeFirstName = "Should be less than 30 characters";
-        } else {
-          formerrors.employeeFirstName = "";
-        }
-        break;
-      case "employeeEmail":
-        formerrors.employeeEmail = emailRegex.test(value)
+      case "email":
+        formerrors.email = emailRegex.test(value)
           ? ""
           : "Invalid email address";
         break;
@@ -127,10 +87,33 @@ class AddEmployee extends React.Component {
     this.setState({ formerrors, [name]: value }, () => console.log(this.state));
   };
 
-  handleOk = (e, empId) => {
+  onChangeDesignation(e) {
+    this.setState({
+      role: e.target.value
+    });
+    console.log(this.state.role);
+  }
+  onChangeName=(e)=> {
+    this.setState({
+      name: e.target.value
+    });
+    console.log(this.state.name);
+  }
 
+  onChangePassword(e) {
+    this.setState({
+      password: e.target.value
+    });
+    console.log(this.state.password);
+  }
 
-
+  onChangeUsername(e) {
+    this.setState({
+      username: e.target.value
+    });
+    console.log(this.state.username);
+  }
+  handleOk = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
@@ -141,39 +124,23 @@ class AddEmployee extends React.Component {
       }
     });
     if (formValid(this.state)) {
-      console.info(`
-        --SUBMITTING--
-        Employee Id: ${this.state.employeeId}
-        Employee Name: ${this.state.employeeName}
-        Employee FirstName:${this.state.employeeFirstName}
-        Employee Email: ${this.state.employeeEmail}  
-        Employee Picture: ${this.state.employeePicture}    
-      `);
 
       const empJson = {
-        employeeid: this.state.employeeId,
-        name: this.state.employeeName,
-        firstname: this.state.employeeFirstName,
-        designationid: this.state.employeeDesignation,
-        email: this.state.employeeEmail,
-        profilePicPath: this.state.employeePicture
+        name: this.state.name,
+        lastname: this.state.lastname,
+        username: this.state.username,
+        email: this.state.email,
+        role: this.state.role,
+        password: this.state.password
 
       };
-
-      const user = {
-        name: this.state.employeeName,
-        username: this.state.employeeFirstName,
-        email: this.state.employeeEmail,
-        role: this.state.employeeDesignation,
-        password: this.state.employeeName
-      }
       this.setState({ empJson })
-
-      axios.post(API_BASE_URL_EMP + "/saveemployee", this.state.formData, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+console.log(empJson)
+      axios.post(LOGIN_API_BASE_URL + "/signup", empJson, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
         .then(res => {
           console.log(res.data);
 
-          this.props.reload();
+          // this.props.reload();
 
         })
 
@@ -194,12 +161,12 @@ class AddEmployee extends React.Component {
     }
 
     const data1 = {
-      employeeid: this.state.employeeId,
-      name: this.state.employeeName,
-      firstname: this.state.employeeFirstName,
-      designationid: this.state.employeeDesignation,
-      email: this.state.employeeEmail,
-      profilePicPath: this.state.employeePicture
+      name: this.state.name,
+      lastname: this.state.lastname,
+      username: this.state.username,
+      email: this.state.email,
+      password: this.state.password,
+      role:this.state.role
     }
     console.log(JSON.stringify(data1))
     formData.append('extra', JSON.stringify(data1))
@@ -217,23 +184,14 @@ class AddEmployee extends React.Component {
 
   handleCancel = e => {
     this.setState({
-      employeeId: "null",
-      employeeName: "null",
-      employeeFirstName: "null",
-      employeeDesignation: "null",
-      employeeEmail: "null",
-      employeePicture: "null",
+      name: "null",
+      lastname: "null",
+      email: "null",
+      username: "null",
+      role: "null",
+      password: "null",
       visible: false
     });
-
-    console.info(`
-        --Cancel--
-        Employee Id: ${this.state.employeeId}
-        Employee Name: ${this.state.employeeName}
-        Employee FirstName:${this.state.employeeFirstName}
-        Employee Email: ${this.state.employeeEmail}
-       
-      `);
   };
 
   render() {
@@ -241,11 +199,11 @@ class AddEmployee extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Button id="addEmployee" type="primary" onClick={this.showModal}>
+        <Button id="addHR" type="primary" onClick={this.showModal}>
           Add HR
         </Button>
         <Modal
-          title="Add Employee"
+          title="Add HR"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -253,102 +211,88 @@ class AddEmployee extends React.Component {
         >
           <Form>
             <Row>
-              <Col span={6} style={{ padding: "5px" }}>
-                <Form.Item label="Employee Id">
-                  <div>
-                    {getFieldDecorator("employeeId", {
-                      rules: [
-                        {
-                          required: true,
-                          message: "Please input employeeId!"
-                        }
-                      ]
-                    })(
-                      <Input
-                        id="employeeId"
-                        className={
-                          formerrors.employeeId.length > 0 ? "error" : null
-                        }
-                        placeholder="Employee Id"
-                        value={this.state.employeeId}
-                        name="employeeId"
-                        type="text"
-                        onChange={this.handlechange}
-                      />
-                    )}
-                  </div>
-
-                  {formerrors.employeeId.length > 0 && (
-                    <span
-                      className="error"
-                      style={{ color: "red", fontSize: "14px" }}
-                    >
-                      {formerrors.employeeId}
-                    </span>
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={9} style={{ padding: "5px" }}>
-                <Form.Item label="Employee Name">
-                  {getFieldDecorator("employeeName", {
+              <Col span={8} style={{ padding: "5px" }}>
+                <Form.Item label="Firstname">
+                  {getFieldDecorator("firstname", {
                     rules: [
                       {
                         required: true,
-                        message: "Please input employeeName!"
+                        message: "Please input firstname!"
                       }
                     ]
                   })(
                     <Input
-                      id="employeeName"
+                      id="firstname"
                       className={
-                        formerrors.employeeName.length > 0 ? "error" : null
+                        formerrors.firstname.length > 0 ? "error" : null
                       }
-                      placeholder="Employee Name"
-                      value={this.state.employeeName}
-                      onChange={this.handlechange}
-                      name="employeeName"
+                      placeholder="Enter the firstname"
+                      value={this.state.name}
+                      onChange={this.onChangeName}
+                      name="firstname"
                       type="text"
                     />
                   )}
-                  {formerrors.employeeName.length > 0 && (
+                  {formerrors.firstname.length > 0 && (
                     <span
                       className="error"
                       style={{ color: "red", fontSize: "14px" }}
                     >
-                      {formerrors.employeeName}
+                      {formerrors.firstname}
                     </span>
                   )}
                 </Form.Item>
               </Col>
-              <Col span={9} style={{ padding: "5px" }}>
-                <Form.Item label="Employee FirstName">
-                  {getFieldDecorator("employeeFirstName", {
+              <Col span={8} style={{ padding: "5px" }}>
+                <Form.Item label="Surname">
+                  {getFieldDecorator("lastname", {
                     rules: [
                       {
                         required: true,
-                        message: "Please input employeeFirstName!"
+                        message: "Please input surname!"
                       }
                     ]
                   })(
                     <Input
-                      id="employeeFirstName"
+                      id="lastname"
                       className={
-                        formerrors.employeeFirstName.length > 0 ? "error" : null
+                        formerrors.lastname.length > 0 ? "error" : null
                       }
-                      placeholder="Employee FirstName"
-                      value={this.state.employeeFirstName}
+                      placeholder="Enter the lastname"
+                      value={this.state.lastname}
                       onChange={this.handlechange}
-                      name="employeeFirstName"
+                      name="lastname"
                       type="text"
                     />
                   )}
-                  {formerrors.employeeFirstName.length > 0 && (
+                  {formerrors.lastname.length > 0 && (
                     <span
                       className="error"
                       style={{ color: "red", fontSize: "14px" }}
                     >
-                      {formerrors.employeeFirstName}
+                      {formerrors.lastname}
                     </span>
+                  )}
+                </Form.Item>
+              </Col>
+              <Col span={8} style={{ padding: "5px" }}>
+                <Form.Item label="Username">
+                  {getFieldDecorator("username", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please input username!"
+                      }
+                    ]
+                  })(
+                    <Input
+                      id="username"
+                      placeholder="Enter the username"
+                      value={this.state.username}
+                      onChange={this.onChangeUsername}
+                      name="username"
+                      type="text"
+                    />
                   )}
                 </Form.Item>
               </Col>
@@ -357,71 +301,79 @@ class AddEmployee extends React.Component {
             <Row>
               <Col span={6} style={{ padding: "5px" }}>
                 <Form.Item label="Designation">
-                  {getFieldDecorator("gender", {
+                {getFieldDecorator("role", {
                     rules: [
-                      { required: true, message: "Please select designation!" }
+                      {
+                        required: true,
+                        message: "Please input role!"
+                      }
                     ]
                   })(
-                    <Select
-                      id="employeeDesignation"
-                      defaultValue="Select Designation"
-                      style={{ width: 120 }}
-                      onChange={this.onChangeEmployeeDesignation}
-                    >
-                      {this.state.designations.map(function (item, index) {
-                        return (
-                          <Option key={index} value={item.designationid}>
-                            {item.designationname}
-                          </Option>
-                        );
-                      })}
-                    </Select>
+                    <Input
+                      // defaultValue="HR"
+                      style={{ width: 100 }}
+                      onChange={this.onChangeDesignation}
+                      placeholder="HR"
+                      // readOnly
+                    />
                   )}
                 </Form.Item>
               </Col>
 
               <Col span={18} style={{ padding: "5px" }}>
                 <Form.Item label="Email">
-                  {getFieldDecorator("employeeEmail", {
+                  {getFieldDecorator("email", {
                     rules: [
                       {
                         required: true,
-                        message: "Please input employeeEmail!"
+                        message: "Please input email!"
                       }
                     ]
                   })(
                     <Input
-                      id="employeeEmail"
+                      id="email"
                       className={
-                        formerrors.employeeEmail.length > 0 ? "error" : null
+                        formerrors.email.length > 0 ? "error" : null
                       }
-                      placeholder="Email"
-                      value={this.state.employeeEmail}
+                      placeholder="Enter the email"
+                      value={this.state.email}
                       onChange={this.handlechange}
-                      name="employeeEmail"
+                      name="email"
                       type="text"
                     />
                   )}
-                  {formerrors.employeeEmail.length > 0 && (
+                  {formerrors.email.length > 0 && (
                     <span
                       className="error"
                       style={{ color: "red", fontSize: "14px" }}
                     >
-                      {formerrors.employeeEmail}
+                      {formerrors.email}
                     </span>
                   )}
                 </Form.Item>
               </Col>
             </Row>
             <Row>
-              <Col span={6} style={{ padding: "5px" }}>
-              <Form.Item label="Profile Picture">
-                {getFieldDecorator("Value", {
-          rules: [{ required: true, message: "Please Upload Profile Picture!" }]
-        })(<input type="file" className="form-control" name="file" multiple onChange={this.onFileChangeHandler} />)}
-                  
-                </Form.Item>
-              </Col>
+              <Form.Item label="Password">
+              {getFieldDecorator("password", {
+                    rules: [
+                      {
+                        required: true,
+                        message: "Please input password!"
+                      }
+                    ]
+                  })(
+                <Input
+                  id="password"
+                  placeholder="Please enter password"
+                  value={this.state.password}
+                  onChange={this.onChangePassword}
+                  name="password"
+                  type="text"
+                />
+                  )}
+              </Form.Item>
+
             </Row>
           </Form>
         </Modal>

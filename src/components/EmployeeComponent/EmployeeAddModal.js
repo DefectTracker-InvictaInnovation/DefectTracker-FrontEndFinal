@@ -416,9 +416,7 @@ class EmployeeAddModal extends React.Component {
             <Row>
               <Col span={6} style={{ padding: "5px" }}>
                 <Form.Item label="Profile Picture">
-                {getFieldDecorator("Value", {
-          rules: [{ required: true, message: "Please Upload Profile Picture!" }]
-        })(<input type="file" className="form-control" name="file" multiple onChange={this.onFileChangeHandler} />)}
+               (<input type="file" className="form-control" name="file" multiple onChange={this.onFileChangeHandler} />)
                   
                 </Form.Item>
               </Col>

@@ -10,6 +10,7 @@ import {
   Select
 } from "antd";
 import React from "react";
+import moment from 'moment';
 import axios from "axios";
 import {  API_BASE_URL, ACCESS_TOKEN } from '../../constants/index';
 
@@ -46,6 +47,11 @@ const formValid = ({ formerrors, ...rest }) => {
 
   return valid;
 };
+
+function disabledDate(current) {
+  // Can not select days before today and today
+  return current && current < moment().endOf('day');
+}
 
 class Model extends React.Component {
   constructor(props) {
@@ -319,7 +325,7 @@ class Model extends React.Component {
     const { formerrors } = this.state;
     return (
       <div>
-        <Button id="addProject" type="primary" onClick={this.showModal}>
+        <Button id="addProject" type="primary" onClick={this.showModal} disabled={this.props.qastatus}>
           Add Project
         </Button>
         <br />
@@ -332,43 +338,7 @@ class Model extends React.Component {
         >
           <Form layout="vertical" >
             <Row gutter={16}>
-              <Col span={6}>
-                <Form.Item label="Project Id">
-                  <div>
-                    {getFieldDecorator("projectId", {
-                      rules: [
-                        {
-                          required: true,
-                          message: "Please input ProjectId!"
-                        }
-                      ]
-                    })(
-                      <Input
-                        id="projectId"
-                        className={
-                          formerrors.projectId.length > 0 ? "error" : null
-                        }
-                        placeholder="Project Id"
-                        name="projectId"
-                        value={this.state.projectId}
-                        onChange={this.handlechange}
-                      />
-                    )}
-                  </div>
-                  {formerrors.projectId.length > 0 && (
-                    <span
-                      className="error"
-                      style={{ color: "red", fontSize: "14px" }}
-                    >
-                      {formerrors.projectId}
-                    </span>
-                  )}
-                </Form.Item>
-              </Col>
-            
-
-            
-              <Col span={18}>
+              <Col span={24}>
                 <Form.Item label="Project Name">
                   <div>
                     {getFieldDecorator("projectName", {
@@ -488,6 +458,7 @@ class Model extends React.Component {
                         name="startDate"
                         value={this.state.startDate}
                         onChange={this.onChangeStartDate}
+                        disabledDate={disabledDate}
                       />
                     )}
                   </div>
@@ -521,6 +492,7 @@ class Model extends React.Component {
                         name="endDate"
                         onChange={this.onChangeEndDate}
                         value={this.state.endDate}
+                        disabledDate={disabledDate}
                       />
                     )}
                   </div>

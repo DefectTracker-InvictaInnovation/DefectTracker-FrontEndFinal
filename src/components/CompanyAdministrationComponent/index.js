@@ -1,8 +1,9 @@
 import React from 'react';
 import CompanyEmployee from './CompanyEmployee';
 import {
-    Breadcrumb
+    Breadcrumb,PageHeader
 } from 'antd';
+import AddEmployee from './AddEmployee';
 
 class CompanyAdministration extends React.Component {
 
@@ -23,25 +24,27 @@ class CompanyAdministration extends React.Component {
     }
 
     render() {
-        
+        const { handleSwitchChange } = this.props;
+        const routes = [{
+                path: 'index',
+                breadcrumbName: 'Home',
+            },
+            {
+                path: 'first',
+                breadcrumbName: 'HR',
+            },
+        ];
         return (
             <React.Fragment>
-                <Breadcrumb style={{
-                    margin: '16px 0'
-                }}>
-                    {/* <Breadcrumb.Item>Sample Component</Breadcrumb.Item>
-                    <Breadcrumb.Item>Sample SubComponent</Breadcrumb.Item> */}
-                </Breadcrumb>
+                <PageHeader title="Human Resources" breadcrumb={{ routes }} />
                 <div
                     style={{
-                    padding: 24,
+                    padding: '0 24px 24px 24px',
                     background: '#fff',
                     minHeight: '500px',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'
                 }}>
-               
-                <CompanyEmployee/>
-            
+                    <AddEmployee />
                 </div>
                 
             </React.Fragment>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Button, message, Upload, Icon } from "antd";
-import {API_BASE_URL_EMP} from '../../constants/index';
+import { API_BASE_URL_EMP } from '../../constants/index';
 import reqwest from 'reqwest';
 
 export default class ImportEmployee extends React.Component {
@@ -25,7 +25,7 @@ export default class ImportEmployee extends React.Component {
     // You can use any AJAX library you like
     reqwest({
       name: "uploadfile",
-      url: API_BASE_URL_EMP+"/database",
+      url: API_BASE_URL_EMP + "/database",
       method: "post",
       processData: false,
       data: formData,
@@ -123,6 +123,9 @@ export default class ImportEmployee extends React.Component {
           ]}
         >
           <Upload {...props}>
+            <p style={{ color: "red", margin: "0 ", display: "inline" }} >* </p> <p style={{ argin: "0 ", display: "inline" }} align="right">Upload .xls file only.</p>
+            <br></br>
+            <br></br>
             <Button>
               <Icon type="upload" /> Click to Upload
             </Button>

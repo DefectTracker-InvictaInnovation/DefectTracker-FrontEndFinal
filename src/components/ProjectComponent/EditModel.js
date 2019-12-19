@@ -225,6 +225,7 @@ export default class Model extends React.Component {
         <Icon
           type="edit"
           // onClick={this.showEditModal}
+          disabled={this.props.qastatus}
           onClick={this.props.EditProject?notificationmsg.bind(this,'warning','Edit'):this.showEditModal}
           style={{ fontSize: "18px", color: "Blue" }}
         />
@@ -238,18 +239,6 @@ export default class Model extends React.Component {
           okText="Update"
         >
           <Form layout="vertical">
-            <Row gutter={16}>
-              <Col span={24}>
-                <Form.Item label="Project Id">
-                  <Input
-                    placeholder="Project Id"
-                    value={this.state.projectId}
-                    onChange={this.onChangeprojectId}
-                    disabled
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
             <Row gutter={16}>
               <Col span={24}>
                 <Form.Item label="Project Name">

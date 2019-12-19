@@ -59,11 +59,12 @@ export default class CompanyPrivilege extends Component {
             privilegeName: record.privilegeName,
             status: checked
         }
+        if(checked){
         data.push(file);
         iddata.push(record.id);
         pmdata.push(file);
         idpmdata.push(record.id);
-
+        }
     }
 
     onChangeDev(record, msg, checked) {

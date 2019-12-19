@@ -310,7 +310,7 @@ export default class PmAllocation extends React.Component {
 
     return (
       <div>
-        <Button id="allocate" type="primary" onClick={this.showModal}>
+        <Button id="allocate" type="primary" onClick={this.showModal} disabled={this.props.qastatus}>
           PM Allocate
         </Button>
         <br />

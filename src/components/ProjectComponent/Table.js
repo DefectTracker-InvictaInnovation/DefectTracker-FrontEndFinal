@@ -1,11 +1,13 @@
-import { Table, Icon, Popconfirm, message, Input,Row, Col, Button, Pagination } from "antd";
+import { Table, Icon, Popconfirm, message, Input, Row, Col, Button, Pagination } from "antd";
 import Highlighter from "react-highlight-words";
 import React from "react";
 import EditModel from "./EditModel";
 import axios from "axios";
 import Model from './Model';
 import PmAllocation from './PmAllocation';
-import { API_BASE_URL,ACCESS_TOKEN } from "../../constants";
+import { API_BASE_URL, ACCESS_TOKEN } from "../../constants";
+import { getQaPrivilegeByName, getAllQaPrivilege, getAllPrivileges, notificationmsg } from '../../services/PrivilegeConfig';
+
 
 function confirm(e) {
   console.log(e)
@@ -28,12 +30,54 @@ export default class App extends React.Component {
     projects: [],
     projectId: this.props.projectId,
     projectName: this.props.projectName,
+    projectAbbr:this.props.projectAbbr,
     duration: this.props.duration,
     status: this.props.status,
     startDate: this.props.startDate,
     endDate: this.props.endDate,
     type: this.props.type
   };
+
+  state = {
+    AddProjectStatus: false,
+    DeleteProjectStatus: true,
+    EditProjectStatus: true,
+    PMAllocationStatus: false
+  }
+
+  privilegeconfig() {
+
+    getAllPrivileges()
+      .then(res => {
+        console.log(res)
+        res.map(post => {
+          if (!post.status) {
+            console.log("debug" + post.privilegeName)
+            if (post.privilegeName == "AddProject") {
+              console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
+              this.setState({
+                AddProjectStatus: true
+              })
+            } else if (post.privilegeName == "EditProject") {
+              this.setState({
+                EditProjectStatus: true
+              })
+            } else if (post.privilegeName == "DeleteProject") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                DeleteProjectStatus: true
+              })
+            }
+            else if (post.privilegeName == "PMAllocation") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                PMAllocationStatus: true
+              })
+            }
+          }
+        });
+      });
+  }
 
 
   handleSubmit = event => {
@@ -49,10 +93,11 @@ export default class App extends React.Component {
   componentDidMount() {
     // page refresh
     this.getAllProjects();
+    this.privilegeconfig();
   }
   //DELETE-METHOD 1 = WORKING
   handleDelete = projectId => {
-    axios.delete(API_BASE_URL+`/deleteById/` + projectId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.delete(API_BASE_URL + `/deleteById/` + projectId, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(console.log(projectId))
       .catch(err => console.log(err));
 
@@ -66,9 +111,10 @@ export default class App extends React.Component {
   };
 
 
-  getAllProjects=()=> {
+  getAllProjects = () => {
     const obj = {
       projectName: this.state.projectName,
+      projectAbbr:this.state.projectAbbr,
       duration: this.state.duration,
       status: this.state.status,
       startDate: this.state.startDate,
@@ -78,7 +124,7 @@ export default class App extends React.Component {
 
     }
     axios
-      .get(API_BASE_URL+`/GetAllproject`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .get(API_BASE_URL + `/GetAllproject`, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(res => {
         this.setState({ projects: res.data });
         console.log(this.state.projects);
@@ -165,17 +211,24 @@ export default class App extends React.Component {
 
   render() {
     const columns = [
-      {
-        title: "Project Id ",
-        dataIndex: "projectId",
-        key: "projectid",
-        width: "20%",
-        ...this.getColumnSearchProps("projectId")
-      },
+      // {
+      //   title: "Project Id ",
+      //   dataIndex: "projectId",
+      //   key: "projectid",
+      //   width: "20%",
+      //   ...this.getColumnSearchProps("projectId")
+      // },
       {
         title: "Project Name",
         dataIndex: "projectName",
         key: "projectName",
+        width: "20%",
+        ...this.getColumnSearchProps("projectName")
+      },
+      {
+        title: "Project Abbreviation",
+        dataIndex: "projectAbbr",
+        key: "projectAbbr",
         width: "20%",
         ...this.getColumnSearchProps("projectName")
       },
@@ -225,47 +278,47 @@ export default class App extends React.Component {
         render: (text, data = this.state.patients) => (
           <span>
             <a>
-              <EditModel id="editProject" projectProps={data.projectId} />
+              <EditModel id="editProject" projectProps={data.projectId} qastatus={this.state.EditProjectStatus}/>
             </a>
           </span>
         )
       },
     ];
 
-    return(
+    return (
       <div>
-         
-         <Row gutter={16}>
-                <Col span={24}>
-                <div
-                            style={{
-                                padding: 24,
-                                background: '#fff',
-                                minHeight: 360,
-                                marginRight: '0px'
-                            }}>
-          <Col span={3}>
-          <div ><Model/></div> 
-          </Col>
-          <Col span={3}>
-         <div > <PmAllocation/></div> 
-         </Col>
-        
-       
 
-     <br/><br/>
-      <Table id="countData" columns={columns} dataSource={this.state.projects} pagination={{
-        total: this.state.Total,
-        showTotal: (total, range) =>
-          `${range[0]}-${range[1]} of ${total} items`,
-        pageSize: 10,
-        showSizeChanger: true
-      }} 
-      reload={this.getAllProjects()}/>
+        <Row gutter={16}>
+          <Col span={24}>
+            <div
+              style={{
+                padding: 24,
+                background: '#fff',
+                minHeight: 360,
+                marginRight: '0px'
+              }}>
+              <Col span={3}>
+                <div ><Model qastatus={this.state.AddProjectStatus}/></div>
+              </Col>
+              <Col span={3}>
+                <div > <PmAllocation qastatus={this.state.PMAllocationStatus}/></div>
+              </Col>
+
+
+
+              <br /><br />
+              <Table id="countData" columns={columns} dataSource={this.state.projects} pagination={{
+                total: this.state.Total,
+                showTotal: (total, range) =>
+                  `${range[0]}-${range[1]} of ${total} items`,
+                pageSize: 10,
+                showSizeChanger: true
+              }}
+              />
+            </div>
+          </Col>
+        </Row>
       </div>
-                    </Col>
-                </Row>
-       </div>
     )
   }
 }

@@ -586,76 +586,76 @@ class App extends React.Component {
     ];
     return (
       <React.Fragment>
-         <Row gutter={16}>
-                <Col span={24}>
-                <div
-                            style={{
-                                padding: 24,
-                                background: '#fff',
-                                minHeight: 360,
-                                marginRight: '0px'
-                            }}>
-        <div>
-          
-          <Col span={4}>
-            <EmployeeAddModal reload={this.getAllEmployees} />
-          </Col>
-          <Col span={4}>
-            <ImportEmployee reload={this.getAllEmployees} />
-          </Col>
-          <br />
-          <br />
+        <Row gutter={16}>
+          <Col span={24}>
+            <div
+              style={{
+                padding: 24,
+                background: '#fff',
+                minHeight: 360,
+                marginRight: '0px'
+              }}>
+              <div>
 
-          <Modal
-            title={null}
-            visible={this.state.visiblepro}
-            onOk={this.handleOkpro}
-            onCancel={this.handleCancelpro}
-            width="600px"
-            footer={null}
-            headers={null}
-          >
-            <ProfileScreen
-              Name={this.state.Name}
-              Email={this.state.Email}
-              Designationname={this.state.Designationname}
-              bench={this.state.bench}
-              projectName={this.state.projectName}
-              availability={this.state.availability}
-              profilePicPath={this.state.profilePicPath}
+                <Col span={4}>
+                  <EmployeeAddModal reload={this.getAllEmployees} />
+                </Col>
+                <Col span={4}>
+                  <ImportEmployee reload={this.getAllEmployees} />
+                </Col>
+                <br />
+                <br />
 
-            />
-          </Modal>
+                <Modal
+                  title={null}
+                  visible={this.state.visiblepro}
+                  onOk={this.handleOkpro}
+                  onCancel={this.handleCancelpro}
+                  width="600px"
+                  footer={null}
+                  headers={null}
+                >
+                  <ProfileScreen
+                    Name={this.state.Name}
+                    Email={this.state.Email}
+                    Designationname={this.state.Designationname}
+                    bench={this.state.bench}
+                    projectName={this.state.projectName}
+                    availability={this.state.availability}
+                    profilePicPath={this.state.profilePicPath}
+
+                  />
+                </Modal>
 
 
 
-          <Modal
-            title="Edit Employee"
-            visible={this.state.visible}
-            onOk={this.handleOk.bind(this, this.state.empId)}
-            onCancel={this.handleCancel}
-            width="500px"
-          >
-            <Form>
-              <Row>
-                <Col span={8} style={{ padding: "5px" }}>
-                  <Form.Item label="Employee Id">
-                    <Input
-                      id="employeeId"
-                      className={
-                        formerrors.employeeId.length > 0 ? "error" : null
-                      }
-                      placeholder="Employee Id"
-                      value={this.state.employeeId}
-                      name="employeeId"
-                      type="text"
-                      onChange={this.handlechange}
-                      disabled
-                    />
-                    {getFieldDecorator("Value", {
-          rules: [{ required: true, message: "Please input your Name!" }]
-        })}
-                    {/* {formerrors.employeeId.length > 0 && (
+                <Modal
+                  title="Edit Employee"
+                  visible={this.state.visible}
+                  onOk={this.handleOk.bind(this, this.state.empId)}
+                  onCancel={this.handleCancel}
+                  width="500px"
+                >
+                  <Form>
+                    <Row>
+                      <Col span={8} style={{ padding: "5px" }}>
+                        <Form.Item label="Employee Id">
+                          <Input
+                            id="employeeId"
+                            className={
+                              formerrors.employeeId.length > 0 ? "error" : null
+                            }
+                            placeholder="Employee Id"
+                            value={this.state.employeeId}
+                            name="employeeId"
+                            type="text"
+                            onChange={this.handlechange}
+                            disabled
+                          />
+                          {getFieldDecorator("Value", {
+                            rules: [{ required: true, message: "Please input your Name!" }]
+                          })}
+                          {/* {formerrors.employeeId.length > 0 && (
                       <span
                         className="error"
                         style={{ color: "red", fontSize: "14px" }}
@@ -663,119 +663,119 @@ class App extends React.Component {
                         {formerrors.employeeId}
                       </span>
                     )} */}
-                  </Form.Item>
-                </Col>
-                <Col span={8} style={{ padding: "5px" }}>
-                  <Form.Item label="Employee Name">
-                 
+                        </Form.Item>
+                      </Col>
+                      <Col span={8} style={{ padding: "5px" }}>
+                        <Form.Item label="Employee Name">
 
-                    <Input
-                      id="employeeName"
-                      className={
-                        formerrors.employeeName.length > 0 ? "error" : null
-                      }
-                      placeholder="Employee Name"
-                      value={this.state.employeeName}
-                      onChange={this.handlechange}
-                      name="employeeName"
-                      type="text"
-                    />
-                     {/* {getFieldDecorator("Value", {
+
+                          <Input
+                            id="employeeName"
+                            className={
+                              formerrors.employeeName.length > 0 ? "error" : null
+                            }
+                            placeholder="Employee Name"
+                            value={this.state.employeeName}
+                            onChange={this.handlechange}
+                            name="employeeName"
+                            type="text"
+                          />
+                          {/* {getFieldDecorator("Value", {
           rules: [{ required: true, message: "Please input your Name!" }]
         })} */}
 
-                    {formerrors.employeeName.length > 0 && (
-                      <span
-                        className="error"
-                        style={{ color: "red", fontSize: "14px" }}
-                      >
-                        {formerrors.employeeName}
-                      </span>
-                    )}
-                  </Form.Item>
-                </Col>
-                <Col span={8} style={{ padding: "5px" }}>
-                  <Form.Item label="Employee FirstName">
-                    <Input
-                      id="employeeFirstName"
-                      className={
-                        formerrors.employeeFirstName.length > 0 ? "error" : null
-                      }
-                      placeholder="Employee FirstName"
-                      value={this.state.employeeFirstName}
-                      onChange={this.handlechange}
-                      name="employeeFirstName"
-                      type="text"
-                    />
-                    {formerrors.employeeFirstName.length > 0 && (
-                      <span
-                        className="error"
-                        style={{ color: "red", fontSize: "14px" }}
-                      >
-                        {formerrors.employeeFirstName}
-                      </span>
-                    )}
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={8} style={{ padding: "5px" }}>
-                  <Form.Item label="Designation">
-                    <Select
-                      id="employeeDesignation"
-                      onChange={this.onChangeEmployeeDesignation}
-                      value={this.state.employeeDesignation}
-                    >
-                      {this.state.des}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={16} style={{ padding: "5px" }}>
-                  <Form.Item label="Email Id">
-                    <Input
-                      id="employeeEmail"
-                      className={
-                        formerrors.employeeEmail.length > 0 ? "error" : null
-                      }
-                      placeholder="Email"
-                      value={this.state.employeeEmail}
-                      onChange={this.handlechange}
-                      name="employeeEmail"
-                      type="text"
-                    />
-                    {formerrors.employeeEmail.length > 0 && (
-                      <span
-                        className="error"
-                        style={{ color: "red", fontSize: "14px" }}
-                      >
-                        {formerrors.employeeEmail}
-                      </span>
-                    )}
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Modal>
-        </div>
-        <Table
-          columns={columns}
-          dataSource={this.state.employees}
-          pagination={{
-            total: this.state.Total,
-            showTotal: (total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`,
-            pageSize: 10,
-            showSizeChanger: true
-          }}
+                          {formerrors.employeeName.length > 0 && (
+                            <span
+                              className="error"
+                              style={{ color: "red", fontSize: "14px" }}
+                            >
+                              {formerrors.employeeName}
+                            </span>
+                          )}
+                        </Form.Item>
+                      </Col>
+                      <Col span={8} style={{ padding: "5px" }}>
+                        <Form.Item label="Employee FirstName">
+                          <Input
+                            id="employeeFirstName"
+                            className={
+                              formerrors.employeeFirstName.length > 0 ? "error" : null
+                            }
+                            placeholder="Employee FirstName"
+                            value={this.state.employeeFirstName}
+                            onChange={this.handlechange}
+                            name="employeeFirstName"
+                            type="text"
+                          />
+                          {formerrors.employeeFirstName.length > 0 && (
+                            <span
+                              className="error"
+                              style={{ color: "red", fontSize: "14px" }}
+                            >
+                              {formerrors.employeeFirstName}
+                            </span>
+                          )}
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={8} style={{ padding: "5px" }}>
+                        <Form.Item label="Designation">
+                          <Select
+                            id="employeeDesignation"
+                            onChange={this.onChangeEmployeeDesignation}
+                            value={this.state.employeeDesignation}
+                          >
+                            {this.state.des}
+                          </Select>
+                        </Form.Item>
+                      </Col>
+                      <Col span={16} style={{ padding: "5px" }}>
+                        <Form.Item label="Email Id">
+                          <Input
+                            id="employeeEmail"
+                            className={
+                              formerrors.employeeEmail.length > 0 ? "error" : null
+                            }
+                            placeholder="Email"
+                            value={this.state.employeeEmail}
+                            onChange={this.handlechange}
+                            name="employeeEmail"
+                            type="text"
+                          />
+                          {formerrors.employeeEmail.length > 0 && (
+                            <span
+                              className="error"
+                              style={{ color: "red", fontSize: "14px" }}
+                            >
+                              {formerrors.employeeEmail}
+                            </span>
+                          )}
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                  </Form>
+                </Modal>
+              </div>
+              <Table
+                columns={columns}
+                dataSource={this.state.employees}
+                pagination={{
+                  total: this.state.Total,
+                  showTotal: (total, range) =>
+                    `${range[0]}-${range[1]} of ${total} items`,
+                  pageSize: 10,
+                  showSizeChanger: true
+                }}
 
-          onRow={(record, rowIndex) => {
-            return {
-              onDoubleClick: () => { this.showModalpro(record.empId) },
-            };
-          }}
-        />
-        </div>
-        </Col>
+                onRow={(record, rowIndex) => {
+                  return {
+                    onDoubleClick: () => { this.showModalpro(record.empId) },
+                  };
+                }}
+              />
+            </div>
+          </Col>
         </Row>
       </React.Fragment>
     );

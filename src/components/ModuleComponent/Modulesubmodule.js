@@ -16,6 +16,9 @@ import { Component } from "react";
 import React from "react";
 import axios from "axios";
 import { API_BASE_URL,ACCESS_TOKEN } from './../../constants/index'
+import { getQaPrivilegeByName, getAllQaPrivilege, getAllPrivileges, notificationmsg } from '../../services/PrivilegeConfig';
+
+
 const { Option } = Select;
 
 class Modulesubmodule extends Component {
@@ -86,6 +89,62 @@ class Modulesubmodule extends Component {
     this.fetchProjects();
     this.getallsub();
     this.GetAllmodule();
+    this.privilegeconfig();
+  }
+
+  state = {
+    AddModuleStatus: false,
+    DeleteModuleStatus: true,
+    EditModuleStatus: true,
+    AddSubModuleStatus: false,
+    DeleteSubModuleStatus: true,
+    EditSubModuleStatus: true,
+
+  }
+
+  privilegeconfig() {
+
+    getAllPrivileges()
+      .then(res => {
+        console.log(res)
+        res.map(post => {
+          if (!post.status) {
+            console.log("debug" + post.privilegeName)
+            if (post.privilegeName == "AddModule") {
+              this.setState({
+                AddModuleStatus: true
+              })
+            } else if (post.privilegeName == "EditModule") {
+              this.setState({
+                EditModuleStatus: true
+              })
+            } else if (post.privilegeName == "DeleteModule") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                DeleteModuleStatus: true
+              })
+            }
+            else if (post.privilegeName == "AddSubModule") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                AddSubModuleStatus: true
+              })
+            }
+            else if (post.privilegeName == "EditSubModule") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                EditSubModuleStatus: true
+              })
+            }
+            else if (post.privilegeName == "DeleteSubModule") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                DeleteSubModuleStatus: true
+              })
+            }
+          }
+        });
+      });
   }
 
   fetchProject() {
@@ -602,7 +661,8 @@ console.log(obj1)
           <Icon
             id="editModule"
             type="edit"
-            onClick={this.handleSubmoduleEdit.bind(this, data.subModuleId)}
+            disabled={this.props.qastatus}
+            onClick={this.props.EditSubModule?notificationmsg.bind(this,'warning','Edit'):this.handleSubmoduleEdit.bind(this, data.subModuleId)}
             style={{ color: "blue" }}
           />
         )
@@ -640,7 +700,8 @@ console.log(obj1)
         render: (text, data = this.state.data) => (
           <Icon
             type="edit"
-            onClick={this.handleEdit.bind(this, data.moduleId)}
+            disabled={this.props.qastatus}
+            onClick={this.props.EditModule?notificationmsg.bind(this,'warning','Edit'):this.handleEdit.bind(this, data.moduleId)}
             style={{ color: "blue" }}
           />
         )
@@ -712,10 +773,10 @@ console.log(obj1)
     return (
       <div>
         <div style={{ paddingBottom: "20px" }}>
-          <Button id="addModule" type="primary" onClick={this.showModal3}>
+          <Button id="addModule" type="primary" onClick={this.showModal3} qastatus={this.state.AddModuleStatus}>
             Add Module
           </Button>&nbsp;&nbsp;
-          <Button id="addSubModule" type="primary" onClick={this.showModal2}>
+          <Button id="addSubModule" type="primary" onClick={this.showModal2} qastatus={this.state.AddSubModuleStatus}> 
             Add SubModule
           </Button>
         </div>

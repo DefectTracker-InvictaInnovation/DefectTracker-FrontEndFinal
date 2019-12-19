@@ -31,7 +31,7 @@ class ModuleComponent extends React.Component {
                     minHeight: '500px',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'
                 }}>
-                    <Modulesubmodule/>
+                    <Modulesubmodule disabled={this.props.qastatus} />
                 </div>
                 
             </React.Fragment>
