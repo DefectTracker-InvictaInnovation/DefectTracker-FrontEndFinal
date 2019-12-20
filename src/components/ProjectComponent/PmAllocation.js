@@ -136,7 +136,7 @@ export default class PmAllocation extends React.Component {
 
   fetchEmployee() {
     var _this = this;
-    axios.get(API_BASE_URL + '/GetAllresources', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    axios.get(API_BASE_URL_EMP + '/GetAllresources', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         console.log(response.data);
         _this.setState({ employee: response.data });
@@ -171,7 +171,7 @@ export default class PmAllocation extends React.Component {
 
   fetchEmployee1() {
     var _this = this;
-    axios.get(API_BASE_URL + '/GetAllresources', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    axios.get(API_BASE_URL_EMP + '/getpm', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         console.log(response.data);
         let emp = response.data
