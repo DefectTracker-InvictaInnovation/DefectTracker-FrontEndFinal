@@ -292,7 +292,6 @@ export default class Model extends React.Component {
                       value={moment(this.state.startDate)}
                       onChange={this.onChangeStartDate}
                       placeholder="Start Date"
-                      disabledDate={disabledDate}
                     />
                   </Form.Item>
                 </Form.Item>
@@ -305,7 +304,6 @@ export default class Model extends React.Component {
                       value={moment(this.state.endDate)}
                       onChange={this.onChangeEndDate}
                       placeholder="End Date"
-                      disabledDate={disabledDate}
                     />
                   </Form.Item>
                 </Form.Item>

@@ -89,63 +89,63 @@ class Modulesubmodule extends Component {
     this.fetchProjects();
     this.getallsub();
     this.GetAllmodule();
-    this.privilegeconfig();
+    // this.privilegeconfig();
   }
 
-  state = {
-    AddModuleStatus: false,
-    DeleteModuleStatus: true,
-    EditModuleStatus: true,
-    AddSubModuleStatus: false,
-    DeleteSubModuleStatus: true,
-    EditSubModuleStatus: true,
+  // state = {
+  //   AddModuleStatus: false,
+  //   DeleteModuleStatus: true,
+  //   EditModuleStatus: true,
+  //   AddSubModuleStatus: false,
+  //   DeleteSubModuleStatus: true,
+  //   EditSubModuleStatus: true,
 
-  }
+  // }
 
-  privilegeconfig() {
+  // privilegeconfig() {
 
-    getAllPrivileges()
-      .then(res => {
-        console.log(res)
-        res.map(post => {
-          if (!post.status) {
-            console.log("debug" + post.privilegeName)
-            if (post.privilegeName == "AddModule") {
-              this.setState({
-                AddModuleStatus: true
-              })
-            } else if (post.privilegeName == "EditModule") {
-              this.setState({
-                EditModuleStatus: true
-              })
-            } else if (post.privilegeName == "DeleteModule") {
-              console.log("debug" + post.privilegeName)
-              this.setState({
-                DeleteModuleStatus: true
-              })
-            }
-            else if (post.privilegeName == "AddSubModule") {
-              console.log("debug" + post.privilegeName)
-              this.setState({
-                AddSubModuleStatus: true
-              })
-            }
-            else if (post.privilegeName == "EditSubModule") {
-              console.log("debug" + post.privilegeName)
-              this.setState({
-                EditSubModuleStatus: true
-              })
-            }
-            else if (post.privilegeName == "DeleteSubModule") {
-              console.log("debug" + post.privilegeName)
-              this.setState({
-                DeleteSubModuleStatus: true
-              })
-            }
-          }
-        });
-      });
-  }
+  //   getAllPrivileges()
+  //     .then(res => {
+  //       console.log(res)
+  //       res.map(post => {
+  //         if (!post.status) {
+  //           console.log("debug" + post.privilegeName)
+  //           if (post.privilegeName == "AddModule") {
+  //             this.setState({
+  //               AddModuleStatus: true
+  //             })
+  //           } else if (post.privilegeName == "EditModule") {
+  //             this.setState({
+  //               EditModuleStatus: true
+  //             })
+  //           } else if (post.privilegeName == "DeleteModule") {
+  //             console.log("debug" + post.privilegeName)
+  //             this.setState({
+  //               DeleteModuleStatus: true
+  //             })
+  //           }
+  //           else if (post.privilegeName == "AddSubModule") {
+  //             console.log("debug" + post.privilegeName)
+  //             this.setState({
+  //               AddSubModuleStatus: true
+  //             })
+  //           }
+  //           else if (post.privilegeName == "EditSubModule") {
+  //             console.log("debug" + post.privilegeName)
+  //             this.setState({
+  //               EditSubModuleStatus: true
+  //             })
+  //           }
+  //           else if (post.privilegeName == "DeleteSubModule") {
+  //             console.log("debug" + post.privilegeName)
+  //             this.setState({
+  //               DeleteSubModuleStatus: true
+  //             })
+  //           }
+  //         }
+  //       });
+  //     });
+  // }
 
   fetchProject() {
     var _this = this;
@@ -543,9 +543,9 @@ console.log(obj1)
     e.preventDefault();
     console.log("handle3");
     const ModuleData = {
-      moduleId: this.state.moduleId,
+      // moduleId: this.state.moduleId,
       moduleName: this.state.moduleName,
-      projectid: this.state.projectId,
+      projectId: this.state.projectId,
       subModuleId: this.state.subModuleId,
       subModuleName: this.state.subModuleName,
     };
@@ -557,9 +557,9 @@ console.log(obj1)
         console.log(error);
       });
     this.setState({
-      moduleId: "",
+      // moduleId: "",
       moduleName: "",
-      projectid: "",
+      projectId: "",
       subModuleId: "",
       subModuleName: "",
       visible3: false
@@ -578,9 +578,9 @@ console.log(obj1)
         for (let i = 0; i < res.data.length; i++) {
           modulelist[i] = {
             key: i,
-            moduleId: res.data[i].moduleId,
+            // moduleId: res.data[i].moduleId,
             moduleName: res.data[i].moduleName,
-            projectid: res.data[i].project.projectId,
+            projectId: res.data[i].project.projectId,
             projectName: res.data[i].project.projectName,
             subModule: res.data[i].subModule,
           };
@@ -654,15 +654,14 @@ console.log(obj1)
   expandedRowRender = (expanded) => {
     console.log(expanded)
     const columns = [
-      { title: "Submodule ID", dataIndex: "subModuleId", key: "subModuleId" },
+      // { title: "Submodule ID", dataIndex: "subModuleId", key: "subModuleId" },
       { title: "Submodule Name", dataIndex: "subModuleName", key: "subModuleName" },
       {
         render: (text, data = this.state.patients, expanded) => (
           <Icon
             id="editModule"
             type="edit"
-            disabled={this.props.qastatus}
-            onClick={this.props.EditSubModule?notificationmsg.bind(this,'warning','Edit'):this.handleSubmoduleEdit.bind(this, data.subModuleId)}
+            onClick={this.handleSubmoduleEdit.bind(this, data.subModuleId)}
             style={{ color: "blue" }}
           />
         )
@@ -692,7 +691,7 @@ console.log(obj1)
 
     const text = "Are you sure to delete this item?";
     const columns = [
-      { title: "Module ID", dataIndex: "moduleId", key: "moduleId" },
+      // { title: "Module ID", dataIndex: "moduleId", key: "moduleId" },
       { title: "Module Name", dataIndex: "moduleName", key: "moduleName" },
       { title: "Project Name", dataIndex: "projectName", key: "projectName" },
 
@@ -700,8 +699,7 @@ console.log(obj1)
         render: (text, data = this.state.data) => (
           <Icon
             type="edit"
-            disabled={this.props.qastatus}
-            onClick={this.props.EditModule?notificationmsg.bind(this,'warning','Edit'):this.handleEdit.bind(this, data.moduleId)}
+            onClick={this.handleEdit.bind(this, data.moduleId)}
             style={{ color: "blue" }}
           />
         )
@@ -773,10 +771,10 @@ console.log(obj1)
     return (
       <div>
         <div style={{ paddingBottom: "20px" }}>
-          <Button id="addModule" type="primary" onClick={this.showModal3} qastatus={this.state.AddModuleStatus}>
+          <Button id="addModule" type="primary" onClick={this.showModal3} >
             Add Module
           </Button>&nbsp;&nbsp;
-          <Button id="addSubModule" type="primary" onClick={this.showModal2} qastatus={this.state.AddSubModuleStatus}> 
+          <Button id="addSubModule" type="primary" onClick={this.showModal2} > 
             Add SubModule
           </Button>
         </div>
@@ -796,11 +794,6 @@ console.log(obj1)
           okText="Add"
         >
           <Form layout={formLayout}>
-            <Form.Item label="Submodule Id:">
-              <Input id="subModuleId" placeholder="input placeholder"
-                onChange={this.onChangesubModuleId}
-              />
-            </Form.Item>
             <Form.Item label="Submodule Name:">
               <Input id="subModuleName" placeholder="input placeholder"
                 onChange={this.onChangesubModuleName}
@@ -834,11 +827,6 @@ console.log(obj1)
           okText="Edit"
         >
           <Form layout={formLayout}>
-            <Form.Item label="Module ID">
-              <Input id="moduleId" placeholder="input placeholder"
-                value={this.state.moduleId}
-                onChange={this.onChangemoduleId} />
-            </Form.Item>
             <Form.Item label="Module Name:">
               <Input id="moduleName" placeholder="input placeholder"
                 value={this.state.moduleName}
@@ -860,11 +848,6 @@ console.log(obj1)
           okText="Edit"
         >
           <Form layout={formLayout}>
-            <Form.Item label="Sub Module ID">
-              <Input id="subModuleId" placeholder="input placeholder"
-                value={this.state.subModuleId}
-                onChange={this.onChangesubModuleId} />
-            </Form.Item>
             <Form.Item label="Sub Module Name:">
               <Input id="subModuleName" placeholder="input placeholder"
                 value={this.state.subModuleName}
@@ -886,14 +869,6 @@ console.log(obj1)
           okText="Add"
         >
           <Form layout={formLayout}>
-            <Form.Item label="Module ID">
-              <Input
-                id="moduleId"
-                placeholder="input placeholder"
-                value={this.state.moduleId}
-                onChange={this.onChangemoduleId}
-              />
-            </Form.Item>
             <Form.Item label="Module Name:">
               <Input
                 id="moduleName"
@@ -906,7 +881,7 @@ console.log(obj1)
               <Select
                 id="projectid"
                 showSearch
-                style={{ width: 200 }}
+                style={{ width: 475 }}
                 placeholder="Select Project"
                 optionFilterProp="children"
                 onChange={(e) => this.onChangeprojectId(e)} value={this.state.projectId}

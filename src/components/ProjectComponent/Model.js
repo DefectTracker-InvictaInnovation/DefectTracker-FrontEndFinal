@@ -458,7 +458,6 @@ class Model extends React.Component {
                         name="startDate"
                         value={this.state.startDate}
                         onChange={this.onChangeStartDate}
-                        disabledDate={disabledDate}
                       />
                     )}
                   </div>
@@ -492,7 +491,6 @@ class Model extends React.Component {
                         name="endDate"
                         onChange={this.onChangeEndDate}
                         value={this.state.endDate}
-                        disabledDate={disabledDate}
                       />
                     )}
                   </div>

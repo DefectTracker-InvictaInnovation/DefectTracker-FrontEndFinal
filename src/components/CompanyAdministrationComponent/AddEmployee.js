@@ -301,22 +301,14 @@ console.log(empJson)
             <Row>
               <Col span={6} style={{ padding: "5px" }}>
                 <Form.Item label="Designation">
-                {getFieldDecorator("role", {
-                    rules: [
-                      {
-                        required: true,
-                        message: "Please input role!"
-                      }
-                    ]
-                  })(
                     <Input
-                      // defaultValue="HR"
+                      defaultValue="HR"
                       style={{ width: 100 }}
                       onChange={this.onChangeDesignation}
                       placeholder="HR"
-                      // readOnly
+                      readOnly
                     />
-                  )}
+                  
                 </Form.Item>
               </Col>
 

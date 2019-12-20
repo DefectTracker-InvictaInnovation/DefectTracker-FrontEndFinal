@@ -518,7 +518,7 @@ class App extends React.Component {
     filteredInfo = filteredInfo || {};
     const columns = [
       {
-        title: "Emp Id",
+        title: "Id",
         dataIndex: "employeeid",
         key: "employeeid",
         width: "10%",
@@ -526,14 +526,14 @@ class App extends React.Component {
         sorter: (a, b) => a.employeeid.length - b.employeeid.length
       },
       {
-        title: "Employee Name",
+        title: "Firstname",
         dataIndex: "name",
         key: "name",
         width: "25%",
         ...this.getColumnSearchProps("name")
       },
       {
-        title: "Employee FirstName",
+        title: "Surname",
         dataIndex: "firstname",
         key: "firstname",
         width: "25%",
@@ -549,7 +549,7 @@ class App extends React.Component {
       },
 
       {
-        title: "Email Id",
+        title: "Email",
         dataIndex: "email",
         key: "email",
         ...this.getColumnSearchProps("email")
@@ -639,7 +639,7 @@ class App extends React.Component {
                   <Form>
                     <Row>
                       <Col span={8} style={{ padding: "5px" }}>
-                        <Form.Item label="Employee Id">
+                        <Form.Item label="Id">
                           <Input
                             id="employeeId"
                             className={
@@ -666,7 +666,7 @@ class App extends React.Component {
                         </Form.Item>
                       </Col>
                       <Col span={8} style={{ padding: "5px" }}>
-                        <Form.Item label="Employee Name">
+                        <Form.Item label="Firstname">
 
 
                           <Input
@@ -695,7 +695,7 @@ class App extends React.Component {
                         </Form.Item>
                       </Col>
                       <Col span={8} style={{ padding: "5px" }}>
-                        <Form.Item label="Employee FirstName">
+                        <Form.Item label="Surname">
                           <Input
                             id="employeeFirstName"
                             className={
@@ -731,7 +731,7 @@ class App extends React.Component {
                         </Form.Item>
                       </Col>
                       <Col span={16} style={{ padding: "5px" }}>
-                        <Form.Item label="Email Id">
+                        <Form.Item label="Email">
                           <Input
                             id="employeeEmail"
                             className={

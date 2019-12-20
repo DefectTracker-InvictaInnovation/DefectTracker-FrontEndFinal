@@ -244,12 +244,6 @@ export default class PriorityConfig extends React.Component {
 
     const columns = [
       {
-        title: 'Priority Id',
-        dataIndex: 'id',
-        key: 'id',
-
-      },
-      {
         title: 'Priority',
         dataIndex: 'name',
         key: 'name',
