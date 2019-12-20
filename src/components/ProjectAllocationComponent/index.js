@@ -208,7 +208,7 @@ export default class ProjectManageAllocation extends React.Component {
 
     fetchResourceallocation() {
         var _this = this;
-        axios.get(API_BASE_URL + '/getallresource', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+        axios.get(API_BASE_URL + '/getseandqaOnly', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(function (response) {
                 console.log(response.data);
                 let resource = response.data

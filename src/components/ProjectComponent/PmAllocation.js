@@ -10,18 +10,18 @@ const originTargetKeys = employee.filter(item => +item.key % 5 > 1).map(item => 
 
 const leftTableColumns = [
   {
-    title: "EmpId",
+    title: "Id",
     dataIndex: "employeeid",
     key: "employeeid",
   },
 
   {
-    title: "EmpName",
+    title: "Firstname",
     dataIndex: "name",
     key: "name",
   },
   {
-    title: "EmpFirstName",
+    title: "Surname",
     dataIndex: "firstname",
     key: "firstname",
   },
@@ -45,18 +45,18 @@ const leftTableColumns = [
 
 const rightTableColumns = [
   {
-    title: "EmpId",
+    title: "Id",
     dataIndex: "employeeid",
     key: "employeeid",
   },
 
   {
-    title: "EmpName",
+    title: "Firstname",
     dataIndex: "name",
     key: "name",
   },
   {
-    title: "EmpFirstName",
+    title: "Surname",
     dataIndex: "firstname",
     key: "firstname",
   },
@@ -66,7 +66,7 @@ const rightTableColumns = [
     key: "email",
   },
   {
-    title: "Designation",
+    title: "Role",
     dataIndex: "designationname",
     key: "designationname",
   },
