@@ -307,7 +307,7 @@ export default class PmAllocation extends React.Component {
             <div>
 
               <Button type="primary" onClick={() => this.setModal1Visible(true)}>
-                Add PM User
+                PM Role Allocation
               </Button>
 
               <Modal

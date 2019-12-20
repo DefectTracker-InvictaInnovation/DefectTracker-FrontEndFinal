@@ -1,10 +1,10 @@
-import { Modal, Button, Select, Transfer, Switch, Table, Tag, message } from 'antd';
+import { Modal, Button, Select, Transfer, Switch, Table, Col, message } from 'antd';
 import React from 'react';
 
 import axios from "axios";
 import difference from 'lodash/difference';
-import {API_BASE_URL,API_BASE_URL_EMP,ACCESS_TOKEN} from './../../constants/index'
-
+import { API_BASE_URL, API_BASE_URL_EMP, ACCESS_TOKEN } from './../../constants/index'
+import PmAllocation from './PmAllocation';
 
 const { Option, OptGroup } = Select;
 
@@ -113,7 +113,7 @@ export default class Allocation extends React.Component {
     disabled: false,
     showSearch: false,
     value1: '',
-    visible1:false
+    visible1: false
 
 
   };
@@ -146,7 +146,7 @@ export default class Allocation extends React.Component {
 
   fetchProjects() {
     var _this = this;
-    axios.get(API_BASE_URL+'/GetAllproject',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL + '/GetAllproject', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         // handle success
         console.log(response.data);
@@ -158,7 +158,7 @@ export default class Allocation extends React.Component {
 
   fetchEmployee() {
     var _this = this;
-    axios.get(API_BASE_URL_EMP+'/getothers',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL + '/GetAllresources', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         // handle success
         console.log(response.data);
@@ -184,7 +184,7 @@ export default class Allocation extends React.Component {
     // setTimeout(() => {
     //   this.setState({ loading: false, visible1: false });
     // }, 3000);
-    
+
     e.preventDefault();
 
     const empdata = {
@@ -208,10 +208,10 @@ export default class Allocation extends React.Component {
   };
 
   handleCancel = () => {
-    var _this=this;
-    _this.setState({ 
-      
-      visible1: false ,
+    var _this = this;
+    _this.setState({
+
+      visible1: false,
     })
   };
 
@@ -233,7 +233,7 @@ export default class Allocation extends React.Component {
 
   fetchEmployee1() {
     var _this = this;
-    axios.get(API_BASE_URL_EMP+'/getothers',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL + '/GetAllresources', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         // handle success
         console.log(response.data);
@@ -288,13 +288,14 @@ export default class Allocation extends React.Component {
           console.log(this.state.data1)
           axios
             .post(
-              API_BASE_URL+"/saveresourceTable", data1,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}},
-             
+              API_BASE_URL + "/saveresourceTable", data1, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } },
+
             )
-            .then(res => {console.log(res.data)
-            
-            
-             }
+            .then(res => {
+              console.log(res.data)
+
+
+            }
             )
             .catch(error => {
               console.log(error);
@@ -370,9 +371,13 @@ export default class Allocation extends React.Component {
 
     return (
       <div>
-        <Button id="allocate" type="primary" onClick={this.showModal}>
+        <Col span={3}><Button id="allocate" type="primary" onClick={this.showModal}>
           Allocate
- </Button>
+       </Button></Col>
+        <Col span={16}></Col>
+        <Col span={3}>
+          <div > <PmAllocation qastatus={this.state.PMAllocationStatus} /></div>
+        </Col>
         <br />
         <Modal
 
@@ -392,7 +397,7 @@ export default class Allocation extends React.Component {
               Submit
  </Button>,
           ]}
->
+        >
           <div><Select id="projects" defaultValue="Project" style={{ width: 200 }} onChange={this.handleChange}>
             <OptGroup label="Projects">
               {this.state.project.map((item, index) => {

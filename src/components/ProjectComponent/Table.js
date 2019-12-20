@@ -300,9 +300,9 @@ export default class App extends React.Component {
               <Col span={3}>
                 <div ><Model qastatus={this.state.AddProjectStatus}/></div>
               </Col>
-              <Col span={3}>
+              {/* <Col span={3}>
                 <div > <PmAllocation qastatus={this.state.PMAllocationStatus}/></div>
-              </Col>
+              </Col> */}
 
 
 
