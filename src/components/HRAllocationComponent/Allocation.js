@@ -3,7 +3,7 @@ import React from 'react';
 
 import axios from "axios";
 import difference from 'lodash/difference';
-import {API_BASE_URL,ACCESS_TOKEN} from './../../constants/index'
+import {API_BASE_URL,API_BASE_URL_EMP,ACCESS_TOKEN} from './../../constants/index'
 
 
 const { Option, OptGroup } = Select;
@@ -158,7 +158,7 @@ export default class Allocation extends React.Component {
 
   fetchEmployee() {
     var _this = this;
-    axios.get(API_BASE_URL+'/GetAllresources',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL_EMP+'/getothers',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         // handle success
         console.log(response.data);
@@ -233,7 +233,7 @@ export default class Allocation extends React.Component {
 
   fetchEmployee1() {
     var _this = this;
-    axios.get(API_BASE_URL+'/GetAllresources',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL_EMP+'/getothers',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         // handle success
         console.log(response.data);
