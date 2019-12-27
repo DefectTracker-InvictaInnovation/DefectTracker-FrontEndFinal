@@ -339,7 +339,7 @@ export default class DesignationConfig extends React.Component {
           <br></br>
           <div>
             <Button id="addDesignation" type="primary" onClick={this.showModal}>
-              Add Employee Designation
+              Add Designation
         </Button>
           </div>
           <br></br>
@@ -361,7 +361,7 @@ export default class DesignationConfig extends React.Component {
               }}>
 
               <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} >
-                <Form.Item label="Employee Designation">
+                <Form.Item label="Designation:">
                   <Input
                     id="designationname"
                     type="text"
