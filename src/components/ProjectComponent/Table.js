@@ -298,7 +298,14 @@ export default class App extends React.Component {
                 marginRight: '0px'
               }}>
               <Col span={3}>
-                <div ><Model qastatus={this.state.AddProjectStatus}/></div>
+                <div >
+                  <Model 
+                  
+                  qastatus={this.state.AddProjectStatus}
+                     reload={this.state.getAllProjects}
+                   />
+                
+                </div>
               </Col>
               {/* <Col span={3}>
                 <div > <PmAllocation qastatus={this.state.PMAllocationStatus}/></div>

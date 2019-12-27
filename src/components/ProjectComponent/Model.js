@@ -300,9 +300,9 @@ class Model extends React.Component {
         .post(
           API_BASE_URL + "/createproject", projectData, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
         .then(res => {
-          console.log(res.data)
-          this.props.reload()
+          console.log(res.data);
 
+         this.props.reload();
         })
         .catch(error => {
           console.log(error);

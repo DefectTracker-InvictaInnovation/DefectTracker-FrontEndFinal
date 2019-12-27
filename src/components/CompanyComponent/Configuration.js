@@ -220,7 +220,8 @@ class Configuration extends React.Component {
       <Col span={8}>
    
       </Col>
-    </Row> 
+    </Row>
+  
 
 
         </div>

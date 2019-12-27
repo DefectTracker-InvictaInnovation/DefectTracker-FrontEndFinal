@@ -27,6 +27,9 @@ import PriorityConfig from '../../SettingComponent/Config/PriorityConfig';
 import SeverityConfig from '../../SettingComponent/Config/SeverityConfig';
 import DefectStatusConfig from '../../SettingComponent/Config/StatusConfig';
 import DefectTypeConfig from '../../SettingComponent/Config/DefectTypeConfig';
+import ProjectTypeConfig from '../../SettingComponent/Config/ProjectTypeConfig';
+import ProjectStatusConfig from '../../SettingComponent/Config/ProjectStatusConfig';
+import DesignationConfig from '../../SettingComponent/Config/DesignationConfig';
 import AuditLog from '../../SettingComponent/GeneralConfiguration/AuditLog';
 import LookAndFeel from '../../SettingComponent/GeneralConfiguration/LookAndFeel';
 import GeneralSetting from '../../SettingComponent/GeneralConfiguration/GeneralSetting';
@@ -109,7 +112,10 @@ class Dashboard extends React.Component {
           DefectStatusConfigcom:false,
           DeveloperPrivilege:false,
           PMPrivilege:false,
-          HRPrivilege:false
+          HRPrivilege:false,
+          ProjectTypeConfig:false,
+          ProjectStatusConfig:false,
+          DesignationConfig:false,
         }
 
         this.events = [
@@ -319,10 +325,25 @@ class Dashboard extends React.Component {
         this.setState({
             PMPrivilege:true
         })
-      }else if(post.privilegeName=="HRPrivilege"){
+      }else if(post.privilegeName=="PMPrivilege"){
         console.log("debug"+post.privilegeName)
         this.setState({
-            HRPrivilege:true
+            PMPrivilege:true
+        })
+      }else if(post.privilegeName=="ProjectTypeConfig"){
+        console.log("debug"+post.privilegeName)
+        this.setState({
+          ProjectTypeConfig:true
+        })
+      }else if(post.privilegeName=="ProjectStatusConfig"){
+        console.log("debug"+post.privilegeName)
+        this.setState({
+          ProjectStatusConfig:true
+        })
+      }else if(post.privilegeName=="DesignationConfig"){
+        console.log("debug"+post.privilegeName)
+        this.setState({
+          DesignationConfig:true
         })
       }
         }
@@ -523,6 +544,7 @@ clearTimeout() {
                             {this.state.SeverityConfigcom ? <NotFound/>:
                                 <SeverityConfigcom/>}
                             </Route>
+                            
 
                             <Route exact path='/Status'>
                             {this.state.DefectStatusConfigcom ? <NotFound/>:
@@ -578,6 +600,27 @@ clearTimeout() {
                                 <Route path='/config/severity'>
                                 {this.state.SeverityConfig ?  <NotFound/>:
                                     <SeverityConfig/>}
+                                </Route>
+
+                                {/* Setting -> General configuration -> Project type Route*/}
+
+                                <Route path='/config/projecttypeconfig'>
+                                {this.state.ProjectTypeConfig ?  <NotFound/>:
+                                    <ProjectTypeConfig/>}
+                                </Route>
+
+                                {/* Setting -> General configuration -> Project status Route*/}
+
+                                <Route path='/config/projectstatusconfig'>
+                                {this.state.ProjectStatusConfig ?  <NotFound/>:
+                                    <ProjectStatusConfig/>}
+                                </Route>
+
+                                {/* Setting -> General configuration -> Employee Designation Route*/}
+
+                                <Route path='/config/designationconfig'>
+                                {this.state.DesignationConfig ?  <NotFound/>:
+                                    <DesignationConfig/>}
                                 </Route>
 
                                 {/* Setting -> General configuration -> Defect type Route*/}
