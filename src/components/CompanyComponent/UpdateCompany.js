@@ -5,7 +5,7 @@ import { InputNumber } from "antd";
 import { Row, Col } from "antd";
 import "./index.css";
 import axios from "axios";
-
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index';
 // const dateFormatList = ["DD/MM/YYYY", "DD/MM/YY"];
 
 const { TextArea } = Input;
@@ -86,7 +86,7 @@ export default class UpdateCompany extends React.Component {
     };
     console.log(updateCompany);
     axios
-      .post("http://localhost:8083/productservice/Company", updateCompany)
+      .post(API_BASE_URL_PRODUCT+"/Company", updateCompany,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => {
         if (res.status === 200) {
           alert("Company Update Successfylly...!");

@@ -19,6 +19,7 @@ import moment from "moment";
 import "./index.css";
 import axios from "axios";
 import CompanyController from "./CompanyController";
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../constants/index';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -60,7 +61,7 @@ export default class App extends React.Component {
 
   //-----------------------------------------------------------------
   fetchAllLicenseType = () => {
-    fetch(`http://localhost:8083/productservice/Licenses`)
+    fetch(API_BASE_URL_PRODUCT+`/Licenses`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -205,7 +206,7 @@ export default class App extends React.Component {
   };
 
   fetchAllCompany = () => {
-    fetch(`http://localhost:8083/productservice/Companys`)
+    fetch(API_BASE_URL_PRODUCT+`/Companys`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => res.json())
       .then(data => {
         this.setState({
@@ -251,7 +252,7 @@ export default class App extends React.Component {
       companyDescription: this.state.companyDescription
     };
     axios
-      .put("http://localhost:8083/productservice/Company", Company)
+      .put(API_BASE_URL_PRODUCT+"/Company", Company,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => this.fetchAllCompany());
     this.setState({
       companyId: "",
@@ -271,7 +272,7 @@ export default class App extends React.Component {
 
   fetchCompanyById = companyId => {
     axios
-      .get("http://localhost:8083/productservice/Company/" + companyId)
+      .get(API_BASE_URL_PRODUCT+"/Company/" + companyId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => {
         console.log(response);
         this.setState({

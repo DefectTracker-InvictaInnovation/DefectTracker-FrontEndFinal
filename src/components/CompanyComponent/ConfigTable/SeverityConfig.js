@@ -16,7 +16,7 @@ import {
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 import SeverityConfigController from "./SeverityConfigController";
-
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index';
 // const { Option } = Select;
 
 // const props = {
@@ -141,7 +141,7 @@ export default class SeverityConfig extends React.Component {
   };
 
   fetchAllSeverity = () => {
-    fetch(`http://localhost:8083/productservice/Severitys`)
+    fetch(API_BASE_URL_PRODUCT+`/Severitys`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => res.json())
       .then(data => {
         this.setState({

@@ -1,8 +1,9 @@
 import axios from "axios";
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index';
 
 function AddSeverityApi(data) {
   axios
-    .post("http://localhost:8083/productservice/Severity", data)
+    .post(API_BASE_URL_PRODUCT+"/Severity", data,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
     .then(res => {
       if (res.status === 200) {
         alert("Status Successfylly Added...!");
@@ -12,7 +13,7 @@ function AddSeverityApi(data) {
 }
 
 function UpdateSeverityApi(data) {
-  return fetch("http://localhost:8083/productservice/Severity", {
+  return fetch(API_BASE_URL_PRODUCT+"/Severity", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}},{
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -22,7 +23,7 @@ function UpdateSeverityApi(data) {
 }
 
 function DeleteSeverityApi(stausId) {
-  fetch("http://localhost:8083/productservice/Severity/" + stausId, {
+  fetch(API_BASE_URL_PRODUCT+"/Severity/" + stausId, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}},{
     method: "DELETE",
     headers: {
       Accept: "application/json",

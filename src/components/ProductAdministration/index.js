@@ -5,6 +5,7 @@
     // import reactCSS from 'reactcss';
     import axios from 'axios';
     import { Row, Col } from 'antd';
+import { API_BASE_URL_PRODUCT,ACCESS_TOKEN } from '../../constants';
 
     const TreeNode = TreeSelect.TreeNode;
     const Option = Select.Option;
@@ -88,8 +89,8 @@
       };
     
       getdefectType() {
-        const url = 'http://localhost:8083/productservice/defecttypes';
-        axios.get(url)
+        const url = API_BASE_URL_PRODUCT+'/defecttypes';
+        axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
     
           .then(response => this.setState({
             DefectType: response.data,
@@ -101,8 +102,8 @@
       }
     
       getCountDefectType() {
-        const url = 'http://localhost:8083/productservice/defecttype';
-        axios.get(url)
+        const url = API_BASE_URL_PRODUCT+'/defecttype';
+        axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
           .then(response => this.setState({
             CountDefectType: response.data,
           }))
@@ -118,7 +119,7 @@
         this.setState({ id: id })
         console.log(id);
     
-        axios.get('http://localhost:8083/productservice/defecttype/' + id)
+        axios.get(API_BASE_URL_PRODUCT+'/defecttype/' + id,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
     
           .then(response => {
             this.setState({
@@ -136,7 +137,7 @@
     
         console.log(id)
     
-        fetch(`http://localhost:8083/productservice/defecttype/` + id, {
+        fetch(API_BASE_URL_PRODUCT+`defecttype/` + id,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}, {
     
           method: "DELETE",
           headers: {
@@ -168,7 +169,7 @@
         else if (NameRegex.test(this.state.name) && NameRegex.test(this.state.value)) {
           // axios.post('http://localhost:8081/defectservice/defecttype/', obj)
           //   .then(res => this.getdefectType());
-          axios.post('http://localhost:8083/productservice/defecttype/', obj).then((response) => {
+          axios.post(API_BASE_URL_PRODUCT+'/defecttype/', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
             // console.log(response);
             this.setState({ events: response.data })
             if (response.data.status === "OK") {
@@ -213,7 +214,7 @@
           message.warn("Invalid Data");
         }
         else if (NameRegex.test(this.state.name) && NameRegex.test(this.state.value)) {
-          axios.put("http://localhost:8083/productservice/defecttype/"+ id, obj)
+          axios.put(API_BASE_URL_PRODUCT+"/defecttype/"+ id, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
             .then((response) => {
               //console.log(response.data);
               this.setState({ events: response.data })

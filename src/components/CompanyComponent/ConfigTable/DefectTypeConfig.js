@@ -14,7 +14,9 @@ import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 import { Row, Col } from "antd";
 import DefectTypeConfigController from "./DefectTypeConfigController";
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index';
 const { Option } = Select;
+
 
 const data = [
   {
@@ -90,7 +92,7 @@ export default class DefectTypeConfic extends React.Component {
   };
 
   fetchAllType = () => {
-    fetch(`http://localhost:8083/productservice/Types`)
+    fetch(API_BASE_URL_PRODUCT+"/Types",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => res.json())
       .then(data => {
         this.setState({

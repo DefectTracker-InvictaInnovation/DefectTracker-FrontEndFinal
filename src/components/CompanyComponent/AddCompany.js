@@ -7,7 +7,7 @@ import "./index.css";
 import axios from "axios";
 import CompanyController from "./CompanyController";
 import { Link } from "react-router-dom";
-
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../constants/index';
 // import AllApi from ".AllApi";
 
 //import { getFieldDecorator } from "antd";
@@ -49,7 +49,7 @@ export default class AddCompany extends React.Component {
 
   //-----------------------------------------------------------------
   fetchAllLicenseType = () => {
-    fetch(`http://localhost:8083/productservice/Licenses`)
+    fetch(API_BASE_URL_PRODUCT+`/Licenses`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => res.json())
       .then(data => {
         this.setState({

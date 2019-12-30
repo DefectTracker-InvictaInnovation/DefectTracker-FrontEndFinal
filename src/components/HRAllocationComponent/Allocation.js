@@ -309,7 +309,7 @@ export default class Allocation extends React.Component {
   }
   //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
   render() {
-    const { visible, loading, targetKeys, disabled, showSearch } = this.state;
+    const {  targetKeys, disabled, showSearch } = this.state;
 
     const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
       <Transfer
