@@ -72,17 +72,6 @@ export default class ProjectTypeConfig extends React.Component {
   }
 
 
-  // getCountDefectStatus() {
-  //   const url = API_BASE_URL_PRODUCT+'/countdefectstatus';
-  //   axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-  //     .then(response => this.setState({
-  //       TotalDefectStatus: response.data,
-  //     }))
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }
-
   showModal = () => {
     this.setState({
       visible: true,

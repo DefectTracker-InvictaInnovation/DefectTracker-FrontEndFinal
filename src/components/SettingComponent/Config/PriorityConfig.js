@@ -1,14 +1,31 @@
 
 import React from 'react';
-import { Table, Divider, Modal, Button, Icon, Upload, Form, Input, Col, Row, Popconfirm } from 'antd';
+import { Table, Divider, Modal, Button, Icon, Form, Input, Col, Row, Popconfirm, message } from 'antd';
 import { SketchPicker } from 'react-color';
 import reactCSS from 'reactcss';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css'
 import axios from 'axios';
-import { ChromePicker } from 'react-color';
 import { API_BASE_URL_PRODUCT, ACCESS_TOKEN } from './../../../constants/index'
 
+const NameRegex = RegExp(/^[a-zA-Z ]+$/);
+//const ValidRegex = RegExp(/^[0-9a-zA-Z]+$/);
+
+const formValid = ({ formErrors, ...rest }) => {
+  let valid = true;
+
+  // validate form errors being empty
+  Object.values(formErrors).forEach(val => {
+    val.length > 0 && (valid = false);
+  });
+
+  // validate the form was filled out
+  Object.values(rest).forEach(val => {
+    val === null && (valid = false);
+  });
+
+  return valid;
+};
 
 const options = [
   {
@@ -83,7 +100,6 @@ export default class PriorityConfig extends React.Component {
     })
   };
 
-
   getDefectPriority() {
     const url = API_BASE_URL_PRODUCT + '/defectpriorities';
     axios.get(url, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
@@ -94,6 +110,7 @@ export default class PriorityConfig extends React.Component {
         console.log(error);
       });
   }
+
 
   deleteDefectPriority(id) {
     console.log(id)
@@ -161,6 +178,11 @@ export default class PriorityConfig extends React.Component {
       icon: this.state.icon,
       color: colorStringValue
     }
+
+    if (this.state.name === "" || this.state.value === "" || (!NameRegex.test(this.state.name) || !NameRegex.test(this.state.value))) {
+      message.warn("Invalid Data");
+    }
+    else if (NameRegex.test(this.state.name) && NameRegex.test(this.state.value)) {
     axios.post(API_BASE_URL_PRODUCT + '/defectpriority', obj, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(res => this.getDefectPriority());
     console.log(obj);
@@ -171,7 +193,8 @@ export default class PriorityConfig extends React.Component {
       color: '',
       visible: false
     })
-  };
+  }
+};
 
   handleEditOk = (id) => {
     let colorString = '#' + rgbHex(this.state.color.r, this.state.color.g, this.state.color.b);
@@ -181,6 +204,11 @@ export default class PriorityConfig extends React.Component {
       icon: this.state.icon,
       color: colorString
     }
+
+    if (this.state.name === "" || this.state.value === "" || (!NameRegex.test(this.state.name) || !NameRegex.test(this.state.value))) {
+      message.warn("Invalid Data");
+    }
+    else if (NameRegex.test(this.state.name) && NameRegex.test(this.state.value)) {
     axios.put(API_BASE_URL_PRODUCT + '/defectpriority/' + id, obj, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(res => this.getDefectPriority());
     this.setState({
@@ -190,7 +218,8 @@ export default class PriorityConfig extends React.Component {
       color: '',
       visibleEditModal: false
     })
-  };
+  }
+};
 
   handleCancel = e => {
     console.log(e);
