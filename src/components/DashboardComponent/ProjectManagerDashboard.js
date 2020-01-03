@@ -45,11 +45,12 @@ class ProjectManagerDashboard extends React.Component {
         name4: '',
         name5: '',
         role: '',
-        projectid: 38,
+
         getall: '',
         email: '',
         high: '',
         openhighsev: ''
+
     };
     // Hello Hari
     getHigh(value) {
@@ -103,7 +104,7 @@ class ProjectManagerDashboard extends React.Component {
 
     onChangeRole = (value) => {
 
-        this.setState({ projectid: value })
+        this.setState({ projectId: value })
         this.getStatusNew(value);
         this.getStatusOpen(value);
         this.getStatusReOpen(value);
@@ -307,6 +308,7 @@ class ProjectManagerDashboard extends React.Component {
     }
 
     componentDidMount() {
+        console.log("thuva" + this.state.projectId);
         this.getAllUsers();
 
         this.getConfiguration();
@@ -682,7 +684,7 @@ class ProjectManagerDashboard extends React.Component {
 
                     <Row style={{ margin: "-20px 0 0 0 " }}>
                         <Col span={10} key="1">
-                            <ChartBar />
+                            <ChartBar projectId={this.props.projectId} />
                         </Col>
                         <Col span={14} key="2">
                             <Card title="Defects Status" style={{ borderRadius: "5px", margin: "0 0 0 5px" }}>
