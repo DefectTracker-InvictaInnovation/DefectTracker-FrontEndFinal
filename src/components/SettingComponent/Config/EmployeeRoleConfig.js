@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Divider, Modal, Button, Icon, Form, Input, Popconfirm, message } from 'antd';
 import axios from 'axios';
 import { Row, Col } from 'antd';
-import {API_BASE_URL,ACCESS_TOKEN} from './../../../constants/index'
+import {ACCESS_TOKEN,API_BASE_URL_PRODUCT} from '../../../constants/index'
 
 const NameRegex = RegExp(/^[a-zA-Z ]+$/);
 //const ValidRegex = RegExp(/^[0-9a-zA-Z]+$/);
@@ -23,11 +23,11 @@ const formValid = ({ formErrors, ...rest }) => {
   return valid;
 };
 
-export default class ProjectTypeConfig extends React.Component {
+export default class EmployeeRole extends React.Component {
   state = {
     visible: false,
     visibleEditModal: false,
-    ProjectType: [],
+    Role: [],
     def: []
 
   };
@@ -37,21 +37,21 @@ export default class ProjectTypeConfig extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleOk = this.handleOk.bind(this);
-    this.editProjectType = this.editProjectType.bind(this);
+    this.editRole = this.editRole.bind(this);
 
 
     this.state = {
-      projecttypeId:'',
-      projecttypeName: '',
+      roleId:'',
+      roleName: '',
       formErrors: {
-        projecttypeName: ""
+        roleName: ""
       }
     }
   };
 
 
   componentDidMount() {
-    this.getProjectType();
+    this.getRole();
     // this.getCountProjectType();
   }
 
@@ -61,13 +61,13 @@ export default class ProjectTypeConfig extends React.Component {
     });
   };
 
-  getProjectType() {
-    const url = API_BASE_URL+'/getallprojecttype';
+  getRole() {
+    const url = API_BASE_URL_PRODUCT+'/getAllRoleInfos';
     axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
 
       .then(response => this.setState({
 
-        ProjectType: response.data,
+        ProjecRoletType: response.data,
       }))
       .catch(function (error) {
         console.log(error);
@@ -75,11 +75,11 @@ export default class ProjectTypeConfig extends React.Component {
 
   }
 
-  editProjectType = projecttypeId => {
+  editRole = roleId => {
     this.showEditModal();
-    this.setState({ projecttypeId: projecttypeId })
-    console.log(projecttypeId);
-    axios.get(API_BASE_URL+'/updateprojecttype/' + projecttypeId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    this.setState({ roleId: roleId })
+    console.log(roleId);
+    axios.get(API_BASE_URL_PRODUCT+'/updateprojecttype/' + roleId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => {
         this.setState({
           name: response.data.name,
@@ -91,40 +91,40 @@ export default class ProjectTypeConfig extends React.Component {
     this.setState({ visible: false })
   }
 
-  deleteProjectType = projecttypeId => {
-    console.log(projecttypeId)
-    fetch(API_BASE_URL+'/deleteprojecttype/' + projecttypeId, {
+  deleteProjectType = roleId => {
+    console.log(roleId)
+    fetch(API_BASE_URL_PRODUCT+'/deleteprojecttype/' + roleId, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(this.state)
     })
-    console.log(projecttypeId);
-    const ProjectType = this.state.ProjectType.filter(ProjectType => {
-      return ProjectType.projecttypeId !== projecttypeId;
+    console.log(roleId);
+    const Role = this.state.ProjectType.filter(Role => {
+      return Role.roleId !== roleId;
     });
     this.setState({
-      ProjectType
+      Role
     })
     // this.getCountProjectType();
-    message.success("Project Type Successfully Deleted");
+    message.success("Role Successfully Deleted");
   }
 
   handleOk = e => {
     const obj = {
-      projecttypeName: this.state.projecttypeName,
+      roleName: this.state.roleName,
     }
-    if (this.state.projecttypeName === "" ||  (!NameRegex.test(this.state.projecttypeName))) {
+    if (this.state.roleName === "" ||  (!NameRegex.test(this.state.roleName))) {
       message.warn("Invalid Data");
     }
 
-    else if (NameRegex.test(this.state.projecttypeName)) {
-      axios.post(API_BASE_URL+'/saveprojecttype/', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
+    else if (NameRegex.test(this.state.roleName)) {
+      axios.post(API_BASE_URL_PRODUCT+'/Role/', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
         this.setState({ events: response.data })
         if (response.data.status === 200) {
           this.getProjectType();
-          message.success("Project Type Successfully Added");
+          message.success("Role Successfully Added");
           // this.getCountDefectType();
         }
       })
@@ -135,10 +135,10 @@ export default class ProjectTypeConfig extends React.Component {
     }
     this.setState({
       formErrors: {
-        projecttypeName: ""
+        roleName: ""
       },
       visible: false,
-      projecttypeName: ""
+      roleName: ""
     })
   };
 
@@ -181,15 +181,15 @@ export default class ProjectTypeConfig extends React.Component {
     console.log(e);
     this.setState({
       visible: false,
-      projecttypeName: null
+      roleName: null
     });
   };
 
-  handleEditProjectCancel = e => {
+  handleEditRoleCancel = e => {
     console.log(e);
     this.setState({
       visibleEditModal: false,
-      projecttypeName: null
+      roleName: null
     });
 
   };
@@ -218,21 +218,21 @@ export default class ProjectTypeConfig extends React.Component {
     let formErrors = { ...this.state.formErrors };
     var newStr = value.replace(/\s+/g, '');
     switch (name) {
-      case "projecttypeName":
+      case "roleName":
         if (!NameRegex.test(value)) {
-          formErrors.projecttypeName = "Invalid Project Type";
+          formErrors.roleName = "Invalid Project Type";
         }
         else if (newStr.length > 15) {
-          formErrors.projecttypeName = "Required less than 15 characters";
+          formErrors.roleName = "Required less than 15 characters";
         }
         else if (newStr.length < 2) {
-          formErrors.projecttypeName = "Required greater than 2 characters";
+          formErrors.roleName = "Required greater than 2 characters";
         }
         else if (newStr.length === 0) {
-          formErrors.projecttypeName = "Can't leave this field blank";
+          formErrors.roleName = "Can't leave this field blank";
         }
         else {
-          formErrors.projecttypeName = "";
+          formErrors.roleName = "";
         }
         break;
       default:
@@ -248,7 +248,7 @@ export default class ProjectTypeConfig extends React.Component {
     if (formValid(this.state)) {
       console.log(`
         --SUBMITTING--
-        projecttypeName :${this.state.projecttypeName}
+        roleName :${this.state.roleName}
       `);
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
@@ -268,15 +268,15 @@ export default class ProjectTypeConfig extends React.Component {
 
     const columns = [
       {
-        title: 'ProjectType Id',
-        dataIndex: 'projecttypeId',
-        key: 'projecttypeId',
+        title: 'Role Id',
+        dataIndex: 'roleId',
+        key: 'roleId',
 
       },
       {
-        title: 'ProjectType Name',
-        dataIndex: 'projecttypeName',
-        key: 'projecttypeName',
+        title: 'Role Name',
+        dataIndex: 'roleName',
+        key: 'roleName',
       },
       {
         title: 'Action',
@@ -284,20 +284,20 @@ export default class ProjectTypeConfig extends React.Component {
         render: (text, data = this.state.def) => (
           <span>
 
-            <Icon id="editProjectType" onClick={this.editProjectType.bind(this, data.projecttypeId)} type="edit" style={{ fontSize: '17px', color: 'blue' }} />
+            <Icon id="editRole" onClick={this.editRole.bind(this, data.roleId)} type="edit" style={{ fontSize: '17px', color: 'blue' }} />
 
 
             <Divider type="vertical" />
 
             <Popconfirm
-              id="deleteConfirmProjectType"
+              id="deleteConfirmRole"
               title="Are you sure, Do you want to delete this ?"
               icon={<Icon type="delete" style={{ color: 'red' }}
 
               />}
-              onConfirm={this.deleteProjectType.bind(this, data.projecttypeId)}
+              onConfirm={this.deleteRole.bind(this, data.roleId)}
             >
-              <Icon id="deleteProjectType" type="delete" style={{ fontSize: '17px', color: 'red' }} />
+              <Icon id="deleteRole" type="delete" style={{ fontSize: '17px', color: 'red' }} />
             </Popconfirm>
 
           </span >
@@ -316,21 +316,21 @@ export default class ProjectTypeConfig extends React.Component {
           }}>
 
           <Row>
-            <Col span={8}><h3>Project Type Configuration</h3></Col>
+            <Col span={8}><h3>Role Configuration</h3></Col>
             <Col span={6}></Col>
             <Col span={10}></Col>
           </Row>
 
           <br></br>
           <div>
-            <Button id="addProjectType" type="primary" onClick={this.showModal}>
-              Add Project Type
+            <Button id="addRole" type="primary" onClick={this.showModal}>
+              Add Role
         </Button>
           </div>
           <br></br>
 
           <Modal
-            title="Add Project Type"
+            title="Add Role"
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
@@ -346,21 +346,21 @@ export default class ProjectTypeConfig extends React.Component {
               }}>
 
               <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} >
-                <Form.Item label="Project Type">
+                <Form.Item label="Role Name">
                   <Input
-                    id="projecttypeName"
+                    id="roleName"
                     type="text"
-                    className={formErrors.projecttypeName.length >= 0 ? "error" : null}
-                    value={this.state.projecttypeName}
-                    name="projecttypeName"
+                    className={formErrors.roleName.length >= 0 ? "error" : null}
+                    value={this.state.roleName}
+                    name="roleName"
                     onChange={this.handleChange}
                   />
-                  {formErrors.projecttypeName.length >= 0 && (
+                  {formErrors.roleName.length >= 0 && (
                     <span
                       className="error"
                       style={{ color: "red", fontSize: "12px" }}
                     >
-                      {formErrors.projecttypeName}
+                      {formErrors.roleName}
                     </span>
                   )}
                 </Form.Item>
@@ -369,10 +369,10 @@ export default class ProjectTypeConfig extends React.Component {
 
           </Modal>
           <Modal
-            title="Edit Project Type"
+            title="Edit Role"
             visible={this.state.visibleEditModal}
-            onOk={this.editProjectType.bind(this, this.state.projecttypeId)}
-            onCancel={this.handleEditProjectCancel}
+            onOk={this.editRole.bind(this, this.state.roleId)}
+            onCancel={this.handleEditRoleCancel}
             style={{ padding: "60px", }}
           >
             <div
@@ -383,21 +383,21 @@ export default class ProjectTypeConfig extends React.Component {
 
               }}>
               <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={this.handleSubmit}>
-                <Form.Item label="Project Type">
+                <Form.Item label="Role">
                   <Input
-                    id="projecttypeName"
+                    id="roleName"
                     type="text"
-                    className={formErrors.projecttypeName.length > 0 ? "error" : null}
-                    name="projecttypeName"
-                    value={this.state.projecttypeName}
+                    className={formErrors.roleName.length > 0 ? "error" : null}
+                    name="roleName"
+                    value={this.state.roleName}
                     onChange={this.handleChange}
                   />
-                  {formErrors.projecttypeName.length > 0 && (
+                  {formErrors.roleName.length > 0 && (
                     <span
                       className="error"
                       style={{ color: "red", fontSize: "12px" }}
                     >
-                      {formErrors.projecttypeName}
+                      {formErrors.roleName}
                     </span>
                   )}
                 </Form.Item>
@@ -405,7 +405,7 @@ export default class ProjectTypeConfig extends React.Component {
             </div>
 
           </Modal>
-          <Table id="countProjectType" columns={columns} dataSource={this.state.ProjectType} />
+          <Table id="EmployeeRole" columns={columns} dataSource={this.state.Role} />
           <Icon type="square" />
         </div>
       </React.Fragment >

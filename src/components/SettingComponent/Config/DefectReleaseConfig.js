@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Divider, Modal, Button, Icon, Form, Input, Popconfirm, message } from 'antd';
 import axios from 'axios';
 import { Row, Col } from 'antd';
-import {API_BASE_URL,ACCESS_TOKEN} from './../../../constants/index'
+import {API_BASE_URL,ACCESS_TOKEN} from '../../../constants/index'
 
 const NameRegex = RegExp(/^[a-zA-Z ]+$/);
 //const ValidRegex = RegExp(/^[0-9a-zA-Z]+$/);
@@ -23,11 +23,11 @@ const formValid = ({ formErrors, ...rest }) => {
   return valid;
 };
 
-export default class ProjectTypeConfig extends React.Component {
+export default class DefectRelease extends React.Component {
   state = {
     visible: false,
     visibleEditModal: false,
-    ProjectType: [],
+    DefectRelease: [],
     def: []
 
   };
@@ -37,21 +37,21 @@ export default class ProjectTypeConfig extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleOk = this.handleOk.bind(this);
-    this.editProjectType = this.editProjectType.bind(this);
+    this.editRelease = this.editRelease.bind(this);
 
 
     this.state = {
-      projecttypeId:'',
-      projecttypeName: '',
+      releaseId:'',
+      releaseName: '',
       formErrors: {
-        projecttypeName: ""
+        releaseName: ""
       }
     }
   };
 
 
   componentDidMount() {
-    this.getProjectType();
+    this.getRelease();
     // this.getCountProjectType();
   }
 
@@ -61,13 +61,13 @@ export default class ProjectTypeConfig extends React.Component {
     });
   };
 
-  getProjectType() {
-    const url = API_BASE_URL+'/getallprojecttype';
+  getRelease() {
+    const url = API_BASE_URL+'/releases';
     axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
 
       .then(response => this.setState({
 
-        ProjectType: response.data,
+        DefectRelease: response.data,
       }))
       .catch(function (error) {
         console.log(error);
@@ -75,11 +75,11 @@ export default class ProjectTypeConfig extends React.Component {
 
   }
 
-  editProjectType = projecttypeId => {
+  editRelease = releaseId => {
     this.showEditModal();
-    this.setState({ projecttypeId: projecttypeId })
-    console.log(projecttypeId);
-    axios.get(API_BASE_URL+'/updateprojecttype/' + projecttypeId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    this.setState({ releaseId: releaseId })
+    console.log(releaseId);
+    axios.get(API_BASE_URL+'/updateRelease/' + releaseId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => {
         this.setState({
           name: response.data.name,
@@ -91,40 +91,40 @@ export default class ProjectTypeConfig extends React.Component {
     this.setState({ visible: false })
   }
 
-  deleteProjectType = projecttypeId => {
-    console.log(projecttypeId)
-    fetch(API_BASE_URL+'/deleteprojecttype/' + projecttypeId, {
+  deleteRelease = releaseId => {
+    console.log(releaseId)
+    fetch(API_BASE_URL+'/release/' + releaseId, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(this.state)
     })
-    console.log(projecttypeId);
-    const ProjectType = this.state.ProjectType.filter(ProjectType => {
-      return ProjectType.projecttypeId !== projecttypeId;
+    console.log(releaseId);
+    const DefectRelease = this.state.ProjectType.filter(DefectRelease => {
+      return DefectRelease.releaseId !== releaseId;
     });
     this.setState({
-      ProjectType
+      DefectRelease
     })
     // this.getCountProjectType();
-    message.success("Project Type Successfully Deleted");
+    message.success("Release Successfully Deleted");
   }
 
   handleOk = e => {
     const obj = {
-      projecttypeName: this.state.projecttypeName,
+      releaseName: this.state.releaseName,
     }
-    if (this.state.projecttypeName === "" ||  (!NameRegex.test(this.state.projecttypeName))) {
+    if (this.state.releaseName === "" ||  (!NameRegex.test(this.state.releaseName))) {
       message.warn("Invalid Data");
     }
 
-    else if (NameRegex.test(this.state.projecttypeName)) {
-      axios.post(API_BASE_URL+'/saveprojecttype/', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
+    else if (NameRegex.test(this.state.releaseName)) {
+      axios.post(API_BASE_URL+'/release/', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
         this.setState({ events: response.data })
         if (response.data.status === 200) {
           this.getProjectType();
-          message.success("Project Type Successfully Added");
+          message.success("Release Successfully Added");
           // this.getCountDefectType();
         }
       })
@@ -135,10 +135,10 @@ export default class ProjectTypeConfig extends React.Component {
     }
     this.setState({
       formErrors: {
-        projecttypeName: ""
+        releaseName: ""
       },
       visible: false,
-      projecttypeName: ""
+      releaseName: ""
     })
   };
 
@@ -181,15 +181,15 @@ export default class ProjectTypeConfig extends React.Component {
     console.log(e);
     this.setState({
       visible: false,
-      projecttypeName: null
+      releaseName: null
     });
   };
 
-  handleEditProjectCancel = e => {
+  handleEditReleaseCancel = e => {
     console.log(e);
     this.setState({
       visibleEditModal: false,
-      projecttypeName: null
+      releaseName: null
     });
 
   };
@@ -218,21 +218,21 @@ export default class ProjectTypeConfig extends React.Component {
     let formErrors = { ...this.state.formErrors };
     var newStr = value.replace(/\s+/g, '');
     switch (name) {
-      case "projecttypeName":
+      case "releaseName":
         if (!NameRegex.test(value)) {
-          formErrors.projecttypeName = "Invalid Project Type";
+          formErrors.releaseName = "Invalid Release";
         }
         else if (newStr.length > 15) {
-          formErrors.projecttypeName = "Required less than 15 characters";
+          formErrors.releaseName = "Required less than 15 characters";
         }
         else if (newStr.length < 2) {
-          formErrors.projecttypeName = "Required greater than 2 characters";
+          formErrors.releaseName = "Required greater than 2 characters";
         }
         else if (newStr.length === 0) {
-          formErrors.projecttypeName = "Can't leave this field blank";
+          formErrors.releaseName = "Can't leave this field blank";
         }
         else {
-          formErrors.projecttypeName = "";
+          formErrors.releaseName = "";
         }
         break;
       default:
@@ -248,7 +248,7 @@ export default class ProjectTypeConfig extends React.Component {
     if (formValid(this.state)) {
       console.log(`
         --SUBMITTING--
-        projecttypeName :${this.state.projecttypeName}
+        releaseName :${this.state.releaseName}
       `);
     } else {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
@@ -268,15 +268,15 @@ export default class ProjectTypeConfig extends React.Component {
 
     const columns = [
       {
-        title: 'ProjectType Id',
-        dataIndex: 'projecttypeId',
-        key: 'projecttypeId',
+        title: 'Release Id',
+        dataIndex: 'releaseId',
+        key: 'releaseId',
 
       },
       {
-        title: 'ProjectType Name',
-        dataIndex: 'projecttypeName',
-        key: 'projecttypeName',
+        title: 'Release Name',
+        dataIndex: 'releaseName',
+        key: 'releaseName',
       },
       {
         title: 'Action',
@@ -284,20 +284,20 @@ export default class ProjectTypeConfig extends React.Component {
         render: (text, data = this.state.def) => (
           <span>
 
-            <Icon id="editProjectType" onClick={this.editProjectType.bind(this, data.projecttypeId)} type="edit" style={{ fontSize: '17px', color: 'blue' }} />
+            <Icon id="editRelease" onClick={this.editRelease.bind(this, data.releaseId)} type="edit" style={{ fontSize: '17px', color: 'blue' }} />
 
 
             <Divider type="vertical" />
 
             <Popconfirm
-              id="deleteConfirmProjectType"
+              id="deleteConfirmRelease"
               title="Are you sure, Do you want to delete this ?"
               icon={<Icon type="delete" style={{ color: 'red' }}
 
               />}
-              onConfirm={this.deleteProjectType.bind(this, data.projecttypeId)}
+              onConfirm={this.deleteRelease.bind(this, data.releaseId)}
             >
-              <Icon id="deleteProjectType" type="delete" style={{ fontSize: '17px', color: 'red' }} />
+              <Icon id="deleteRelease" type="delete" style={{ fontSize: '17px', color: 'red' }} />
             </Popconfirm>
 
           </span >
@@ -316,21 +316,21 @@ export default class ProjectTypeConfig extends React.Component {
           }}>
 
           <Row>
-            <Col span={8}><h3>Project Type Configuration</h3></Col>
+            <Col span={8}><h3>Release Configuration</h3></Col>
             <Col span={6}></Col>
             <Col span={10}></Col>
           </Row>
 
           <br></br>
           <div>
-            <Button id="addProjectType" type="primary" onClick={this.showModal}>
-              Add Project Type
+            <Button id="addRelease" type="primary" onClick={this.showModal}>
+              Add Release
         </Button>
           </div>
           <br></br>
 
           <Modal
-            title="Add Project Type"
+            title="Add Release"
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
@@ -346,21 +346,21 @@ export default class ProjectTypeConfig extends React.Component {
               }}>
 
               <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} >
-                <Form.Item label="Project Type">
+                <Form.Item label="Defect Release">
                   <Input
-                    id="projecttypeName"
+                    id="releaseName"
                     type="text"
-                    className={formErrors.projecttypeName.length >= 0 ? "error" : null}
-                    value={this.state.projecttypeName}
-                    name="projecttypeName"
+                    className={formErrors.releaseName.length >= 0 ? "error" : null}
+                    value={this.state.releaseName}
+                    name="releaseName"
                     onChange={this.handleChange}
                   />
-                  {formErrors.projecttypeName.length >= 0 && (
+                  {formErrors.releaseName.length >= 0 && (
                     <span
                       className="error"
                       style={{ color: "red", fontSize: "12px" }}
                     >
-                      {formErrors.projecttypeName}
+                      {formErrors.releaseName}
                     </span>
                   )}
                 </Form.Item>
@@ -369,10 +369,10 @@ export default class ProjectTypeConfig extends React.Component {
 
           </Modal>
           <Modal
-            title="Edit Project Type"
+            title="Edit Release"
             visible={this.state.visibleEditModal}
-            onOk={this.editProjectType.bind(this, this.state.projecttypeId)}
-            onCancel={this.handleEditProjectCancel}
+            onOk={this.editRelease.bind(this, this.state.releaseId)}
+            onCancel={this.handleEditReleaseCancel}
             style={{ padding: "60px", }}
           >
             <div
@@ -383,21 +383,21 @@ export default class ProjectTypeConfig extends React.Component {
 
               }}>
               <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={this.handleSubmit}>
-                <Form.Item label="Project Type">
+                <Form.Item label="Release">
                   <Input
-                    id="projecttypeName"
+                    id="releaseName"
                     type="text"
-                    className={formErrors.projecttypeName.length > 0 ? "error" : null}
-                    name="projecttypeName"
-                    value={this.state.projecttypeName}
+                    className={formErrors.releaseName.length > 0 ? "error" : null}
+                    name="releaseName"
+                    value={this.state.releaseName}
                     onChange={this.handleChange}
                   />
-                  {formErrors.projecttypeName.length > 0 && (
+                  {formErrors.releaseName.length > 0 && (
                     <span
                       className="error"
                       style={{ color: "red", fontSize: "12px" }}
                     >
-                      {formErrors.projecttypeName}
+                      {formErrors.releaseName}
                     </span>
                   )}
                 </Form.Item>
@@ -405,7 +405,7 @@ export default class ProjectTypeConfig extends React.Component {
             </div>
 
           </Modal>
-          <Table id="countProjectType" columns={columns} dataSource={this.state.ProjectType} />
+          <Table id="DefectRelease" columns={columns} dataSource={this.state.DefectRelease} />
           <Icon type="square" />
         </div>
       </React.Fragment >

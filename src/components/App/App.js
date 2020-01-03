@@ -9,7 +9,7 @@ import history from './Login/util/history';
 import axios from "axios";
 import PrivateRoute from './Login/util/PrivateRoute';
 import DefectDashboard from './../DashboardComponent/DefectDashboard';
-import { ACCESS_TOKEN } from '../../constants/index';
+import { ACCESS_TOKEN, API_BASE_URL_EMP } from '../../constants/index';
 import { ROLE_NAME } from '../../constants/index';
 import { IS_AUTHENTICATED } from '../../constants/index';
 import Forgot from './Login/forgot'
@@ -77,7 +77,7 @@ class App extends React.Component {
     // const headers = new Headers();
     // headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     console.log(token)
-    axios.get("http://localhost:8762/employeeservice/employeeservice/getallemployee",
+    axios.get(API_BASE_URL_EMP +"/getallemployee",
       {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN),

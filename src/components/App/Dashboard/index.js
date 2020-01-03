@@ -29,6 +29,8 @@ import DefectStatusConfig from '../../SettingComponent/Config/StatusConfig';
 import DefectTypeConfig from '../../SettingComponent/Config/DefectTypeConfig';
 import ProjectTypeConfig from '../../SettingComponent/Config/ProjectTypeConfig';
 import ProjectStatusConfig from '../../SettingComponent/Config/ProjectStatusConfig';
+import DefectRelease from '../../SettingComponent/Config/DefectReleaseConfig';
+import EmployeeRole from '../../SettingComponent/Config/EmployeeRoleConfig'
 import DesignationConfig from '../../SettingComponent/Config/DesignationConfig';
 import AuditLog from '../../SettingComponent/GeneralConfiguration/AuditLog';
 import LookAndFeel from '../../SettingComponent/GeneralConfiguration/LookAndFeel';
@@ -116,6 +118,8 @@ class Dashboard extends React.Component {
           ProjectTypeConfig:false,
           ProjectStatusConfig:false,
           DesignationConfig:false,
+          DefectReleaseConfig:false,
+          EmployeeRoleConfig:false,
         }
 
         this.events = [
@@ -344,6 +348,16 @@ class Dashboard extends React.Component {
         console.log("debug"+post.privilegeName)
         this.setState({
           DesignationConfig:true
+        })
+      }else if(post.privilegeName=="DefectReleaseConfig"){
+        console.log("debug"+post.privilegeName)
+        this.setState({
+          DefectReleaseConfig:true
+        })
+      }else if(post.privilegeName=="EmployeeRoleConfig"){
+        console.log("debug"+post.privilegeName)
+        this.setState({
+          EmployeeRoleConfig:true
         })
       }
         }
@@ -614,6 +628,20 @@ clearTimeout() {
                                 <Route path='/config/projectstatusconfig'>
                                 {this.state.ProjectStatusConfig ?  <NotFound/>:
                                     <ProjectStatusConfig/>}
+                                </Route>
+
+                                {/* Setting -> General configuration -> Employee Role Route*/}
+
+                                <Route path='/config/employeeroleconfig'>
+                                {this.state.EmployeeRoleConfig ?  <NotFound/>:
+                                    <EmployeeRole/>}
+                                </Route>
+
+                                {/* Setting -> General configuration -> Defect Release Route*/}
+
+                                <Route path='/config/defectreleaseconfig'>
+                                {this.state.DefectReleaseConfig ?  <NotFound/>:
+                                    <DefectRelease/>}
                                 </Route>
 
                                 {/* Setting -> General configuration -> Employee Designation Route*/}
