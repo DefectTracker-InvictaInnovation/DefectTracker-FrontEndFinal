@@ -9,7 +9,7 @@ import { API_BASE_URL, API_BASE_URL_EMP, CURRENT_USER, API_BASE_URL_PRODUCT, ACC
 import { ROLE_NAME } from '../../constants/index';
 import DefectLog from "./DefectLog";
 import DefectAdd from "./DefectAdd";
-import {getQaPrivilegeByName,getAllQaPrivilege,getAllPrivileges,notificationmsg} from '../../services/PrivilegeConfig';
+import { getQaPrivilegeByName, getAllQaPrivilege, getAllPrivileges, notificationmsg } from '../../services/PrivilegeConfig';
 import Highlighter from 'react-highlight-words';
 
 const TreeNode = TreeSelect.TreeNode;
@@ -196,7 +196,7 @@ class TableFilter extends React.Component {
         employeeEmail: ""
       },
       searchText: '',
-    searchedColumn: '',
+      searchedColumn: '',
     };
 
     this.fetchProjects = this.fetchProjects.bind(this);
@@ -218,10 +218,10 @@ class TableFilter extends React.Component {
     this.onChangeFixedIn = this.onChangeFixedIn.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
-  state={
-    AddDefectStatus:false,
-    DeleteDefectStatus:true,
-    EditDefectStatus:true
+  state = {
+    AddDefectStatus: false,
+    DeleteDefectStatus: true,
+    EditDefectStatus: true
   }
 
   fetchStatus() {
@@ -251,33 +251,33 @@ class TableFilter extends React.Component {
     this.privilegeconfig();
   }
 
-  privilegeconfig(){
-  
+  privilegeconfig() {
+
     getAllPrivileges()
-    .then(res=>{
-      console.log(res)
-     res.map(post=>{
-        if(!post.status){
-        console.log("debug"+post.privilegeName)
-        if(post.privilegeName=="AddDefect"){
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
-        this.setState({
-          AddDefectStatus:true
-        })
-      }else if(post.privilegeName=="EditDefect"){
-        this.setState({
-          EditDefectStatus:true
-        })
-      }else if(post.privilegeName=="DeleteDefect"){
-        console.log("debug"+post.privilegeName)
-        this.setState({
-          DeleteDefectStatus:true
-        })
-      }
-        }
-     });
-    });
- console.log(this.state.AddDefectStatus)
+      .then(res => {
+        console.log(res)
+        res.map(post => {
+          if (!post.status) {
+            console.log("debug" + post.privilegeName)
+            if (post.privilegeName == "AddDefect") {
+              console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
+              this.setState({
+                AddDefectStatus: true
+              })
+            } else if (post.privilegeName == "EditDefect") {
+              this.setState({
+                EditDefectStatus: true
+              })
+            } else if (post.privilegeName == "DeleteDefect") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                DeleteDefectStatus: true
+              })
+            }
+          }
+        });
+      });
+    console.log(this.state.AddDefectStatus)
   }
 
   fetchFoundIn() {
@@ -1301,8 +1301,8 @@ class TableFilter extends React.Component {
           textToHighlight={text.toString()}
         />
       ) : (
-        text
-      ),
+          text
+        ),
   });
 
   handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -1513,7 +1513,7 @@ class TableFilter extends React.Component {
               id="edit"
               type="edit"
               // onClick={this.handleEdit.bind(this, data.defectId, data.projectId)}
-              onClick={this.state.EditDefectStatus ?notificationmsg.bind(this,'warning','Edit'):this.handleEdit.bind(this, data.defectId,data.projectId) }
+              onClick={this.state.EditDefectStatus ? notificationmsg.bind(this, 'warning', 'Edit') : this.handleEdit.bind(this, data.defectId, data.projectId)}
               style={{ fontSize: "18px", color: "green" }}
             />
 
@@ -1593,7 +1593,7 @@ class TableFilter extends React.Component {
         <EditorIn />
         <Row>
           <Col span={4}>
-            <DefectAdd qastatus={this.state.AddDefectStatus}/>
+            <DefectAdd qastatus={this.state.AddDefectStatus} />
           </Col>
           <Col span={8}>
 
@@ -1798,13 +1798,17 @@ class TableFilter extends React.Component {
                     onChange={this.onChangeFoundIn}
 
                   >
-                    {this.state.defectfoundIn.map(function (item, index) {
+                    {/* {this.state.defectfoundIn.map(function (item, index) {
                       return (
                         <Option key={index} value={item.releaseName}>
                           {item.releaseName}
                         </Option>
                       );
-                    })}
+                    })} */}
+                    <Option value="Release1">Release1</Option>
+                    <Option value="Release2">Release2</Option>
+                    <Option value="Release3">Release3</Option>
+                    <Option value="Release4">Release4</Option>
                   </Select>
 
 
@@ -1825,13 +1829,17 @@ class TableFilter extends React.Component {
                     onChange={this.onChangeFixedIn}
 
                   >
-                    {this.state.defectfixedIn.map(function (item, index) {
+                    {/* {this.state.defectfixedIn.map(function (item, index) {
                       return (
                         <Option key={index} value={item.releaseName}>
                           {item.releaseName}
                         </Option>
                       );
-                    })}
+                    })} */}
+                    <Option value="Release1">Release1</Option>
+                    <Option value="Release2">Release2</Option>
+                    <Option value="Release3">Release3</Option>
+                    <Option value="Release4">Release4</Option>
                   </Select>
                 </Form.Item>
               </Col>

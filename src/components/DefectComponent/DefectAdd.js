@@ -718,13 +718,14 @@ this.fetchModules(value)
                     onChange={this.onChangeFoundIn}
                   >
                     
-                    {this.state.defectfoundIn.map(function (item, index) {
-                      return (
-                        <Option key={index} value={item.releaseName}>
-                          {item.releaseName}
-                        </Option>
-                      );
-                    })}
+                    {/* {this.state.defectfoundIn.map(function (item, index) {
+                      return ( */}
+                        <Option value="Release1">Release1</Option>
+                        <Option value="Release2">Release2</Option>
+                        <Option value="Release3">Release3</Option>
+                        <Option value="Release4">Release4</Option>
+                      {/* );
+                    })} */}
                   </Select>
 
 
