@@ -72,13 +72,13 @@ handleSubmit(event) {
            <div className="login-card">
       <Form onSubmit={this.handleSubmit} className="login-form">
         <FormItem>
-          {getFieldDecorator('username', {
+          {getFieldDecorator('usernameOrEmail', {
             rules: [{ required: true, message: 'Please input your username or email!' }],
           })(
             <Input
               prefix={<Icon type="user" />}
               size="large"
-              name="username"
+              name="usernameOrEmail"
               placeholder="Username or Email" 
               onChange={this.onChangeuser}
               />

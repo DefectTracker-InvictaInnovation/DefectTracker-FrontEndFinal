@@ -57,11 +57,11 @@ export default class ProjectMangerPrivilege extends Component {
     }
     render() {
         const columns = [
-            {
-                title: 'ID',
-                dataIndex: 'id',
+            // {
+            //     title: 'ID',
+            //     dataIndex: 'id',
 
-            },
+            // },
             {
                 title: 'Privilleges',
                 dataIndex: 'privilegeName',
@@ -103,11 +103,12 @@ export default class ProjectMangerPrivilege extends Component {
                     <Search style={{ width: '200px', marginBottom: '10px' }} placeholder="Search" onSearch={value => console.log(value)} enterButton />
 
                     <Table
-                        columns={columns} dataSource={this.state.PmPrivilages} pagination={{ pageSize: 30 }}
+                        columns={columns} dataSource={this.state.PmPrivilages} pagination={{ pageSize: 10 }}
 
                     />
+                    <Button type="primary" onClick={this.submit}>Set Privilages</Button>
                 </div>
-                <Button type="primary" onClick={this.submit}>Set Privilages</Button>
+                
             </React.Fragment>
 
         )

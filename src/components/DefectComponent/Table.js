@@ -9,7 +9,8 @@ import { API_BASE_URL, API_BASE_URL_EMP, CURRENT_USER, API_BASE_URL_PRODUCT, ACC
 import { ROLE_NAME } from '../../constants/index';
 import DefectLog from "./DefectLog";
 import DefectAdd from "./DefectAdd";
-import {getQaPrivilegeByName,getAllQaPrivilege,getAllPrivileges,notificationmsg} from '../../services/PrivilegeConfig';
+import { getQaPrivilegeByName, getAllQaPrivilege, getAllPrivileges, notificationmsg } from '../../services/PrivilegeConfig';
+import Highlighter from 'react-highlight-words';
 
 const TreeNode = TreeSelect.TreeNode;
 const Option = Select.Option;
@@ -194,6 +195,8 @@ class TableFilter extends React.Component {
         employeeFirstName: "",
         employeeEmail: ""
       },
+      searchText: '',
+      searchedColumn: '',
     };
 
     this.fetchProjects = this.fetchProjects.bind(this);
@@ -215,10 +218,10 @@ class TableFilter extends React.Component {
     this.onChangeFixedIn = this.onChangeFixedIn.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
-  state={
-    AddDefectStatus:false,
-    DeleteDefectStatus:true,
-    EditDefectStatus:true
+  state = {
+    AddDefectStatus: false,
+    DeleteDefectStatus: true,
+    EditDefectStatus: true
   }
 
   fetchStatus() {
@@ -248,33 +251,33 @@ class TableFilter extends React.Component {
     this.privilegeconfig();
   }
 
-  privilegeconfig(){
-  
+  privilegeconfig() {
+
     getAllPrivileges()
-    .then(res=>{
-      console.log(res)
-     res.map(post=>{
-        if(!post.status){
-        console.log("debug"+post.privilegeName)
-        if(post.privilegeName=="AddDefect"){
-          console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
-        this.setState({
-          AddDefectStatus:true
-        })
-      }else if(post.privilegeName=="EditDefect"){
-        this.setState({
-          EditDefectStatus:true
-        })
-      }else if(post.privilegeName=="DeleteDefect"){
-        console.log("debug"+post.privilegeName)
-        this.setState({
-          DeleteDefectStatus:true
-        })
-      }
-        }
-     });
-    });
- console.log(this.state.AddDefectStatus)
+      .then(res => {
+        console.log(res)
+        res.map(post => {
+          if (!post.status) {
+            console.log("debug" + post.privilegeName)
+            if (post.privilegeName == "AddDefect") {
+              console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
+              this.setState({
+                AddDefectStatus: true
+              })
+            } else if (post.privilegeName == "EditDefect") {
+              this.setState({
+                EditDefectStatus: true
+              })
+            } else if (post.privilegeName == "DeleteDefect") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                DeleteDefectStatus: true
+              })
+            }
+          }
+        });
+      });
+    console.log(this.state.AddDefectStatus)
   }
 
   fetchFoundIn() {
@@ -1249,6 +1252,72 @@ class TableFilter extends React.Component {
       });
   };
 
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
+        />
+        <Button
+          type="primary"
+          onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          icon="search"
+          size="small"
+          style={{ width: 90, marginRight: 8 }}
+        >
+          Search
+        </Button>
+        <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+          Reset
+        </Button>
+      </div>
+    ),
+    filterIcon: filtered => (
+      <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes(value.toLowerCase()),
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select());
+      }
+    },
+    render: text =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text.toString()}
+        />
+      ) : (
+          text
+        ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
+
   Preloader(props) {
     return <img src="spinner.gif" />;
   }
@@ -1389,6 +1458,7 @@ class TableFilter extends React.Component {
         //onFilter: (value, record) => record.defectId.includes(value),
         //sorter: (a, b) => a.defectId.length - b.defectId.length,
         //sortOrder: sortedInfo.columnKey === "defectId" && sortedInfo.order
+        ...this.getColumnSearchProps('defectAbbr'),
       },
 
       {
@@ -1396,14 +1466,7 @@ class TableFilter extends React.Component {
         dataIndex: "moduleName",
         key: "moduleName",
         width: "150px",
-        filters: [
-          { text: "Login", value: "login" },
-          { text: "Defect", value: "defect" },
-
-        ],
-
-        filteredValue: filteredInfo.moduleName || null,
-        onFilter: (value, record) => record.moduleName.includes(value),
+        ...this.getColumnSearchProps('moduleName'),
 
       },
       {
@@ -1411,26 +1474,14 @@ class TableFilter extends React.Component {
         dataIndex: "severity",
         key: "severity",
         width: "110px",
-        filters: [
-          { text: "High", value: "High" },
-          { text: "Medium", value: "Medium" },
-          { text: "Low", value: "Low" }
-        ],
-        filteredValue: filteredInfo.severity || null,
-        onFilter: (value, record) => record.severity.includes(value)
+        ...this.getColumnSearchProps('severity'),
       },
       {
         title: "Priority",
         dataIndex: "priority",
         key: "priority",
         width: "110px",
-        filters: [
-          { text: "High", value: "High" },
-          { text: "Medium", value: "Medium" },
-          { text: "Low", value: "Low" }
-        ],
-        filteredValue: filteredInfo.priority || null,
-        onFilter: (value, record) => record.priority.includes(value)
+        ...this.getColumnSearchProps('priority'),
 
       },
 
@@ -1439,13 +1490,7 @@ class TableFilter extends React.Component {
         dataIndex: "status",
         key: "status",
         width: "150px",
-        filters: [
-          { text: "Open", value: "Open" },
-          { text: "Re-opened", value: "Re-opened" },
-          { text: "Defrred", value: "Defrred" }
-        ],
-        filteredValue: filteredInfo.status || null,
-        onFilter: (value, record) => record.status.includes(value),
+        ...this.getColumnSearchProps('status'),
 
       },
       {
@@ -1453,13 +1498,7 @@ class TableFilter extends React.Component {
         dataIndex: "assignTo",
         key: "assignTo",
         width: "150px",
-        filters: [
-          { text: "Release1", value: "Release1" },
-          { text: "Release2", value: "Release2" },
-          { text: "Release3", value: "Release3" }
-        ],
-        filteredValue: filteredInfo.fixedIn || null,
-        onFilter: (value, record) => record.status.includes(value),
+        ...this.getColumnSearchProps('assignTo'),
 
       },
 
@@ -1474,7 +1513,7 @@ class TableFilter extends React.Component {
               id="edit"
               type="edit"
               // onClick={this.handleEdit.bind(this, data.defectId, data.projectId)}
-              onClick={this.state.EditDefectStatus ?notificationmsg.bind(this,'warning','Edit'):this.handleEdit.bind(this, data.defectId,data.projectId) }
+              onClick={this.state.EditDefectStatus ? notificationmsg.bind(this, 'warning', 'Edit') : this.handleEdit.bind(this, data.defectId, data.projectId)}
               style={{ fontSize: "18px", color: "green" }}
             />
 
@@ -1554,7 +1593,7 @@ class TableFilter extends React.Component {
         <EditorIn />
         <Row>
           <Col span={4}>
-            <DefectAdd qastatus={this.state.AddDefectStatus}/>
+            <DefectAdd qastatus={this.state.AddDefectStatus} />
           </Col>
           <Col span={8}>
 
@@ -1759,13 +1798,17 @@ class TableFilter extends React.Component {
                     onChange={this.onChangeFoundIn}
 
                   >
-                    {this.state.defectfoundIn.map(function (item, index) {
+                    {/* {this.state.defectfoundIn.map(function (item, index) {
                       return (
                         <Option key={index} value={item.releaseName}>
                           {item.releaseName}
                         </Option>
                       );
-                    })}
+                    })} */}
+                    <Option value="Release1">Release1</Option>
+                    <Option value="Release2">Release2</Option>
+                    <Option value="Release3">Release3</Option>
+                    <Option value="Release4">Release4</Option>
                   </Select>
 
 
@@ -1786,13 +1829,17 @@ class TableFilter extends React.Component {
                     onChange={this.onChangeFixedIn}
 
                   >
-                    {this.state.defectfixedIn.map(function (item, index) {
+                    {/* {this.state.defectfixedIn.map(function (item, index) {
                       return (
                         <Option key={index} value={item.releaseName}>
                           {item.releaseName}
                         </Option>
                       );
-                    })}
+                    })} */}
+                    <Option value="Release1">Release1</Option>
+                    <Option value="Release2">Release2</Option>
+                    <Option value="Release3">Release3</Option>
+                    <Option value="Release4">Release4</Option>
                   </Select>
                 </Form.Item>
               </Col>

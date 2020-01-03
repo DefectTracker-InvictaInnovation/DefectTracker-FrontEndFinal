@@ -16,6 +16,7 @@ import {
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 import PriorityConfigController from "./PriorityConfigController";
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index';
 const { Option } = Select;
 
 const data = [
@@ -159,7 +160,7 @@ export default class PriorityConfig extends React.Component {
   };
 
   fetchAllPriority = () => {
-    fetch(`http://localhost:8083/productservice/Prioritys`)
+    fetch(API_BASE_URL_PRODUCT+`/Prioritys`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => res.json())
       .then(data => {
         this.setState({

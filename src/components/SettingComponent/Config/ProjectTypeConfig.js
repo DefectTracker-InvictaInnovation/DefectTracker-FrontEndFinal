@@ -1,12 +1,9 @@
 import React from 'react';
-import { Table, Divider, Modal, Button, Icon, Form, Input, Popconfirm, message } from 'antd';
+import { Table, Divider, Modal, Button, Icon, Form, Input, Col, Row, Popconfirm, message } from 'antd';
 import axios from 'axios';
-import { Row, Col } from 'antd';
 import {API_BASE_URL,ACCESS_TOKEN} from './../../../constants/index'
 
 const NameRegex = RegExp(/^[a-zA-Z ]+$/);
-//const ValidRegex = RegExp(/^[0-9a-zA-Z]+$/);
-
 const formValid = ({ formErrors, ...rest }) => {
   let valid = true;
 
@@ -28,32 +25,52 @@ export default class ProjectTypeConfig extends React.Component {
     visible: false,
     visibleEditModal: false,
     ProjectType: [],
-    def: []
-
+    def: [],
+    TotalProjectType: []
   };
-
 
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleOk = this.handleOk.bind(this);
-    this.editProjectType = this.editProjectType.bind(this);
-
-
+    this.handleEditOk = this.handleEditOk.bind(this);
+    this.deleteType = this.deleteType.bind(this);
+    this.onChangeprojectType = this.onChangeprojectType.bind(this);
     this.state = {
-      projecttypeId:'',
+      projecttypeId: '',
       projecttypeName: '',
+      value:'',
       formErrors: {
+        projecttypeId: "",
         projecttypeName: ""
       }
+
+
+
     }
   };
-
-
   componentDidMount() {
-    this.getProjectType();
-    // this.getCountProjectType();
+    this.getprojectType();
+    // this.getCountDefectStatus();
   }
+
+  onChangeprojectType(e) {
+    this.setState({
+      projecttypeName: e.target.value
+    })
+  };
+
+  getprojectType() {
+    const url = API_BASE_URL+'/getallprojecttype';
+    axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .then(response => this.setState({
+        ProjectType: response.data,
+      }))
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
 
   showModal = () => {
     this.setState({
@@ -61,28 +78,14 @@ export default class ProjectTypeConfig extends React.Component {
     });
   };
 
-  getProjectType() {
-    const url = API_BASE_URL+'/getallprojecttype';
-    axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-
-      .then(response => this.setState({
-
-        ProjectType: response.data,
-      }))
-      .catch(function (error) {
-        console.log(error);
-      });
-
-  }
-
-  editProjectType = projecttypeId => {
+  editType = (projecttypeId) => {
     this.showEditModal();
     this.setState({ projecttypeId: projecttypeId })
     console.log(projecttypeId);
-    axios.get(API_BASE_URL+'/updateprojecttype/' + projecttypeId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL+'/getprojecttypeId/' + projecttypeId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => {
         this.setState({
-          name: response.data.name,
+          projecttypeName: response.data.projecttypeName
         });
       })
       .catch(function (error) {
@@ -90,10 +93,12 @@ export default class ProjectTypeConfig extends React.Component {
       })
     this.setState({ visible: false })
   }
+  deleteType = projecttypeId => {
 
-  deleteProjectType = projecttypeId => {
     console.log(projecttypeId)
+
     fetch(API_BASE_URL+'/deleteprojecttype/' + projecttypeId, {
+
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -107,74 +112,65 @@ export default class ProjectTypeConfig extends React.Component {
     this.setState({
       ProjectType
     })
-    // this.getCountProjectType();
     message.success("Project Type Successfully Deleted");
+    // this.getCountDefectStatus();
   }
-
-  handleOk = e => {
-    const obj = {
-      projecttypeName: this.state.projecttypeName,
-    }
-    if (this.state.projecttypeName === "" ||  (!NameRegex.test(this.state.projecttypeName))) {
-      message.warn("Invalid Data");
-    }
-
-    else if (NameRegex.test(this.state.projecttypeName)) {
-      axios.post(API_BASE_URL+'/saveprojecttype/', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
-        this.setState({ events: response.data })
-        if (response.data.status === 200) {
-          this.getProjectType();
-          message.success("Project Type Successfully Added");
-          // this.getCountDefectType();
-        }
-      })
-        .catch((error) => {
-          console.log(error);
-          message.warn("Invalid Data");
-        });
-    }
-    this.setState({
-      formErrors: {
-        projecttypeName: ""
-      },
-      visible: false,
-      projecttypeName: ""
-    })
-  };
-
-  // handleEditOk = (projecttypeId) => {
-  //   const obj = {
-  //     projecttypeName: this.state.projecttypeName
-  //   }
-  //   if (this.state.projecttypeName === "" ||  (!NameRegex.test(this.state.projecttypeName))) {
-  //     message.warn("Invalid Data");
-  //   }
-  //   else if (NameRegex.test(this.state.projecttypeName)) {
-  //     axios.put(API_BASE_URL+`/updateprojecttype/${projecttypeId}`, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-  //       .then((response) => {
-  //         this.setState({ events: response.data })
-  //         if (response.data.status === "OK") {
-  //           message.success("Project Type Successfully Updated");
-  //           this.getprojectType();
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //         message.warn("Invalid Data");
-  //       });
-  //   }
-  //   this.setState({
-  //     projecttypeName: '',
-  //     visible: false,
-  //     visibleEditModal: false
-  //   })
-  // };
-
   showEditModal = () => {
     console.log("showEditModal clicked");
     this.setState({
       visibleEditModal: true,
     });
+  };
+
+
+  handleOk = e => {
+
+    const obj = {
+      projecttypeName: this.state.projecttypeName
+
+    }
+    if (this.state.projecttypeName === "" || (!NameRegex.test(this.state.projecttypeName))) {
+      message.warn("Invalid Data");
+    }
+    else if (NameRegex.test(this.state.projecttypeName)) {
+      axios.post(API_BASE_URL+'/saveprojecttype', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
+        console.log(response);
+        this.setState({ events: response.data })
+        if (response.status === 200) {
+
+          message.success("Project Type Successfully Added");
+          this.getprojectType();
+          // this.getCountDefectStatus();
+        }
+      })
+        .catch((error) => {
+          console.log(error);
+          message.warn("Project Type Already Exist");
+        });
+
+
+    }
+
+    this.setState({
+      projecttypeName: '',
+      visible: false,
+
+    })
+
+  };
+
+  handleEditOk = (projecttypeId) => {
+    const obj = {
+      projecttypeId: this.state.projecttypeId,
+      projecttypeName: this.state.projecttypeName
+    }
+    axios.put(API_BASE_URL+"/updateprojecttype/"+projecttypeId, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .then(res => this.getprojectType());
+    this.setState({
+      projecttypeName: '',
+      visibleEditModal: false
+    })
+
   };
 
   handleCancel = e => {
@@ -185,13 +181,13 @@ export default class ProjectTypeConfig extends React.Component {
     });
   };
 
-  handleEditProjectCancel = e => {
+  handleEditPriorityCancel = e => {
     console.log(e);
     this.setState({
       visibleEditModal: false,
-      projecttypeName: null
-    });
+      projecttypeName: ""
 
+    });
   };
 
   state = {
@@ -203,6 +199,8 @@ export default class ProjectTypeConfig extends React.Component {
       a: '1',
     },
   };
+
+
 
   handleClick = () => {
     this.setState({ displayColorPicker: !this.state.displayColorPicker })
@@ -216,20 +214,20 @@ export default class ProjectTypeConfig extends React.Component {
     e.preventDefault();
     const { name, value } = e.target;
     let formErrors = { ...this.state.formErrors };
-    var newStr = value.replace(/\s+/g, '');
+    var newstr = value.replace(/\s+/g, '');
     switch (name) {
       case "projecttypeName":
-        if (!NameRegex.test(value)) {
-          formErrors.projecttypeName = "Invalid Project Type";
+        if (!NameRegex.test(newstr)) {
+          formErrors.projecttypeName = "Invalid Defect Status";
         }
-        else if (newStr.length > 15) {
-          formErrors.projecttypeName = "Required less than 15 characters";
+        else if (newstr.length === 0) {
+          formErrors.projecttypeName = "can't leave this field blank";
         }
-        else if (newStr.length < 2) {
-          formErrors.projecttypeName = "Required greater than 2 characters";
+        else if (newstr.length < 3) {
+          formErrors.projecttypeName = "Required more than 3 charecters";
         }
-        else if (newStr.length === 0) {
-          formErrors.projecttypeName = "Can't leave this field blank";
+        else if (newstr.length > 15) {
+          formErrors.projecttypeName = "Required less than 15 charecters";
         }
         else {
           formErrors.projecttypeName = "";
@@ -240,6 +238,7 @@ export default class ProjectTypeConfig extends React.Component {
     }
 
     this.setState({ formErrors, [name]: value }, () => console.log(this.state));
+
   };
 
   handleSubmit = e => {
@@ -254,7 +253,6 @@ export default class ProjectTypeConfig extends React.Component {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
     }
   }
-
   normFile = e => {
     console.log('Upload event:', e);
     if (Array.isArray(e)) {
@@ -265,46 +263,37 @@ export default class ProjectTypeConfig extends React.Component {
 
   render() {
     const { formErrors } = this.state;
-
     const columns = [
       {
-        title: 'ProjectType Id',
+        title: 'Project-Type Id ',
         dataIndex: 'projecttypeId',
         key: 'projecttypeId',
 
       },
       {
-        title: 'ProjectType Name',
+        title: 'Project-Type Name',
         dataIndex: 'projecttypeName',
         key: 'projecttypeName',
       },
       {
         title: 'Action',
-        key: 'Action',
         render: (text, data = this.state.def) => (
           <span>
-
-            <Icon id="editProjectType" onClick={this.editProjectType.bind(this, data.projecttypeId)} type="edit" style={{ fontSize: '17px', color: 'blue' }} />
-
-
+            <Icon id="editStatus" onClick={this.editType.bind(this, data.projecttypeId)} type="edit" style={{ fontSize: '17px', color: 'blue' }} />
             <Divider type="vertical" />
-
             <Popconfirm
-              id="deleteConfirmProjectType"
+              id="deleteComfirmStatus"
               title="Are you sure, Do you want to delete this ?"
               icon={<Icon type="delete" style={{ color: 'red' }}
-
               />}
-              onConfirm={this.deleteProjectType.bind(this, data.projecttypeId)}
+              onConfirm={this.deleteType.bind(this, data.projecttypeId)}
             >
-              <Icon id="deleteProjectType" type="delete" style={{ fontSize: '17px', color: 'red' }} />
+              <Icon id="deleteStatus" type="delete" style={{ fontSize: '17px', color: 'red' }} />
             </Popconfirm>
-
-          </span >
+          </span>
         ),
       },
     ];
-
     return (
       <React.Fragment>
         <div
@@ -316,26 +305,24 @@ export default class ProjectTypeConfig extends React.Component {
           }}>
 
           <Row>
-            <Col span={8}><h3>Project Type Configuration</h3></Col>
+            <Col span={8}><h3>Type Configuration</h3></Col>
             <Col span={6}></Col>
             <Col span={10}></Col>
           </Row>
-
           <br></br>
           <div>
-            <Button id="addProjectType" type="primary" onClick={this.showModal}>
-              Add Project Type
+            <Button id="addStatus" type="primary" onClick={this.showModal}>
+              Add Type
         </Button>
           </div>
           <br></br>
 
           <Modal
-            title="Add Project Type"
+            title=" Add Type"
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             style={{ padding: "40px", }}
-
           >
             <div
               style={{
@@ -345,9 +332,9 @@ export default class ProjectTypeConfig extends React.Component {
 
               }}>
 
-              <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} >
+              <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13}}>
                 <Form.Item label="Project Type">
-                  <Input
+                <Input
                     id="projecttypeName"
                     type="text"
                     className={formErrors.projecttypeName.length >= 0 ? "error" : null}
@@ -368,49 +355,41 @@ export default class ProjectTypeConfig extends React.Component {
             </div>
 
           </Modal>
+
           <Modal
-            title="Edit Project Type"
+            title="Edit Type"
             visible={this.state.visibleEditModal}
-            onOk={this.editProjectType.bind(this, this.state.projecttypeId)}
-            onCancel={this.handleEditProjectCancel}
-            style={{ padding: "60px", }}
+            onOk={this.handleEditOk.bind(this, this.state.projecttypeId)}
+            onCancel={this.handleEditPriorityCancel}
+            style={{ padding: "40px", }}
           >
             <div
               style={{
                 margin: "0 -20px 0 0",
                 background: '#fff',
-                minHeight: '150px',
+                minHeight: '80px',
 
               }}>
-              <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={this.handleSubmit}>
+              <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit}>
                 <Form.Item label="Project Type">
                   <Input
                     id="projecttypeName"
                     type="text"
-                    className={formErrors.projecttypeName.length > 0 ? "error" : null}
-                    name="projecttypeName"
                     value={this.state.projecttypeName}
-                    onChange={this.handleChange}
+                    name="projecttypeName"
+                    onChange={this.onChangeprojectType}
                   />
-                  {formErrors.projecttypeName.length > 0 && (
-                    <span
-                      className="error"
-                      style={{ color: "red", fontSize: "12px" }}
-                    >
-                      {formErrors.projecttypeName}
-                    </span>
-                  )}
                 </Form.Item>
               </Form>
             </div>
 
           </Modal>
-          <Table id="countProjectType" columns={columns} dataSource={this.state.ProjectType} />
+          <Table id="countStatus" columns={columns} dataSource={this.state.ProjectType} />
+          {/* Total Number of Defect Status: {this.state.TotalDefectStatus} */}
           <Icon type="square" />
         </div>
-      </React.Fragment >
+      </React.Fragment>
     );
   }
-
 }
 

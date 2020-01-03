@@ -77,7 +77,7 @@ class App extends React.Component {
     // const headers = new Headers();
     // headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     console.log(token)
-    axios.get(API_BASE_URL_EMP +"/getallemployee",
+    axios.get(API_BASE_URL_EMP+"/getallemployee",
       {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN),

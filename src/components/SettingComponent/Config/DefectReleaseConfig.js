@@ -79,7 +79,7 @@ export default class DefectRelease extends React.Component {
     this.showEditModal();
     this.setState({ releaseId: releaseId })
     console.log(releaseId);
-    axios.get(API_BASE_URL+'/updateRelease/' + releaseId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL+'/updateRelease /' + releaseId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => {
         this.setState({
           name: response.data.name,

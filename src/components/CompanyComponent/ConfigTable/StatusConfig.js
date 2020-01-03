@@ -15,6 +15,7 @@ import {
 import { SketchPicker } from "react-color";
 import reactCSS from "reactcss";
 import StatusConfigController from "./StatusConfigController";
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index';
 
 const { Option } = Select;
 
@@ -127,7 +128,7 @@ export default class StatusConfig extends React.Component {
   };
 
   fetchAllStatus = () => {
-    fetch(`http://localhost:8083/productservice/Statuses`)
+    fetch(API_BASE_URL_PRODUCT+`/Statuses`,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => res.json())
       .then(data => {
         this.setState({

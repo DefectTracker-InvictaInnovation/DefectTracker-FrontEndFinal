@@ -1,4 +1,4 @@
-import { Modal, Button, Select, Transfer, Row, Table, Col, Input } from 'antd';
+import { Modal, Button, Select, Transfer, Row, Table, Col, message } from 'antd';
 import React from 'react';
 import axios from "axios";
 import difference from 'lodash/difference';
@@ -7,6 +7,10 @@ import { API_BASE_URL_EMP, API_BASE_URL, ACCESS_TOKEN } from '../../constants/in
 const { Option, OptGroup } = Select;
 const employee = []
 const originTargetKeys = employee.filter(item => +item.key % 5 > 1).map(item => item.key);
+
+const success = () => {
+  message.success('This is a success message');
+};
 
 function onSearch(val) {
   console.log('search:', val);
@@ -143,6 +147,7 @@ export default class PmAllocation extends React.Component {
     this.setState({
       visible: false,
     });
+    // message.success("PM Allocation Successfully!!!")
   };
 
   handleCancel = e => {
@@ -178,12 +183,12 @@ export default class PmAllocation extends React.Component {
         })
       }
     });
-
+    
   }
 
   fetchProjects() {
     var _this = this;
-    axios.get(API_BASE_URL + '/GetAllproject', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    axios.get(API_BASE_URL + '/getallresource', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         // handle success
         console.log(response.data);

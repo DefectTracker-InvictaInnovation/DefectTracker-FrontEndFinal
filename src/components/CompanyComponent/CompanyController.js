@@ -1,7 +1,8 @@
 import axios from "axios";
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../constants/index';
 
 function AddCompanyApi(data) {
-  axios.post("http://localhost:8083/productservice/Company", data).then(res => {
+  axios.post(API_BASE_URL_PRODUCT+"/Company", data,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then(res => {
     if (res.status === 200) {
       alert("Company Successfylly Added...!");
       console.log(res.data);
@@ -10,7 +11,7 @@ function AddCompanyApi(data) {
 }
 
 function UpdateCompanyApi(data) {
-  return fetch("http://localhost:8083/productservice/Company", {
+  return fetch(API_BASE_URL_PRODUCT+"/Company", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}},{
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -20,7 +21,7 @@ function UpdateCompanyApi(data) {
 }
 
 function DeleteCompanyApi(companyId) {
-  fetch("http://localhost:8083/productservice/Company/" + companyId, {
+  fetch(API_BASE_URL_PRODUCT+"/Company/" + companyId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}, {
     method: "DELETE",
     headers: {
       Accept: "application/json",

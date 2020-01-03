@@ -212,17 +212,17 @@ class Modulesubmodule extends Component {
   };
 
   //DELETE-METHOD 1 = WORKING
-  handleDelete = moduleId => {
-    axios.delete(API_BASE_URL+`/deleteModuleById/` + moduleId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-      .then(console.log(moduleId))
-      .catch(err => console.log(err));
-    const module = this.state.module.filter(module => {
-      return module.moduleId !== moduleId;
-    });
-    this.setState({
-      module
-    });
-  };
+  // handleDelete = moduleId => {
+  //   axios.delete(API_BASE_URL+`/deleteModuleById/` + moduleId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+  //     .then(console.log(moduleId))
+  //     .catch(err => console.log(err));
+  //   const module = this.state.module.filter(module => {
+  //     return module.moduleId !== moduleId;
+  //   });
+  //   this.setState({
+  //     module
+  //   });
+  // };
 
   fetchModules() {
     var _this = this;
@@ -274,13 +274,14 @@ class Modulesubmodule extends Component {
   };
 
   handleEdit = moduleId => {
-    this.showModal();
     console.log(moduleId);
+    this.showModal();
+    
     this.setState({
       moduleId: moduleId
     });
     axios
-      .get(API_BASE_URL+"/findallmoduleinfo/" + moduleId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .get(API_BASE_URL+"/GetmoduleById/" + moduleId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => {
         console.log(response.data);
         this.setState({
@@ -469,7 +470,7 @@ class Modulesubmodule extends Component {
 let obj1=JSON.stringify(obj);
 console.log(obj1)
     axios
-      .put(API_BASE_URL+"/updatemodule/" + this.state.moduleId, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .put(API_BASE_URL+"/updateModule/" + this.state.moduleId, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => this.GetAllmodule());
     this.setState({
       moduleId: "",

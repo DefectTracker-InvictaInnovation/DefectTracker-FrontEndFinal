@@ -152,7 +152,7 @@ class DefectAdd extends React.Component {
   fetchFoundIn() {
     var _this = this;
     axios
-      .get("http://localhost:8081/defectservices/releases")
+      .get(API_BASE_URL+"/releases",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         console.log(response);
         _this.setState({ defectfoundIn: response.data });
@@ -163,7 +163,7 @@ class DefectAdd extends React.Component {
   fetchTypes() {
     var _this = this;
     axios
-      .get("http://localhost:8083/productservice/defecttypes")
+      .get(API_BASE_URL_PRODUCT+"/defecttypes",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         console.log(response);
         _this.setState({ types: response.data });
@@ -174,7 +174,7 @@ class DefectAdd extends React.Component {
   fetchProjects() {
     var _this = this;
     axios
-      .get(API_BASE_URL + "/getallresource")
+      .get(API_BASE_URL + "/getallresource",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         console.log(response.data);
         _this.setState({ projects: response.data });
@@ -185,7 +185,7 @@ class DefectAdd extends React.Component {
   fetchModules(value) {
     var _this = this;
     axios
-      .get("http://localhost:8081/defectservices/FindallMain")
+      .get(API_BASE_URL+"/FindallMain",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         console.log(response.data);
 
@@ -209,7 +209,7 @@ class DefectAdd extends React.Component {
   fetchSeveritys() {
     var _this = this;
     axios
-      .get("http://localhost:8083/productservice/Severitys")
+      .get(API_BASE_URL_PRODUCT+"/Severitys",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         console.log(response.data);
         _this.setState({ severitys: response.data });
@@ -220,7 +220,7 @@ class DefectAdd extends React.Component {
   fetchPrioritys() {
     var _this = this;
     axios
-      .get("http://localhost:8083/productservice/defectpriorities")
+      .get(API_BASE_URL_PRODUCT+"/defectpriorities",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         console.log(response.data);
         _this.setState({ prioritys: response.data });
@@ -277,7 +277,7 @@ class DefectAdd extends React.Component {
 this.fetchModules(value)
     var _this = this;
     axios
-      .get(API_BASE_URL + '/getallresource')
+      .get(API_BASE_URL + '/getallresource',{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(function (response) {
         console.log(response.data);
         let assignToopt = response.data.map((post, index) => {
@@ -354,7 +354,7 @@ this.fetchModules(value)
 
   assinNoti = (value) => {
     axios
-      .get(API_BASE_URL_EMP + "/getallemployee")
+      .get(API_BASE_URL_EMP + "/getallemployee",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => {
         console.log(response.data);
         console.log(value);
@@ -440,7 +440,7 @@ this.fetchModules(value)
         // dateAndTime: this.state.dateAndTime,
       };
       console.log(serverport);
-      axios.post(API_BASE_URL + "/saveDefect", serverport)
+      axios.post(API_BASE_URL + "/saveDefect", serverport,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
 
         .then(res => console.log(res.data))
         .catch(error => {
@@ -454,7 +454,7 @@ this.fetchModules(value)
     var mail = this.state.emailnoti;
     console.log(mail);
     axios
-      .post(API_BASE_URL_EMP + "/sendmail", mail)
+      .post(API_BASE_URL_EMP + "/sendmail", mail,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => {
 
         console.log(res.data);
@@ -519,7 +519,7 @@ this.fetchModules(value)
 
   attachment = id => {
     axios
-      .get(API_BASE_URL + "/listFile/" + id)
+      .get(API_BASE_URL + "/listFile/" + id,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(data => {
         data.data.map(file => {
           console.log(file.fileDownloadUri);
@@ -718,13 +718,14 @@ this.fetchModules(value)
                     onChange={this.onChangeFoundIn}
                   >
                     
-                    {this.state.defectfoundIn.map(function (item, index) {
-                      return (
-                        <Option key={index} value={item.releaseName}>
-                          {item.releaseName}
-                        </Option>
-                      );
-                    })}
+                    {/* {this.state.defectfoundIn.map(function (item, index) {
+                      return ( */}
+                        <Option value="Release1">Release1</Option>
+                        <Option value="Release2">Release2</Option>
+                        <Option value="Release3">Release3</Option>
+                        <Option value="Release4">Release4</Option>
+                      {/* );
+                    })} */}
                   </Select>
 
 

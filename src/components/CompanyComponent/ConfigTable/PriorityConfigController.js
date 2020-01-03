@@ -1,8 +1,9 @@
 import axios from "axios";
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index';
 
 function AddPriorityApi(data) {
   axios
-    .post("http://localhost:8083/productservice/Priority", data)
+    .post(API_BASE_URL_PRODUCT+"/Priority", data,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
     .then(res => {
       if (res.status === 200) {
         alert("Status Successfylly Added...!");
@@ -12,7 +13,7 @@ function AddPriorityApi(data) {
 }
 
 function UpdatePriorityApi(data) {
-  return fetch("http://localhost:8083/productservice/Priority", {
+  return fetch(API_BASE_URL_PRODUCT+"/Priority",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -22,7 +23,7 @@ function UpdatePriorityApi(data) {
 }
 
 function DeletePriorityApi(priorityId) {
-  fetch("http://localhost:8083/productservice/Priority/" + priorityId, {
+  fetch(API_BASE_URL_PRODUCT+"/Priority/" + priorityId, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}},{
     method: "DELETE",
     headers: {
       Accept: "application/json",

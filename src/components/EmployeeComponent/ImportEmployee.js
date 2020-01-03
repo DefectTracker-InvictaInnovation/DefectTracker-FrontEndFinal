@@ -20,6 +20,7 @@ export default class ImportEmployee extends React.Component {
 
     this.setState({
       uploading: true,
+      visible:false
     });
 
     // You can use any AJAX library you like
@@ -30,9 +31,12 @@ export default class ImportEmployee extends React.Component {
       processData: false,
       data: formData,
       success: () => {
+        console.log("dddddddddddd")
         this.props.reload()
         this.setState({
-          uploading: false
+          fileList:[],
+          uploading: false,
+          visible:false
         });
         message.success("upload successfully.");
       },
@@ -43,6 +47,7 @@ export default class ImportEmployee extends React.Component {
         message.error("upload failed.");
       }
     });
+    this.props.reload()
   };
 
   onChange(info) {

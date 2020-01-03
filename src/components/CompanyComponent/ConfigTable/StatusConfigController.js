@@ -1,7 +1,8 @@
 import axios from "axios";
+import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index';
 
 function AddStatusApi(data) {
-  axios.post("http://localhost:8083/productservice/Status", data).then(res => {
+  axios.post(API_BASE_URL_PRODUCT+"/Status", data,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then(res => {
     if (res.status === 200) {
       alert("Status Successfylly Added...!");
       console.log(res.data);
@@ -10,7 +11,7 @@ function AddStatusApi(data) {
 }
 
 function UpdateStatusApi(data) {
-  return fetch("http://localhost:8083/productservice/Status", {
+  return fetch(API_BASE_URL_PRODUCT+"/Status",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
@@ -20,7 +21,7 @@ function UpdateStatusApi(data) {
 }
 
 function DeleteStatusApi(stausId) {
-  fetch("http://localhost:8083/productservice/Status/" + stausId, {
+  fetch(API_BASE_URL_PRODUCT+"/Status/" + stausId,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}, {
     method: "DELETE",
     headers: {
       Accept: "application/json",
