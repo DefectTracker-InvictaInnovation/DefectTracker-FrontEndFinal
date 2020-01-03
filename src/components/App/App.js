@@ -9,8 +9,7 @@ import history from './Login/util/history';
 import axios from "axios";
 import PrivateRoute from './Login/util/PrivateRoute';
 import DefectDashboard from './../DashboardComponent/DefectDashboard';
-import { ACCESS_TOKEN } from '../../constants/index';
-import { ROLE_NAME } from '../../constants/index';
+import { ROLE_NAME,ACCESS_TOKEN ,FRONT_END_URL} from '../../constants/index';
 import { IS_AUTHENTICATED } from '../../constants/index';
 import Forgot from './Login/forgot'
 import Reset from './Login/reset';
@@ -103,20 +102,20 @@ class App extends React.Component {
 console.log(globalHistory.location);
 if(localStorage.getItem(IS_AUTHENTICATED)){
 
-  if((globalHistory.location.href==="http://localhost:3000/") && (localStorage.getItem(ROLE_NAME) === 'ROLE_ADMIN')){
+  if((globalHistory.location.href===`${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_ADMIN')){
     history.push('/home');
   }
 
-  if((globalHistory.location.href==="http://localhost:3000/") && (localStorage.getItem(ROLE_NAME) === 'ROLE_HR')){
+  if((globalHistory.location.href===`${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_HR')){
     history.push('/home');
   }
-  if((globalHistory.location.href==="http://localhost:3000/") && (localStorage.getItem(ROLE_NAME) === 'ROLE_QA')){
+  if((globalHistory.location.href===`${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_QA')){
     history.push('/dashboard/defect');
   }
-  if((globalHistory.location.href==="http://localhost:3000/") && (localStorage.getItem(ROLE_NAME) === 'ROLE_PM')){
+  if((globalHistory.location.href===`${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_PM')){
     history.push('/dashboard/projectmanager/');
   }
-  if((globalHistory.location.href==="http://localhost:3000/") && (localStorage.getItem(ROLE_NAME) === 'ROLE_DEVELOPER')){
+  if((globalHistory.location.href===`${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_DEVELOPER')){
     history.push('/dashboard/developer');
   }
 
