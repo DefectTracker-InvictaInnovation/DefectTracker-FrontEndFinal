@@ -377,10 +377,10 @@ class SiderComponent extends React.Component {
 
 
                 <Menu.Item key="18">
-                  <Link to="/config/priority">Priority</Link>
+                  <Link to="/config/priority">Defect Priority</Link>
                 </Menu.Item>
                 <Menu.Item key="19">
-                  <Link to="/config/severity">Severity</Link>
+                  <Link to="/config/severity">Defect Severity</Link>
                 </Menu.Item>
                 <Menu.Item key="20">
                   <Link to="/config/defecttype">Defect Type</Link>
@@ -395,7 +395,13 @@ class SiderComponent extends React.Component {
                   <Link to="/config/projectstatusconfig">Project Status</Link>
                 </Menu.Item>
                 <Menu.Item key="24">
-                  <Link to="/config/designationconfig">Designation Configure</Link>
+                  <Link to="/config/designationconfig">Employee Designation</Link>
+                </Menu.Item>
+                <Menu.Item key="25">
+                  <Link to="/config/employeeroleconfig">Employee Role</Link>
+                </Menu.Item>
+                <Menu.Item key="26">
+                  <Link to="/config/defectreleaseconfig">Defect Release</Link>
                 </Menu.Item>
               </SubMenu>}
             <SubMenu
@@ -408,7 +414,7 @@ class SiderComponent extends React.Component {
               }
             >
               {this.state.ManageAuditLog ? '' :
-                <Menu.Item key="25">
+                <Menu.Item key="27">
                   <Link to="/settings/auditlog">Audit Log</Link>
                 </Menu.Item>}
             </SubMenu>
@@ -423,36 +429,36 @@ class SiderComponent extends React.Component {
                 }
               >
                 {this.state.CompanyPrivilege ? '' :
-                  <Menu.Item key="26">
+                  <Menu.Item key="28">
                     <Link to="/privilege/company">Company Privileges</Link>
                   </Menu.Item>}
                 {this.state.ProjectPrivilege ? '' :
-                  <Menu.Item key="27">
+                  <Menu.Item key="29">
                     <Link to="/privilege/project">Project Privileges</Link>
                   </Menu.Item>}
                 {this.state.QAPrivilege ? '' :
-                  <Menu.Item key="28">
-                    <Link to="/privilege/qalead">QA Privilege</Link>
+                  <Menu.Item key="30">
+                    <Link to="/privilege/qalead">QA Lead Privileges</Link>
                   </Menu.Item>}
                 {this.state.TecLeadPrivilege ? '' :
-                  <Menu.Item key="29">
+                  <Menu.Item key="31">
                     <Link to="/privilege/techlead">Tech Lead Privileges</Link>
                   </Menu.Item>}
                 {this.state.ProjectConfigurePrivilege ? '' :
-                  <Menu.Item key="30">
-                    <Link to="/privilege/projectConfig">Project Privilege</Link>
+                  <Menu.Item key="32">
+                    <Link to="/privilege/projectConfig">Project Configure Privilege</Link>
                   </Menu.Item>}
                 {this.state.DeveloperConfigurePrivilege ? '' :
-                  <Menu.Item key="31">
-                    <Link to="/privilege/developer">Developer Privilege</Link>
+                  <Menu.Item key="33">
+                    <Link to="/privilege/developer">Developer Configure Privilege</Link>
                   </Menu.Item>}
                 {this.state.ProjectManagerConfigurePrivilege ? '' :
-                  <Menu.Item key="32">
-                    <Link to="/privilege/pm">Project Manager Privilege</Link>
+                  <Menu.Item key="34">
+                    <Link to="/privilege/pm">Project Manager Configure Privilege</Link>
                   </Menu.Item>}
                 {this.state.HRConfigurePrivilege ? '' :
-                  <Menu.Item key="33">
-                    <Link to="/privilege/hr">HR Privilege</Link>
+                  <Menu.Item key="35">
+                    <Link to="/privilege/hr">HR Configure Privilege</Link>
                   </Menu.Item>}
               </SubMenu>}
             {localStorage.getItem(ROLE_NAME) === 'ROLE_HR' ?
@@ -465,10 +471,10 @@ class SiderComponent extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item key="34">
+                <Menu.Item key="36">
                   <Link to="/workflow/defectroles">Defect Roles Flow</Link>
                 </Menu.Item>
-                <Menu.Item key="35">
+                <Menu.Item key="37">
                   <Link to="/workflow/defectstatus">Defect Status Flow</Link>
                 </Menu.Item>
               </SubMenu> : ""}

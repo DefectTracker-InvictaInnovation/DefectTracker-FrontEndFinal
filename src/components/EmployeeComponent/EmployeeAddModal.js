@@ -107,6 +107,7 @@ class EmployeeAddModal extends React.Component {
         } else {
           formerrors.employeeName = "";
         }
+        break;
       case "employeeFirstName":
         if (!NameRegex.test(value)) {
           formerrors.employeeFirstName = "Invalid Name";
@@ -419,10 +420,10 @@ class EmployeeAddModal extends React.Component {
                 <Form.Item label="Profile Picture">
                   {getFieldDecorator("profilePicPath", {
                     rules: [
-                      {
-                        required: true,
-                        message: "Please input profile!"
-                      }
+                      // {
+                      //   required: true,
+                      //   message: "Please input profile!"
+                      // }
                     ]
                   })(
                    ( <input type="file" className="form-control" name="file" multiple onChange={this.onFileChangeHandler} />)

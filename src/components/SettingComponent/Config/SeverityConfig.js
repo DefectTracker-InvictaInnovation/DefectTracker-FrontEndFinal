@@ -1,10 +1,29 @@
 import React from 'react';
-import { Table, Divider, Modal, Button, Icon, Upload, Form, Input, Col, Row, Popconfirm } from 'antd';
+import { Table, Divider, Modal, Button, Icon, Form, Input, Col, Row, Popconfirm, message } from 'antd';
 import { SketchPicker } from 'react-color';
 import reactCSS from 'reactcss';
 import axios from 'axios';
 import Dropdown from 'react-dropdown';
 import {API_BASE_URL_PRODUCT,ACCESS_TOKEN} from './../../../constants/index'
+
+const NameRegex = RegExp(/^[a-zA-Z ]+$/);
+//const ValidRegex = RegExp(/^[0-9a-zA-Z]+$/);
+
+const formValid = ({ formErrors, ...rest }) => {
+  let valid = true;
+
+  // validate form errors being empty
+  Object.values(formErrors).forEach(val => {
+    val.length > 0 && (valid = false);
+  });
+
+  // validate the form was filled out
+  Object.values(rest).forEach(val => {
+    val === null && (valid = false);
+  });
+
+  return valid;
+};
 
 const options = [
   {
@@ -121,6 +140,11 @@ export default class SeverityConfig extends React.Component {
       icon: this.state.icon,
       color: colorStringValue
     }
+
+    if (this.state.name === "" || this.state.value === "" || (!NameRegex.test(this.state.name) || !NameRegex.test(this.state.value))) {
+      message.warn("Invalid Data");
+    }
+    else if (NameRegex.test(this.state.name) && NameRegex.test(this.state.value)) {
     axios.post(API_BASE_URL_PRODUCT+'/Severity/', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => this.getDefectSeverity());
     console.log(obj);
@@ -131,7 +155,8 @@ export default class SeverityConfig extends React.Component {
       color: '',
       visible: false
     })
-  };
+  }
+};
 
 
 
@@ -177,6 +202,11 @@ export default class SeverityConfig extends React.Component {
       icon: this.state.icon,
       color: colorString
     }
+
+    if (this.state.name === "" || this.state.value === "" || (!NameRegex.test(this.state.name) || !NameRegex.test(this.state.value))) {
+      message.warn("Invalid Data");
+    }
+    else if (NameRegex.test(this.state.name) && NameRegex.test(this.state.value)) {
     axios.put(API_BASE_URL_PRODUCT+"/Severity/"+id, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => this.getDefectSeverity());
     this.setState({
@@ -186,7 +216,8 @@ export default class SeverityConfig extends React.Component {
       color: '',
       visibleEditModal: false
     })
-  };
+  }
+};
 
 
 
