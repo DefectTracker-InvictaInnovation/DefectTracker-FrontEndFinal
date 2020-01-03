@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Table, Switch, Button, Input, PageHeader } from 'antd';
 import axios from "axios";
-import { ROLE_NAME, ACCESS_TOKEN, API_BASE_URL } from '../../constants/index';
+import { API_BASE_URL_EMP, ACCESS_TOKEN, API_BASE_URL } from '../../constants/index';
 
 const Search = Input.Search;
 
@@ -57,11 +57,11 @@ export default class DeveloperPrivilege extends Component {
     }
     render() {
         const columns = [
-            {
-                title: 'ID',
-                dataIndex: 'id',
+            // {
+            //     title: 'ID',
+            //     dataIndex: 'id',
 
-            },
+            // },
             {
                 title: 'Privilleges',
                 dataIndex: 'privilegeName',
@@ -103,11 +103,14 @@ export default class DeveloperPrivilege extends Component {
                     <Search style={{ width: '200px', marginBottom: '10px' }} placeholder="Search" onSearch={value => console.log(value)} enterButton />
 
                     <Table
-                        columns={columns} dataSource={this.state.QAPrivilages} pagination={{ pageSize: 30 }}
+                        columns={columns} dataSource={this.state.QAPrivilages} pagination={{ pageSize: 10 }}
 
                     />
+                     <Button type="primary" onClick={this.submit}>Set Privilages</Button>
                 </div>
-                <Button type="primary" onClick={this.submit}>Set Privilages</Button>
+
+                <br></br>
+               
             </React.Fragment>
 
         )

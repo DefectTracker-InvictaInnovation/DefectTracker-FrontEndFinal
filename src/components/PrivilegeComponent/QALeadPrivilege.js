@@ -69,11 +69,11 @@ export default class QAPrivilege extends Component {
     }
     render() {
         const columns = [
-            {
-                title: 'ID',
-                dataIndex: 'id',
+            // {
+            //     title: 'ID',
+            //     dataIndex: 'id',
 
-            },
+            // },
             {
                 title: 'Privilleges',
                 dataIndex: 'privilegeName',
@@ -102,7 +102,7 @@ export default class QAPrivilege extends Component {
         ];
         return (
             <React.Fragment>
-                <PageHeader title="QA Lead Privilege" breadcrumb={{ routes }} />
+                <PageHeader title="QA Privilege" breadcrumb={{ routes }} />
                 <div
                     style={{
                         padding: '0 24px 24px 24px',
@@ -115,11 +115,12 @@ export default class QAPrivilege extends Component {
                     <Search style={{ width: '200px', marginBottom: '10px' }} placeholder="Search" onSearch={value => console.log(value)} enterButton />
 
                     <Table
-                        columns={columns} dataSource={this.state.QAPrivilages} pagination={{ pageSize: 30 }}
+                        columns={columns} dataSource={this.state.QAPrivilages} pagination={{ pageSize: 10 }}
 
                     />
+                    <Button type="primary" onClick={this.submit}>Set Privilages</Button>
                 </div>
-                <Button type="primary" onClick={this.submit}>Set Privilages</Button>
+                
             </React.Fragment>
 
         )

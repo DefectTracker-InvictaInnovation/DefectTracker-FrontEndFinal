@@ -303,7 +303,7 @@ class EmployeeAddModal extends React.Component {
                       className={
                         formerrors.employeeName.length > 0 ? "error" : null
                       }
-                      placeholder="Employee Name"
+                      placeholder="Firstname"
                       value={this.state.employeeName}
                       onChange={this.handlechange}
                       name="employeeName"
@@ -335,7 +335,7 @@ class EmployeeAddModal extends React.Component {
                       className={
                         formerrors.employeeFirstName.length > 0 ? "error" : null
                       }
-                      placeholder="Employee FirstName"
+                      placeholder="Surname"
                       value={this.state.employeeFirstName}
                       onChange={this.handlechange}
                       name="employeeFirstName"
@@ -363,6 +363,7 @@ class EmployeeAddModal extends React.Component {
                     ]
                   })(
                     <Select
+                    placeholder="Designation"
                       id="employeeDesignation"
                       defaultValue="Select Designation"
                       style={{ width: 120 }}

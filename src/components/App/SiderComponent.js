@@ -432,7 +432,7 @@ class SiderComponent extends React.Component {
                   </Menu.Item>}
                 {this.state.QAPrivilege ? '' :
                   <Menu.Item key="28">
-                    <Link to="/privilege/qalead">QA Lead Privileges</Link>
+                    <Link to="/privilege/qalead">QA Privilege</Link>
                   </Menu.Item>}
                 {this.state.TecLeadPrivilege ? '' :
                   <Menu.Item key="29">
@@ -440,19 +440,19 @@ class SiderComponent extends React.Component {
                   </Menu.Item>}
                 {this.state.ProjectConfigurePrivilege ? '' :
                   <Menu.Item key="30">
-                    <Link to="/privilege/projectConfig">Project Configure Privilege</Link>
+                    <Link to="/privilege/projectConfig">Project Privilege</Link>
                   </Menu.Item>}
                 {this.state.DeveloperConfigurePrivilege ? '' :
                   <Menu.Item key="31">
-                    <Link to="/privilege/developer">Developer Configure Privilege</Link>
+                    <Link to="/privilege/developer">Developer Privilege</Link>
                   </Menu.Item>}
                 {this.state.ProjectManagerConfigurePrivilege ? '' :
                   <Menu.Item key="32">
-                    <Link to="/privilege/pm">Project Manager Configure Privilege</Link>
+                    <Link to="/privilege/pm">Project Manager Privilege</Link>
                   </Menu.Item>}
                 {this.state.HRConfigurePrivilege ? '' :
                   <Menu.Item key="33">
-                    <Link to="/privilege/hr">HR Configure Privilege</Link>
+                    <Link to="/privilege/hr">HR Privilege</Link>
                   </Menu.Item>}
               </SubMenu>}
             {localStorage.getItem(ROLE_NAME) === 'ROLE_HR' ?
