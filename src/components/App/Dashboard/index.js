@@ -390,7 +390,7 @@ clearTimeout() {
   }
 
 
-        handleLogout(redirectTo="/login", notificationType="success", description="You're successfully logged out.") {
+        handleLogout(redirectTo="/", notificationType="success", description="You're successfully logged out.") {
             localStorage.removeItem(ACCESS_TOKEN);
             localStorage.removeItem(IS_AUTHENTICATED);
             localStorage.removeItem(ROLE_NAME);
