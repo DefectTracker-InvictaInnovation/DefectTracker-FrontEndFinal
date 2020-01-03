@@ -2,21 +2,33 @@ import React, { Component } from 'react';
 import { Chart } from 'primereact/chart';
 import { Card } from 'antd';
 import axios from 'axios';
-import { API_BASE_URL,ACCESS_TOKEN } from '../../../constants/index';
+import { API_BASE_URL, ACCESS_TOKEN } from '../../../constants/index';
 
 export default class ChartBar extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
+
             highsev: '',
             mediumsev: '',
             lowsev: '',
             count: '',
+            projectid: this.props.projectId,
         }
     };
 
+    // onChangeRole = (value) => {
 
+    //     this.setState({ projectid: value })
+
+    //     this.getLow(value);
+    //     this.getMedium(value);
+    //     this.getHigh(value);
+
+    //     console.log(value)
+
+    // }
     getdefectcount() {
         axios
             .get(API_BASE_URL + '/gettoatalcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
@@ -27,20 +39,20 @@ export default class ChartBar extends Component {
                 })
             })
     }
-    getHigh() {
+    getHigh(value) {
         axios
-            .get(API_BASE_URL + '/getpriorityhighcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getprioritycount/' + this.state.projectid + '&high', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
-                console.log(res.data)
+                console.log("" + res.data)
                 this.setState({
                     highsev: res.data
                 })
             })
     }
 
-    getMedium() {
+    getMedium(value) {
         axios
-            .get(API_BASE_URL + '/getprioritymediumcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getprioritycount/' + this.state.projectid + '&medium', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
                 console.log(res.data)
                 this.setState({
@@ -51,8 +63,8 @@ export default class ChartBar extends Component {
 
 
 
-    getlow() {
-        const url = API_BASE_URL + '/getprioritylowcount';
+    getlow(value) {
+        const url = API_BASE_URL + '/getprioritycount/' + this.state.projectid + '&low';
         axios.get(url, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(response => this.setState({
                 lowsev: response.data,
@@ -67,6 +79,7 @@ export default class ChartBar extends Component {
         this.getMedium()
         this.getlow()
         this.getdefectcount()
+        console.log('thuva' + this.state.projectid);
     }
 
 
