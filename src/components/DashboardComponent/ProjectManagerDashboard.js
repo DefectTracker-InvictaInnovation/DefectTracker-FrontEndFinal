@@ -3,7 +3,7 @@ import { Breadcrumb, Statistic, Card, Row, Col, Icon, Timeline, Select, Progress
 import ChartBar from './assets/ChartBar';
 import ChartPolar from './assets/ChartPolar';
 import { Chart } from 'primereact/chart';
-import { API_BASE_URL, CURRENT_USER, API_BASE_URL_PRODUCT, ACCESS_TOKEN, LOGIN_API_BASE_URL,EXISTING_EMAIL } from '../../../src/constants/index';
+import { API_BASE_URL, CURRENT_USER, API_BASE_URL_PRODUCT, ACCESS_TOKEN, LOGIN_API_BASE_URL, EXISTING_EMAIL } from '../../../src/constants/index';
 import DeveloperDefectDetail from './Elements/DeveloperDefectDetail';
 import DeveloperDefectPercentage from './Elements/DeveloperDefectPercentage';
 import DeveloperDefectStatusChart from './Elements/DeveloperDefectStatusChart';
@@ -12,9 +12,13 @@ import DefectTypeDoughnutChart from './Elements/DefectTypeDoughnutChart';
 import DeveloperLineChart from './Elements/DeveloperLineChart';
 import DashboardConfig from './DashboardConfig';
 import axios from 'axios';
+
+
 const Option = Select.Option;
 const currentuser = localStorage.getItem(CURRENT_USER);
 class ProjectManagerDashboard extends React.Component {
+
+
     state = {
         filteredInfo: null,
         sortedInfo: null,
@@ -41,37 +45,42 @@ class ProjectManagerDashboard extends React.Component {
         name4: '',
         name5: '',
         role: '',
-        projectid: '',
-        getall:'',
-        email:''
+
+        getall: '',
+        email: '',
+        high: '',
+        openhighsev: ''
+
     };
-// Hello Hari
-    getHigh() {
+    // Hello Hari
+    getHigh(value) {
 
         axios
-            .get(API_BASE_URL + "/getseverityhigcount", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getseveritycount/' + value + '&high', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
-                console.log(res.data)
+                console.log("thuva" + res.data)
                 this.setState({
-                    highsev: res.data
+                    highsev: res.data,
                 })
-            })
+            }) //.catch(function (error) {
+        //     console.log("testing" + error);
+        // });
     }
 
-    getMedium() {
+    getMedium(value) {
         axios
-            .get(API_BASE_URL + '/getseveritymediumcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getseveritycount/' + value + '&medium', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
-                console.log(res.data)
+                console.log("thuva" + res.data)
                 this.setState({
                     mediumsev: res.data
                 })
             })
     }
 
-    getLow() {
+    getLow(value) {
         axios
-            .get(API_BASE_URL + '/getseveritylowcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getseveritycount/' + value + '&low', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
                 console.log(res.data)
                 this.setState({
@@ -80,11 +89,22 @@ class ProjectManagerDashboard extends React.Component {
             })
     }
 
+    getopenhigh(value) {
+        axios
+            .get(API_BASE_URL + '/getopenseveritycount/' + value + '&high', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    openhighsev: res.data
+                })
+            })
+    }
+
 
 
     onChangeRole = (value) => {
 
-        this.setState({ projectid: value })
+        this.setState({ projectId: value })
         this.getStatusNew(value);
         this.getStatusOpen(value);
         this.getStatusReOpen(value);
@@ -92,6 +112,14 @@ class ProjectManagerDashboard extends React.Component {
         this.getStatusFixed(value);
         this.getStatusDefered(value);
         this.getStatusClose(value);
+        this.getLow(value);
+        this.getMedium(value);
+        this.getHigh(value);
+        this.getHigh1(value);
+        this.getLow1(value);
+        this.getMedium1(value);
+        this.getopenhigh(value);
+        this.getdefectcount(value);
         console.log(value)
 
     }
@@ -198,9 +226,9 @@ class ProjectManagerDashboard extends React.Component {
             })
 
     }
-    getHigh1() {
+    getHigh1(value) {
         axios
-            .get(API_BASE_URL + '/gethightcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getprioritycount/' + value + '&high', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
                 let color = ""
                 if (3 > res.data) {
@@ -221,7 +249,7 @@ class ProjectManagerDashboard extends React.Component {
 
     getLow1() {
         axios
-            .get(API_BASE_URL + '/getlowcount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getprioritycount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
                 let color = ""
                 if (3 > res.data) {
@@ -241,7 +269,7 @@ class ProjectManagerDashboard extends React.Component {
 
     getMedium1() {
         axios
-            .get(API_BASE_URL + '/getcountmedium', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .get(API_BASE_URL + '/getprioritycount', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(res => {
                 let color = ""
                 if (3 > res.data) {
@@ -280,6 +308,7 @@ class ProjectManagerDashboard extends React.Component {
     }
 
     componentDidMount() {
+        console.log("thuva" + this.state.projectId);
         this.getAllUsers();
 
         this.getConfiguration();
@@ -302,15 +331,15 @@ class ProjectManagerDashboard extends React.Component {
         this.getDefectRatio();
         this.gettotaldefectwithRe();
         this.getallRole();
-        
+
     }
-    getAllUsers=()=> {
+    getAllUsers = () => {
         var _this = this;
         axios.get(LOGIN_API_BASE_URL + '/getAllUsers', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
             .then(function (response) {
                 // handle success
                 console.log(response.data);
-                 _this.setState({ getall: response.data });
+                _this.setState({ getall: response.data });
                 // console.log(_this.state.mod);
             });
     }
@@ -323,9 +352,9 @@ class ProjectManagerDashboard extends React.Component {
             .then(function (response) {
                 console.log(response.data);
                 let d = response.data.map(post => {
-                    console.log(post.name + "keerthi");
+                    console.log(post.name + "rommi");
                     console.log(currentuser);
-                    if ( currentuser ) {
+                    if (currentuser) {
                         console.log(currentuser);
                         return <Option value={post.projectId}>{post.projectName}</Option>
                     }
@@ -352,7 +381,7 @@ class ProjectManagerDashboard extends React.Component {
         //     })
     }
 
-  
+
     getDefectRatio() {
         axios
             .get(API_BASE_URL + '/getremarksratio', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
@@ -365,13 +394,15 @@ class ProjectManagerDashboard extends React.Component {
             })
     }
 
-    getdefectcount() {
-        const url = API_BASE_URL + '/getTotalDefectCount';
+    getdefectcount(value) {
+        const url = API_BASE_URL + '/getdefectbyprojectcount/' + value;
         axios.get(url, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
 
             .then(response => this.setState({
-                value: response.data,
+                defectcount: response.data,
+
             }))
+
             .catch(function (error) {
                 console.log(error);
             });
@@ -562,10 +593,10 @@ class ProjectManagerDashboard extends React.Component {
                             <Card style={{ margin: "10px 5px 0 -2px", borderRadius: "5px" }}>
                                 <Statistic
                                     title="High Severity"
-                                    value={this.state.high}
+                                    value={this.state.highsev}
                                     valueStyle={{ color: this.state.color }}
                                     prefix={<Icon type="arrow-up" style={{ color: "red" }} />}
-                                    suffix="%"
+                                // suffix="%"
                                 />
                             </Card>
                         </Col>
@@ -573,20 +604,20 @@ class ProjectManagerDashboard extends React.Component {
                             <Card style={{ margin: "10px 5px", borderRadius: "5px" }}>
                                 <Statistic
                                     title="Medium Severity"
-                                    value={this.state.medium}
+                                    value={this.state.mediumsev}
                                     valueStyle={{ color: this.state.color }}
                                     prefix={<Icon type="arrow-up" style={{ color: "orange" }} />}
-                                    suffix="%"
+                                // suffix="%"
                                 />
                             </Card></Col>
                         <Col span={6}>
                             <Card style={{ margin: "10px 5px", borderRadius: "5px" }}>
                                 <Statistic
                                     title="Low Severity"
-                                    value={this.state.low}
+                                    value={this.state.lowsev}
                                     valueStyle={{ color: this.state.color }}
                                     prefix={<Icon type="arrow-down" style={{ color: "green" }} />}
-                                    suffix="%"
+                                // suffix="%"
                                 />
                             </Card></Col>
                         <Col span={6}>
@@ -607,7 +638,7 @@ class ProjectManagerDashboard extends React.Component {
                                     precision={3}
                                     valueStyle={{ color: '#3f8600' }}
                                     prefix={<Icon type="safety-certificate" theme="filled" />}
-                                    suffix="%"
+                                // suffix="%"
                                 />
                             </Card>
                         </Col>
@@ -619,14 +650,15 @@ class ProjectManagerDashboard extends React.Component {
                                     precision={3}
                                     valueStyle={{ color: '#3f8600' }}
                                     prefix={<Icon type="fund" theme="filled" />}
-                                    suffix="%"
+                                // suffix="%"
                                 />
                             </Card></Col>
                         <Col span={6}>
                             <Card style={{ margin: "10px 5px 0 -2px", borderRadius: "5px" }}>
                                 <Statistic
                                     title="Total Defect"
-                                    value={this.state.value}
+
+                                    value={this.state.defectcount}
                                     valueStyle={{ color: '#3f8600' }}
                                     prefix={<Icon type="safety-certificate" theme="filled" />}
                                 />
@@ -637,7 +669,7 @@ class ProjectManagerDashboard extends React.Component {
                             <Card style={{ margin: "10px 5px 0 -2px", borderRadius: "5px" }}>
                                 <Statistic
                                     title="Total Open Severity High"
-                                    value={this.state.openHigh}
+                                    value={this.state.openhighsev}
                                     valueStyle={{ color: '#3f8600' }}
                                     prefix={<Icon type="safety-certificate" theme="filled" style={{ color: '#e30931' }} />}
                                 />
@@ -652,7 +684,7 @@ class ProjectManagerDashboard extends React.Component {
 
                     <Row style={{ margin: "-20px 0 0 0 " }}>
                         <Col span={10} key="1">
-                            <ChartBar />
+                            <ChartBar projectId={this.props.projectId} />
                         </Col>
                         <Col span={14} key="2">
                             <Card title="Defects Status" style={{ borderRadius: "5px", margin: "0 0 0 5px" }}>
