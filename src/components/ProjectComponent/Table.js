@@ -30,7 +30,7 @@ export default class App extends React.Component {
     projects: [],
     projectId: this.props.projectId,
     projectName: this.props.projectName,
-    projectAbbr:this.props.projectAbbr,
+    projectAbbr: this.props.projectAbbr,
     duration: this.props.duration,
     status: this.props.status,
     startDate: this.props.startDate,
@@ -114,7 +114,7 @@ export default class App extends React.Component {
   getAllProjects = () => {
     const obj = {
       projectName: this.state.projectName,
-      projectAbbr:this.state.projectAbbr,
+      projectAbbr: this.state.projectAbbr,
       duration: this.state.duration,
       status: this.state.status,
       startDate: this.state.startDate,
@@ -278,7 +278,7 @@ export default class App extends React.Component {
         render: (text, data = this.state.patients) => (
           <span>
             <a>
-              <EditModel id="editProject" projectProps={data.projectId} qastatus={this.state.EditProjectStatus}/>
+              <EditModel id="editProject" projectProps={data.projectId} qastatus={this.state.EditProjectStatus} reload={this.getAllProjects} />
             </a>
           </span>
         )
@@ -299,12 +299,12 @@ export default class App extends React.Component {
               }}>
               <Col span={3}>
                 <div >
-                  <Model 
-                  
-                  qastatus={this.state.AddProjectStatus}
-                     reload={this.state.getAllProjects}
-                   />
-                
+                  <Model
+
+                    qastatus={this.state.AddProjectStatus}
+                    reload={this.getAllProjects}
+                  />
+
                 </div>
               </Col>
               {/* <Col span={3}>
