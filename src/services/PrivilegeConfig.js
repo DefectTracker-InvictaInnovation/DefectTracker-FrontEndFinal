@@ -79,7 +79,7 @@ export function getAllQaPrivilege(){
 let st ="";
 export function getDeveloper(){
     
-    axios.get("http://localhost:8762/defectservices/defectservices/getAllDeveloperPrivilegeInfo",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL+"/getAllDeveloperPrivilegeInfo",{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
     .then(res=>{
          res.data.map(post=>{
                 if("ManageCompany"==post.privilegeName){

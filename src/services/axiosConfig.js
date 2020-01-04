@@ -1,10 +1,6 @@
 import axios from 'axios';
-import {ACCESS_TOKEN} from '../constants/index'
+import {ACCESS_TOKEN,API_BASE_URL,LOGIN_API_BASE_URL,EMP_API_BASE_URL,PRODUCT_API_BASE_URL} from '../constants/index'
 import handleError from './handleError';
-export const DEFECT_API_BASE_URL = 'http://localhost:8762/defectservices/defectservices';
-export const LOGIN_API_BASE_URL="http://localhost:8762/loginservice/loginservice/api/auth";
-export const EMP_API_BASE_URL='http://localhost:8762/employeeservice/employeeservice';
-export const PRODUCT_API_BASE_URL='http://localhost:8762/productservice/productservice';
 
 function addParamsToURL(url, params) {
     if (params) {
@@ -18,7 +14,7 @@ function addParamsToURL(url, params) {
 function getService (service) {
     switch(service){
         case 'defect':
-            return DEFECT_API_BASE_URL;
+            return API_BASE_URL;
         case 'login':
             return LOGIN_API_BASE_URL;
         case 'employee':
