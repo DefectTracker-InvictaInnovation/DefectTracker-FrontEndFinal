@@ -9,12 +9,12 @@ import history from './Login/util/history';
 import axios from "axios";
 import PrivateRoute from './Login/util/PrivateRoute';
 import DefectDashboard from './../DashboardComponent/DefectDashboard';
-import { ACCESS_TOKEN, API_BASE_URL_EMP } from '../../constants/index';
-import { ROLE_NAME } from '../../constants/index';
+import { ROLE_NAME, ACCESS_TOKEN, FRONT_END_URL } from '../../constants/index';
 import { IS_AUTHENTICATED } from '../../constants/index';
 import Forgot from './Login/forgot'
 import Reset from './Login/reset';
-
+import { API_BASE_URL_EMP } from '../../constants/index';
+import { globalHistory } from '@reach/router';
 
 
 class App extends React.Component {
@@ -77,7 +77,7 @@ class App extends React.Component {
     // const headers = new Headers();
     // headers.append('Authorization', 'Bearer ' + localStorage.getItem(ACCESS_TOKEN))
     console.log(token)
-    axios.get(API_BASE_URL_EMP+"/getallemployee",
+    axios.get(API_BASE_URL_EMP + "/getallemployee",
       {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN),
@@ -99,7 +99,27 @@ class App extends React.Component {
     getCurrentUser();
 
 
+    console.log(globalHistory.location);
+    if (localStorage.getItem(IS_AUTHENTICATED)) {
 
+      if ((globalHistory.location.href === `${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_ADMIN')) {
+        history.push('/home');
+      }
+
+      if ((globalHistory.location.href === `${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_HR')) {
+        history.push('/home');
+      }
+      if ((globalHistory.location.href === `${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_QA')) {
+        history.push('/dashboard/defect');
+      }
+      if ((globalHistory.location.href === `${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_PM')) {
+        history.push('/dashboard/projectmanager/');
+      }
+      if ((globalHistory.location.href === `${FRONT_END_URL}`) && (localStorage.getItem(ROLE_NAME) === 'ROLE_DEVELOPER')) {
+        history.push('/dashboard/developer');
+      }
+
+    }
 
     console.log(localStorage.getItem(IS_AUTHENTICATED))
 
@@ -125,7 +145,7 @@ class App extends React.Component {
 
     if (localStorage.getItem(IS_AUTHENTICATED)) {
 
-      if (localStorage.getItem(ROLE_NAME) === 'ROLE_HR') {
+      if ((localStorage.getItem(ROLE_NAME) === 'ROLE_HR')) {
         console.log("ROLE_ADMIN")
         history.push('/home');
         // window.location.reload();
@@ -149,7 +169,7 @@ class App extends React.Component {
         console.log("ROLE_DEVELOPER")
         // window.location.reload();
       }
-      else if (localStorage.getItem(ROLE_NAME) === 'ROLE_ADMIN') {
+      else if ((localStorage.getItem(ROLE_NAME) === 'ROLE_ADMIN')) {
         history.push('/home');
         console.log("ROLE_ADMIN")
         // window.location.reload();
@@ -171,26 +191,22 @@ class App extends React.Component {
             render={(props) => <WrappedNormalLoginForm onLogin={this.handleLogin} {...props} />}>
 
           </Route>
-          <Route exact path="/login"
+          {/* <Route exact path="/login"
             render={(props) => <WrappedNormalLoginForm onLogin={this.handleLogin} {...props} />}>
-
-          </Route>
+          </Route> */}
           <Route exact path="/forgot" render={props => <Forgot {...props} />} />
           <Route path="/Reset">
             <Reset />
           </Route>
           {/* <Route path='/' component={Dashboard}/> */}
-
-          <PrivateRoute
+          {localStorage.getItem(IS_AUTHENTICATED) ? <Route path='/' component={Dashboard} /> : <PrivateRoute
             authenticated={this.state.isAuthenticated}
             path="/"
             component={Dashboard}
             currentUser={this.state.currentUser}
             handleLogout={this.handleLogout} >
           </PrivateRoute>
-
-
-
+          }
         </Switch>
 
 
