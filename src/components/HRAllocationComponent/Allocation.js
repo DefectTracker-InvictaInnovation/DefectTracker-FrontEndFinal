@@ -312,20 +312,17 @@ export default class Allocation extends React.Component {
     const {  targetKeys, disabled, showSearch } = this.state;
 
     const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
-      <Transfer
-        id="tableTransfer"
-        {...restProps} showSelectAll={false} >
-
+      <Transfer {...restProps} showSelectAll={false}>
         {({
           direction,
           filteredItems,
           onItemSelectAll,
           onItemSelect,
           selectedKeys: listSelectedKeys,
-          disabled: listDisabled
+          disabled: listDisabled,
         }) => {
-          const columns = direction === "left" ? leftColumns : rightColumns;
-
+          const columns = direction === 'left' ? leftColumns : rightColumns;
+    
           const rowSelection = {
             getCheckboxProps: item => ({ disabled: listDisabled || item.disabled }),
             onSelectAll(selected, selectedRows) {
@@ -336,31 +333,25 @@ export default class Allocation extends React.Component {
                 ? difference(treeSelectedKeys, listSelectedKeys)
                 : difference(listSelectedKeys, treeSelectedKeys);
               onItemSelectAll(diffKeys, selected);
-
-              this.setState({ filteredItems })
             },
             onSelect({ key }, selected) {
-
               onItemSelect(key, selected);
             },
-            selectedRowKeys: listSelectedKeys
-
+            selectedRowKeys: listSelectedKeys,
           };
-
+    
           return (
-
             <Table
-              id="allocationTable"
               rowSelection={rowSelection}
               columns={columns}
               dataSource={filteredItems}
               size="small"
-              style={{ pointerEvents: listDisabled ? "none" : null }}
+              style={{ pointerEvents: listDisabled ? 'none' : null }}
               onRow={({ key, disabled: itemDisabled }) => ({
                 onClick: () => {
                   if (itemDisabled || listDisabled) return;
                   onItemSelect(key, !listSelectedKeys.includes(key));
-                }
+                },
               })}
             />
           );

@@ -340,9 +340,9 @@ export default class PmAllocation extends React.Component {
                 &nbsp;&nbsp;
                 <Select
                   showSearch
-                  defaultValue="PM"
+                  // defaultValue="PM"
                   style={{ width: 200, marignBottom: '20px' }}
-                  placeholder="Select a Role"
+                  placeholder="Select a PM Role"
                   optionFilterProp="children"
                   onChange={this.onChangeRole}
                   onSearch={onSearch}
