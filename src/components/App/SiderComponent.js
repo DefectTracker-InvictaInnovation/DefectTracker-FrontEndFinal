@@ -37,7 +37,8 @@ class SiderComponent extends React.Component {
     ProjectManagerConfigurePrivilege: false,
     HRConfigurePrivilege: false,
     privilege: false,
-    ProjectAllocation: false
+    ProjectAllocation: false,
+    DesignationConfig:false
   };
 
   componentDidMount() {
@@ -186,6 +187,12 @@ class SiderComponent extends React.Component {
               console.log("debug" + post.privilegeName)
               this.setState({
                 ProjectAllocation: true
+              })
+            }
+            else if (post.privilegeName == "DesignationConfig") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                DesignationConfig: true
               })
             }
           }
@@ -394,9 +401,9 @@ class SiderComponent extends React.Component {
                 <Menu.Item key="23">
                   <Link to="/config/projectstatusconfig">Project Status</Link>
                 </Menu.Item>
-                <Menu.Item key="24">
+                {/* <Menu.Item key="24">
                   <Link to="/config/designationconfig">Designation Configure</Link>
-                </Menu.Item>
+                </Menu.Item> */}
               </SubMenu>}
             <SubMenu
               key="sub6"
@@ -472,6 +479,12 @@ class SiderComponent extends React.Component {
                   <Link to="/workflow/defectstatus">Defect Status Flow</Link>
                 </Menu.Item>
               </SubMenu> : ""}
+
+              {this.state.DesignationConfig ? '' :
+            <Menu.Item key="36">
+              <Link to="/config/designationconfig">
+                <Icon type="project" /><span>DesignationConfig</span></Link>
+            </Menu.Item>}
           </SubMenu>
         </Menu>
       </Sider>
