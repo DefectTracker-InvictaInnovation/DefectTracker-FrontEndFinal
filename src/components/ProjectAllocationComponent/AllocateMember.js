@@ -9,6 +9,9 @@ const { TreeNode } = TreeSelect;
 const { Option, OptGroup } = Select;
 const d = [];
 const z = [];
+const w = [];
+const p = [];
+const m = [];
 
 
 function onSearch(val) {
@@ -65,18 +68,7 @@ const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
 
 const mockData = [];
 const { SHOW_PARENT } = TreeSelect;
-const treeData = [
-  {
-    title: 'Node1',
-    value: '0-0',
-    key: '0-0',
-  },
-  {
-    title: 'Node2',
-    value: '0-1',
-    key: '0-1',
-  },
-];
+
 const originTargetKeys = mockData.filter(item => +item.key % 3 > 1).map(item => item.key);
 export default class AllocateMember extends React.Component {
   state = {
@@ -97,8 +89,10 @@ export default class AllocateMember extends React.Component {
     projectroleId: '',
     moduleId: '',
     subModuleList: [],
-    mod:[],
-    value4: ['0-0'],
+    mod: [],
+    value4: '',
+    modId: "",
+    submoduledata: ''
 
 
   };
@@ -106,9 +100,9 @@ export default class AllocateMember extends React.Component {
   componentDidMount() {
     this.fetchRoleallocation();
     this.fetchProjects();
-    // this.fetchModules();
+    this.fetchModules();
     // this.fetchfindallmain();
-    this.fetchSubModules();
+    //  this.fetchSubModules();
     this.getAllModule();
   }
 
@@ -141,6 +135,7 @@ export default class AllocateMember extends React.Component {
       });
   }
 
+
   handleChange = (value) => {
     this.setState({
       value1: value,
@@ -148,7 +143,7 @@ export default class AllocateMember extends React.Component {
     var _this = this;
     console.log(value);
     console.log(this.state.list);
-
+    p.push(value);
     const list1 = []
     this.state.list.map((post, index) => {
 
@@ -161,6 +156,7 @@ export default class AllocateMember extends React.Component {
           roleName: post.roleName,
 
 
+
         });
 
         console.log(list1)
@@ -168,12 +164,66 @@ export default class AllocateMember extends React.Component {
           list1: list1
         })
       }
+
     });
     // this.fetchModules(value);
-    this.getAllModule(value);
-
+    // this.getAllModule(value);
+    this.fetchModulesusing(value)
   }
 
+  fetchModulesusing = (id) => {
+    var _this = this
+    axios.get(API_BASE_URL + '/GetAllmodule/' + id, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+      .then(function (response) {
+        // handle success
+        console.log(response.data);
+
+        let proMod = response.data.map((post, index) => {
+          return <Option key={index} value={post.moduleId}>{post.moduleName}</Option>
+        })
+        _this.setState({ proMod });
+
+      });
+
+  }
+  handleChangeModule = (value) => {
+
+    console.log(value)
+    m.push(value)
+    var _this = this
+    axios.get(API_BASE_URL + '/getModules/' + value, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+      .then(function (response) {
+        // handle success
+        console.log(response.data);
+
+        const datasub = []
+        response.data.map((post, index) => {
+
+
+          datasub.push({
+            title: post.subModuleName,
+            value: post.subModuleId,
+            key: post.subModuleId,
+
+          });
+
+
+
+
+          _this.setState({
+            modId: value
+          })
+
+        });
+        console.log(datasub)
+        _this.setState({
+          datasub
+        })
+
+      });
+
+
+  }
   fetchProjects() {
     var _this = this;
     axios.get(API_BASE_URL + '/GetAllproject', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
@@ -182,6 +232,8 @@ export default class AllocateMember extends React.Component {
         console.log(response.data);
         _this.setState({ project: response.data });
         console.log(_this.state.project);
+
+
 
       });
   }
@@ -198,17 +250,17 @@ export default class AllocateMember extends React.Component {
       });
   }
 
-  fetchSubModules() {
-    var _this = this;
-    axios.get(API_BASE_URL + '/GetAllsubmodule', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
-      .then(function (response) {
-        // handle success
-        console.log(response.data);
-        _this.setState({ submodule: response.data });
-        console.log(_this.state.submodule);
+  // fetchSubModules() {
+  //   var _this = this;
+  //   axios.get(API_BASE_URL + '/GetAllsubmodule', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+  //     .then(function (response) {
+  //       // handle success
+  //       console.log(response.data);
+  //       _this.setState({ submodule: response.data });
+  //       console.log(_this.state.submodule);
 
-      });
-  }
+  //     });
+  // }
 
   saveModule(targetKeys) {
     console.log(targetKeys[0]);
@@ -295,24 +347,28 @@ export default class AllocateMember extends React.Component {
 
   onChange2 = value4 => {
     console.log("onChange ", value4);
+    w.push(value4)
     this.setState({ value4 });
   };
 
   handleOk = e => {
     console.log(e);
+    // {
+    //   "moduleId": "14",
+    //   "projectId": "5",
+    //    "submoduleId": ["1","15"],
+    //    "projectroleId":"1"
+    // }
 
     const mod = {
-      projectRoleAllocation: {
-        projectroleId: d[0]
-      },
-      module: {
-        moduleId: "M001"
-      },
 
-      subModuleList: z.pop()
+      projectroleId: d[0],
+      moduleId: m[0],
+      projectId: p[0],
+      submoduleId: w.pop()
     }
-
-    axios.post(API_BASE_URL + "/savemoduleallocation", mod, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    console.log(mod)
+    axios.post(API_BASE_URL + "/assignmodule", mod, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
     console.log(mod)
 
     this.setState({
@@ -365,13 +421,27 @@ export default class AllocateMember extends React.Component {
 
 
   render() {
+    // const treeData = [
+    //   {
+    //     title: 'Node1',
+    //     value: '0-0',
+    //     key: '0-0',
+    //   },
+    //   {
+    //     title: 'Node2',
+    //     value: '0-1',
+    //     key: '0-1',
+    //   },
+    // ];
+    console.log(this.state.datasub)
+    const treeData = this.state.datasub;
     const tProps = {
       treeData,
       value: this.state.value4,
       onChange: this.onChange2,
       treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
-      searchPlaceholder: 'Please select',
+      searchPlaceholder: 'Select a submodule',
       style: {
         width: '20%',
       },
@@ -493,17 +563,17 @@ export default class AllocateMember extends React.Component {
             style={{ width: 200, marignBottom: '20px' }}
             placeholder="Select a Module"
             optionFilterProp="children"
-            onChange={this.handleChange}
+            onChange={this.handleChangeModule}
             // onFocus={onFocus}
             // onBlur={onBlur}
             onSearch={onSearch}
             filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
-            <OptGroup label="Modules">
+            {/* <OptGroup label="Modules">
               {this.state.mod.map((item, index) => {
                 return <Option key={index} value={item.moduleId}> {item.moduleName}</Option>
               })}
-            </OptGroup>
-
+            </OptGroup> */}
+            {this.state.proMod}
           </Select>
           &nbsp;&nbsp;
           <TreeSelect {...tProps} />
