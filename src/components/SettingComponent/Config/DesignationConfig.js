@@ -1,12 +1,9 @@
 import React from 'react';
-import { Table, Divider, Modal, Button, Icon, Form, Input, Popconfirm, message } from 'antd';
+import { Table, Divider, Modal, Button, Icon, Form, Input, Col, Row, notification, message } from 'antd';
 import axios from 'axios';
-import { Row, Col } from 'antd';
-import {API_BASE_URL_EMP,ACCESS_TOKEN} from './../../../constants/index'
+import {API_BASE_URL,ACCESS_TOKEN, API_BASE_URL_EMP} from './../../../constants/index'
 
 const NameRegex = RegExp(/^[a-zA-Z ]+$/);
-//const ValidRegex = RegExp(/^[0-9a-zA-Z]+$/);
-
 const formValid = ({ formErrors, ...rest }) => {
   let valid = true;
 
@@ -23,36 +20,63 @@ const formValid = ({ formErrors, ...rest }) => {
   return valid;
 };
 
+const openNotificationWithIcon = type => {
+  notification[type]({
+    message: 'This is Warning Message',
+    description:
+      "This is the contain Valuable Data.If You delete this all data can't retrive!!!!",
+  });
+};
+
 export default class DesignationConfig extends React.Component {
   state = {
     visible: false,
     visibleEditModal: false,
     Designation: [],
-    def: []
+    def: [],
+    TotalDesignation: []
   };
-
 
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleOk = this.handleOk.bind(this);
-    this.editDesignation = this.editDesignation.bind(this);
+    this.handleEditOk = this.handleEditOk.bind(this);
     this.deleteDesignation = this.deleteDesignation.bind(this);
-
-
+    this.onChangedesignation = this.onChangedesignation.bind(this);
     this.state = {
-        designationid:'',
-        designationname: '',
+      designationid: '',
+      designationname: '',
+      value:'',
       formErrors: {
+        designationid: "",
         designationname: ""
       }
+
+
+
     }
   };
-
-
   componentDidMount() {
-    this.getdesignation();
-    // this.getCountProjectType();
+    this.getDesignation();
+    // this.getCountDefectStatus();
+  }
+
+  onChangedesignation(e) {
+    this.setState({
+      designationname: e.target.value
+    })
+  };
+
+  getDesignation() {
+    const url = API_BASE_URL_EMP+'/getAllDesignation';
+    axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .then(response => this.setState({
+        Designation: response.data,
+      }))
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   showModal = () => {
@@ -61,41 +85,14 @@ export default class DesignationConfig extends React.Component {
     });
   };
 
-  getdesignation() {
-    const url = API_BASE_URL_EMP+'/getAllDesignation';
-    axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-
-      .then(response => this.setState({
-
-        Designation: response.data,
-      }))
-      .catch(function (error) {
-        console.log(error);
-      });
-
-  }
-
-//   getCountProjectType() {
-//     const url =API_BASE_URL_PRODUCT+'/countdefecttype';
-//     axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-//       .then(response => this.setState({
-//         CountDefectType: response.data,
-//       }))
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-
-//   }
-
-
   editDesignation = (designationid) => {
     this.showEditModal();
     this.setState({ designationid: designationid })
     console.log(designationid);
-    axios.get(API_BASE_URL_EMP+'/updatedesignation/' + designationid,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    axios.get(API_BASE_URL_EMP+'/getbydesignationId/' + designationid,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(response => {
         this.setState({
-          name: response.data.name,
+          designationname: response.data.designationname
         });
       })
       .catch(function (error) {
@@ -103,10 +100,12 @@ export default class DesignationConfig extends React.Component {
       })
     this.setState({ visible: false })
   }
+  deleteDesignation = designationid => {
 
-  deleteDesignation(designationid) {
     console.log(designationid)
+
     fetch(API_BASE_URL_EMP+'/deletedesignation/' + designationid, {
+
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -118,78 +117,67 @@ export default class DesignationConfig extends React.Component {
       return Designation.designationid !== designationid;
     });
     this.setState({
-        Designation
+      Designation
     })
-    // this.getCountProjectType();
-    message.success("Employee Designation Successfully Deleted");
+    message.success("Designation Successfully Deleted");
+    // this.getCountDefectStatus();
   }
-
-  handleOk = e => {
-    const obj = {
-        designationname: this.state.designationname,
-    }
-    if (this.state.designationname === "" ||  (!NameRegex.test(this.state.designationname))) {
-      message.warn("Invalid Data");
-    }
-
-    else if (NameRegex.test(this.state.designationname)) {
-      axios.post(API_BASE_URL_EMP+'/createdesignation/', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
-        this.setState({ events: response.data })
-        if (response.data.status === 200) {
-          this.getdesignation();
-          message.success("Employee Designation Successfully Added");
-          // this.getCountDefectType();
-        }
-      })
-        .catch((error) => {
-          console.log(error);
-          message.warn("Invalid Data");
-        });
-    }
-    this.setState({
-      formErrors: {
-        designationname: ""
-      },
-      visible: false,
-      designationname: ""
-    })
-  };
-
-//   handleEditOk = (designationid) => {
-//     const obj = {
-//         designationname: this.state.designationname
-//     }
-//     if (this.state.designationname === "" ||  (!NameRegex.test(this.state.designationname))) {
-//       message.warn("Invalid Data");
-//     }
-//     else if (NameRegex.test(this.state.designationname)) {
-//       axios.put(API_BASE_URL_EMP+`/updatedesignation/${designationid}`, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-//         .then((response) => {
-//           this.setState({ events: response.data })
-//           if (response.data.status === "OK") {
-//             message.success("Employee Designation Successfully Updated");
-//             this.getdesignation();
-//           }
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//           message.warn("Invalid Data");
-//         });
-//     }
-
-//     this.setState({
-//         designationname: '',
-//       visible: false,
-//       visibleEditModal: false
-//     })
-
-//   };
-
   showEditModal = () => {
     console.log("showEditModal clicked");
     this.setState({
       visibleEditModal: true,
     });
+  };
+
+
+  handleOk = e => {
+
+    const obj = {
+      designationname: this.state.designationname
+
+    }
+    if (this.state.designationname === "" || (!NameRegex.test(this.state.designationname))) {
+      message.warn("Invalid Data");
+    }
+    else if (NameRegex.test(this.state.designationname)) {
+      axios.post(API_BASE_URL_EMP+'/createdesignation', obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}}).then((response) => {
+        console.log(response);
+        this.setState({ events: response.data })
+        if (response.status === 200) {
+
+          message.success("Designation Successfully Added");
+          this.getDesignation();
+          // this.getCountDefectStatus();
+        }
+      })
+        .catch((error) => {
+          console.log(error);
+          message.warn("Designation Already Exist");
+        });
+
+
+    }
+
+    this.setState({
+      createdesignation: '',
+      visible: false,
+
+    })
+
+  };
+
+  handleEditOk = (designationid) => {
+    const obj = {
+      designationid: this.state.designationid,
+      designationname: this.state.designationname
+    }
+    axios.put(API_BASE_URL_EMP+"/updatedesignation/"+designationid, obj,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+      .then(res => this.getDesignation());
+    this.setState({
+      designationname: '',
+      visibleEditModal: false
+    })
+    this.getDesignation();
   };
 
   handleCancel = e => {
@@ -200,13 +188,13 @@ export default class DesignationConfig extends React.Component {
     });
   };
 
-  handleEditDesignationCancel = e => {
+  handleEditPriorityCancel = e => {
     console.log(e);
     this.setState({
       visibleEditModal: false,
-      designationname: null
-    });
+      designationname: ""
 
+    });
   };
 
   state = {
@@ -218,6 +206,8 @@ export default class DesignationConfig extends React.Component {
       a: '1',
     },
   };
+
+
 
   handleClick = () => {
     this.setState({ displayColorPicker: !this.state.displayColorPicker })
@@ -231,20 +221,20 @@ export default class DesignationConfig extends React.Component {
     e.preventDefault();
     const { name, value } = e.target;
     let formErrors = { ...this.state.formErrors };
-    var newStr = value.replace(/\s+/g, '');
+    var newstr = value.replace(/\s+/g, '');
     switch (name) {
       case "designationname":
-        if (!NameRegex.test(value)) {
-          formErrors.designationname = "Invalid Designationa Name";
+        if (!NameRegex.test(newstr)) {
+          formErrors.designationname = "Invalid Designation Name";
         }
-        else if (newStr.length > 15) {
-          formErrors.designationname = "Required less than 15 characters";
+        else if (newstr.length === 0) {
+          formErrors.designationname = "can't leave this field blank";
         }
-        else if (newStr.length < 2) {
-          formErrors.designationname = "Required greater than 2 characters";
+        else if (newstr.length < 2) {
+          formErrors.designationname = "Required more than 2 charecters";
         }
-        else if (newStr.length === 0) {
-          formErrors.designationname = "Can't leave this field blank";
+        else if (newstr.length > 15) {
+          formErrors.designationname = "Required less than 15 charecters";
         }
         else {
           formErrors.designationname = "";
@@ -255,6 +245,7 @@ export default class DesignationConfig extends React.Component {
     }
 
     this.setState({ formErrors, [name]: value }, () => console.log(this.state));
+
   };
 
   handleSubmit = e => {
@@ -269,7 +260,6 @@ export default class DesignationConfig extends React.Component {
       console.error("FORM INVALID - DISPLAY ERROR MESSAGE");
     }
   }
-
   normFile = e => {
     console.log('Upload event:', e);
     if (Array.isArray(e)) {
@@ -280,10 +270,9 @@ export default class DesignationConfig extends React.Component {
 
   render() {
     const { formErrors } = this.state;
-
     const columns = [
       {
-        title: 'Designation Id',
+        title: 'Designation Id ',
         dataIndex: 'designationid',
         key: 'designationid',
 
@@ -295,31 +284,23 @@ export default class DesignationConfig extends React.Component {
       },
       {
         title: 'Action',
-        key: 'Action',
         render: (text, data = this.state.def) => (
           <span>
-
-            <Icon id="editDesignation" onClick={this.editDesignation.bind(this, data.designationid)} type="edit" style={{ fontSize: '17px', color: 'blue' }} />
-
-
+            <Icon id="editStatus" onClick={this.editDesignation.bind(this, data.designationid)} type="edit" style={{ fontSize: '17px', color: 'blue' }} />
             <Divider type="vertical" />
-
-            <Popconfirm
-              id="deleteConfirmDesignation"
+            {/* <Popconfirm
+              id="deleteComfirmStatus"
               title="Are you sure, Do you want to delete this ?"
               icon={<Icon type="delete" style={{ color: 'red' }}
-
               />}
               onConfirm={this.deleteDesignation.bind(this, data.designationid)}
-            >
-              <Icon id="deleteDesignation" type="delete" style={{ fontSize: '17px', color: 'red' }} />
-            </Popconfirm>
-
-          </span >
+            > */}
+              <Icon id="deleteStatus" type="delete" style={{ fontSize: '17px', color: 'red' }} onClick={() => openNotificationWithIcon('warning')}  />
+            {/* </Popconfirm> */}
+          </span>
         ),
       },
     ];
-
     return (
       <React.Fragment>
         <div
@@ -331,26 +312,24 @@ export default class DesignationConfig extends React.Component {
           }}>
 
           <Row>
-            <Col span={8}><h3>Employee Designation Configuration</h3></Col>
+            <Col span={8}><h3>Designation Configuration</h3></Col>
             <Col span={6}></Col>
             <Col span={10}></Col>
           </Row>
-
           <br></br>
           <div>
-            <Button id="addDesignation" type="primary" onClick={this.showModal}>
+            <Button id="addStatus" type="primary" onClick={this.showModal}>
               Add Designation
         </Button>
           </div>
           <br></br>
 
           <Modal
-            title="Add Employee Designation"
+            title=" Add Designation"
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             style={{ padding: "40px", }}
-
           >
             <div
               style={{
@@ -360,9 +339,9 @@ export default class DesignationConfig extends React.Component {
 
               }}>
 
-              <Form labelCol={{ span: 6 }} wrapperCol={{ span: 13 }} >
-                <Form.Item label="Designation:">
-                  <Input
+              <Form labelCol={{ span: 8 }} wrapperCol={{ span: 15}}>
+                <Form.Item label="Designation Name">
+                <Input
                     id="designationname"
                     type="text"
                     className={formErrors.designationname.length >= 0 ? "error" : null}
@@ -383,49 +362,41 @@ export default class DesignationConfig extends React.Component {
             </div>
 
           </Modal>
+
           <Modal
-            title="Edit Employee Designation"
+            title="Edit Designation"
             visible={this.state.visibleEditModal}
-            onOk={this.editDesignation.bind(this, this.state.designationid)}
-            onCancel={this.handleEditDesignationCancel}
-            style={{ padding: "60px", }}
+            onOk={this.handleEditOk.bind(this, this.state.designationid)}
+            onCancel={this.handleEditPriorityCancel}
+            style={{ padding: "40px", }}
           >
             <div
               style={{
                 margin: "0 -20px 0 0",
                 background: '#fff',
-                minHeight: '150px',
+                minHeight: '80px',
 
               }}>
-              <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }} onSubmit={this.handleSubmit}>
-                <Form.Item label="Employee Designation">
+              <Form labelCol={{ span: 8 }} wrapperCol={{ span: 15}} onSubmit={this.handleSubmit}>
+                <Form.Item label="Designation Name">
                   <Input
                     id="designationname"
                     type="text"
-                    className={formErrors.designationname.length > 0 ? "error" : null}
-                    name="designationname"
                     value={this.state.designationname}
-                    onChange={this.handleChange}
+                    name="designationname"
+                    onChange={this.onChangedesignation}
                   />
-                  {formErrors.designationname.length > 0 && (
-                    <span
-                      className="error"
-                      style={{ color: "red", fontSize: "12px" }}
-                    >
-                      {formErrors.designationname}
-                    </span>
-                  )}
                 </Form.Item>
               </Form>
             </div>
 
           </Modal>
-          <Table id="Designation" columns={columns} dataSource={this.state.Designation} />
+          <Table id="countStatus" columns={columns} dataSource={this.state.Designation} />
+          {/* Total Number of Defect Status: {this.state.TotalDefectStatus} */}
           <Icon type="square" />
         </div>
-      </React.Fragment >
+      </React.Fragment>
     );
   }
-
 }
 
