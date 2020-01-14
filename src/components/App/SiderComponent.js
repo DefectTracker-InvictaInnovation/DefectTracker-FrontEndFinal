@@ -38,7 +38,7 @@ class SiderComponent extends React.Component {
     HRConfigurePrivilege: false,
     privilege: false,
     ProjectAllocation: false,
-    DesignationConfig:false
+    DesignationConfig: false
   };
 
   componentDidMount() {
@@ -322,16 +322,37 @@ class SiderComponent extends React.Component {
 
           {/* Project Menu -----------------------------------------------------------------*/}
           {this.state.ManageProject ? '' :
-            <Menu.Item key="13">
-              <Link to="/project">
-                <Icon type="project" /><span>Manage Project</span></Link>
-            </Menu.Item>}
+            // <Menu.Item key="13">
+            //   <Link to="/project">
+            //     <Icon type="project" /><span>Manage Project</span></Link>
+            // </Menu.Item>}
+            <SubMenu key="sub3"
+              title={
+                <span>
+                  <Icon type="alert" />
+                  <span>Project</span>
+                </span>
+              }>
+              <Menu.Item key="13">
+                <Link to="/project">
+                 <span>Manage Project</span></Link>
+              </Menu.Item>
+              <Menu.Item key="14">
+                <Link to="/config/projecttypeconfig">
+                <span>Manage Project Type</span></Link>
+              </Menu.Item>
+              <Menu.Item key="15">
+                <Link to="/config/projectstatusconfig">
+                <span> Manage Project Status</span></Link>
+              </Menu.Item>
+
+            </SubMenu>}
 
 
           {/* Defect Menu -----------------------------------------------------------------*/}
           {this.state.ManageDefect ? '' :
             <SubMenu
-              key="sub3"
+              key="sub4"
               title={
                 <span>
                   <Icon type="alert" />
@@ -339,7 +360,7 @@ class SiderComponent extends React.Component {
                 </span>
               }
             >
-              <Menu.Item key="14">
+              <Menu.Item key="16">
                 <Link to="/defect">Defect</Link>
               </Menu.Item>
             </SubMenu>}
@@ -352,7 +373,7 @@ class SiderComponent extends React.Component {
 
           {/* Setting Menu -----------------------------------------------------------------*/}
           <SubMenu
-            key="sub4"
+            key="sub5"
             title={
               <span>
                 <Icon type="setting" />
@@ -361,19 +382,19 @@ class SiderComponent extends React.Component {
             }
           >
             {this.state.GeneralConfiguration ? '' :
-              <Menu.Item key="15">
+              <Menu.Item key="17">
                 <Link to="/settings/generalsetting">General Configuration</Link>
               </Menu.Item>}
             {this.state.LookAndFeel ? '' :
-              <Menu.Item key="16">
+              <Menu.Item key="18">
                 <Link to="/settings/lookandfeel">Look and Feel</Link>
               </Menu.Item>}
-            <Menu.Item key="17">
+            <Menu.Item key="19">
               <Link to="/settings/profilescreen">Profile Setting</Link>
             </Menu.Item>
             {this.state.GeneralConfiguration ? '' :
               <SubMenu
-                key="sub5"
+                key="sub6"
                 title={
                   <span>
                     <Icon type="setting" />
@@ -383,30 +404,30 @@ class SiderComponent extends React.Component {
               >
 
 
-                <Menu.Item key="18">
+                <Menu.Item key="20">
                   <Link to="/config/priority">Priority</Link>
                 </Menu.Item>
-                <Menu.Item key="19">
+                <Menu.Item key="21">
                   <Link to="/config/severity">Severity</Link>
                 </Menu.Item>
-                <Menu.Item key="20">
+                <Menu.Item key="22">
                   <Link to="/config/defecttype">Defect Type</Link>
                 </Menu.Item>
-                <Menu.Item key="21">
+                <Menu.Item key="23">
                   <Link to="/config/defectstatus">Defect Status</Link>
                 </Menu.Item>
-                <Menu.Item key="22">
+                {/* <Menu.Item key="22">
                   <Link to="/config/projecttypeconfig">Project Type</Link>
                 </Menu.Item>
                 <Menu.Item key="23">
                   <Link to="/config/projectstatusconfig">Project Status</Link>
-                </Menu.Item>
+                </Menu.Item> */}
                 {/* <Menu.Item key="24">
                   <Link to="/config/designationconfig">Designation Configure</Link>
                 </Menu.Item> */}
               </SubMenu>}
             <SubMenu
-              key="sub6"
+              key="sub7"
               title={
                 <span>
                   <Icon type="setting" />
@@ -415,13 +436,13 @@ class SiderComponent extends React.Component {
               }
             >
               {this.state.ManageAuditLog ? '' :
-                <Menu.Item key="25">
+                <Menu.Item key="24">
                   <Link to="/settings/auditlog">Audit Log</Link>
                 </Menu.Item>}
             </SubMenu>
             {this.state.privilege ? '' :
               <SubMenu
-                key="sub7"
+                key="sub8"
                 title={
                   <span>
                     <Icon type="user" />
@@ -430,41 +451,41 @@ class SiderComponent extends React.Component {
                 }
               >
                 {this.state.CompanyPrivilege ? '' :
-                  <Menu.Item key="26">
+                  <Menu.Item key="25">
                     <Link to="/privilege/company">Company Privileges</Link>
                   </Menu.Item>}
                 {this.state.ProjectPrivilege ? '' :
-                  <Menu.Item key="27">
+                  <Menu.Item key="26">
                     <Link to="/privilege/project">Project Privileges</Link>
                   </Menu.Item>}
                 {this.state.QAPrivilege ? '' :
-                  <Menu.Item key="28">
+                  <Menu.Item key="27">
                     <Link to="/privilege/qalead">QA Privilege</Link>
                   </Menu.Item>}
                 {this.state.TecLeadPrivilege ? '' :
-                  <Menu.Item key="29">
+                  <Menu.Item key="28">
                     <Link to="/privilege/techlead">Tech Lead Privileges</Link>
                   </Menu.Item>}
                 {this.state.ProjectConfigurePrivilege ? '' :
-                  <Menu.Item key="30">
+                  <Menu.Item key="29">
                     <Link to="/privilege/projectConfig">Project Privilege</Link>
                   </Menu.Item>}
                 {this.state.DeveloperConfigurePrivilege ? '' :
-                  <Menu.Item key="31">
+                  <Menu.Item key="30">
                     <Link to="/privilege/developer">Developer Privilege</Link>
                   </Menu.Item>}
                 {this.state.ProjectManagerConfigurePrivilege ? '' :
-                  <Menu.Item key="32">
+                  <Menu.Item key="31">
                     <Link to="/privilege/pm">Project Manager Privilege</Link>
                   </Menu.Item>}
                 {this.state.HRConfigurePrivilege ? '' :
-                  <Menu.Item key="33">
+                  <Menu.Item key="32">
                     <Link to="/privilege/hr">HR Privilege</Link>
                   </Menu.Item>}
               </SubMenu>}
             {localStorage.getItem(ROLE_NAME) === 'ROLE_HR' ?
               <SubMenu
-                key="sub8"
+                key="sub9"
                 title={
                   <span>
                     <Icon type="line-chart" />
@@ -472,19 +493,19 @@ class SiderComponent extends React.Component {
                   </span>
                 }
               >
-                <Menu.Item key="34">
+                <Menu.Item key="33">
                   <Link to="/workflow/defectroles">Defect Roles Flow</Link>
                 </Menu.Item>
-                <Menu.Item key="35">
+                <Menu.Item key="34">
                   <Link to="/workflow/defectstatus">Defect Status Flow</Link>
                 </Menu.Item>
               </SubMenu> : ""}
 
-              {this.state.DesignationConfig ? '' :
-            <Menu.Item key="36">
-              <Link to="/config/designationconfig">
-                <Icon type="project" /><span>DesignationConfig</span></Link>
-            </Menu.Item>}
+            {this.state.DesignationConfig ? '' :
+              <Menu.Item key="35">
+                <Link to="/config/designationconfig">
+                  <Icon type="project" /><span>DesignationConfig</span></Link>
+              </Menu.Item>}
           </SubMenu>
         </Menu>
       </Sider>

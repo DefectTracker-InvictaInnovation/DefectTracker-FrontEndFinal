@@ -1,5 +1,5 @@
 import React from 'react';
-import {  Row, Col } from "antd";
+import { Row, Col } from "antd";
 
 class Mail extends React.Component {
     constructor(props) {
@@ -10,7 +10,7 @@ class Mail extends React.Component {
         return (
             <div>
                 <h1>Defect Tracker/{this.props.defectAbbr}</h1>
-                    <h2>{this.props.defectDescription}</h2>
+                <h2>{this.props.defectDescription}</h2>
                 <Row>
                     <Col span={12}>
                         <p>
