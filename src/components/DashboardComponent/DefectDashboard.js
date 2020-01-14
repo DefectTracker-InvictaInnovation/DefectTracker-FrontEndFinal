@@ -273,7 +273,7 @@ componentDidMount(){
                                         <h1>Opened Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="454d66" type="dashboard" percent={this.state.value} />
+                                            <Progress strokeColor="e41749" type="dashboard" percent={this.state.defectcount} format={percent => `${percent} `} />
                                         </div>
                                     </div>
                                 </div>
@@ -298,7 +298,7 @@ componentDidMount(){
                                         <h1>Fixed Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="ff8a5c" type="dashboard" percent={this.state.value4} />
+                                            <Progress strokeColor="454d66" type="dashboard" percent={this.state.StatusOpen} format={percent => `${percent} `}/>
                                         </div>
                                     </div>
                                 </div>
@@ -323,7 +323,7 @@ componentDidMount(){
                                         <h1>Reopened Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="58b368" type="dashboard" percent={this.state.value3} />
+                                            <Progress strokeColor="ff8a5c" type="dashboard" percent={this.state.StatusFixed} format={percent => `${percent} `}/>
                                         </div>
                                     </div>
                                 </div>
@@ -348,7 +348,7 @@ componentDidMount(){
                                         <h1>Rejected Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="e41749" type="dashboard" percent={this.state.value2} />
+                                            <Progress strokeColor="58b368" type="dashboard" percent={this.state.StatusReOpen} format={percent => `${percent} `} />
                                         </div>
                                     </div>
                                 </div>

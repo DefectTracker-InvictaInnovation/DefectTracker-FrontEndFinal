@@ -464,7 +464,7 @@ getdefectcount(value) {
                     <Statistic title="New" value= {1} suffix="/100"   />
                   </Col>
                   <Col span={8}>
-                    <Statistic title="Closed" value={1} suffix="/ 100" />
+                    <Statistic title="Closed" value={this.state.StatusClose}/>
                   </Col>
                 </Row>
               </div>
@@ -485,13 +485,13 @@ getdefectcount(value) {
                 <Row>
                   <Col span={24}>
                     <h3>New</h3>
-                    <Progress percent={55} />
+                    <Progress percent={this.state.StatusNew} />
                     <h3>Open</h3>
-                    <Progress percent={5} />
+                    <Progress percent={this.state.StatusOpen} />
                     <h3>Reject</h3>
-                    <Progress percent={10} />
+                    <Progress percent={this.state.StatusRejected} />
                     <h3>Closed</h3>
-                    <Progress percent={30} />
+                    <Progress percent={this.state.StatusClose} />
                   </Col>
                 </Row>
               </div>
