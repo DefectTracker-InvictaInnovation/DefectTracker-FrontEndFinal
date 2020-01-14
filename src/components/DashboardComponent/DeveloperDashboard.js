@@ -271,7 +271,7 @@ getdefectcount(value) {
       labels: ["New", "Open", "Reject", "Closed","ReOpen","Fixed","Defered"],
       datasets: [
         {
-          data: [this.state.StatusNew, this.state.StatusOpen,this.state.StatusRejected,this.state.StatusClose,this.state.StatusReOpen,this.state.StatusFixed,this.state.getStatusDefered],
+          data: [this.state.StatusNew, this.state.StatusOpen,this.state.StatusRejected,this.state.StatusClose,this.state.StatusReOpen,this.state.StatusFixed,this.state.StatusDefered],
           backgroundColor: ["#1460db", "#db149c", "#FFCE56", "#cbf207","#4CAF50", "#9c07f2", "#f2071b"],
           hoverBackgroundColor: ["#1461db", "#db150c", "#FFCE57", "#cbf210","#4CAF55", "#9c07f4", "#f2075b"]
         }
@@ -485,13 +485,13 @@ getdefectcount(value) {
                 <Row>
                   <Col span={24}>
                     <h3>New</h3>
-                    <Progress percent={this.state.StatusNew} />
+                    <Progress percent={Math.round(100*(this.state.StatusNew/this.state.defectcount))} />
                     <h3>Open</h3>
-                    <Progress percent={this.state.StatusOpen} />
+                    <Progress percent={Math.round(100*(this.state.StatusOpen/this.state.defectcount))} />
                     <h3>Reject</h3>
-                    <Progress percent={this.state.StatusRejected} />
+                    <Progress percent={Math.round(100*(this.state.StatusRejected/this.state.defectcount))} />
                     <h3>Closed</h3>
-                    <Progress percent={this.state.StatusClose} />
+                    <Progress percent={Math.round(100*(this.state.StatusClose/this.state.defectcount))} />
                   </Col>
                 </Row>
               </div>
