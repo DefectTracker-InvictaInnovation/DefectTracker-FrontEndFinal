@@ -12,3 +12,4 @@ export const  IS_AUTHENTICATED ='authenticated';
 export const  CURRENT_USER ='username';
 export const ACCESS_TOKEN = 'accessToken';
 export const EXISTING_EMAIL = 'email';
+export const  CURRENT_LOGIN_USER ='usernameOrEmail';

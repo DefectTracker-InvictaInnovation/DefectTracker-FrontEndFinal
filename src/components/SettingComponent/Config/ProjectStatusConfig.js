@@ -274,12 +274,12 @@ export default class ProjectStatusConfig extends React.Component {
   render() {
     const { formErrors } = this.state;
     const columns = [
-      {
-        title: 'Project-Status Id ',
-        dataIndex: 'projectstatusId',
-        key: 'projectstatusId',
+      // {
+      //   title: 'Project-Status Id ',
+      //   dataIndex: 'projectstatusId',
+      //   key: 'projectstatusId',
 
-      },
+      // },
       {
         title: 'Project-Status Name',
         dataIndex: 'projectstatusName',

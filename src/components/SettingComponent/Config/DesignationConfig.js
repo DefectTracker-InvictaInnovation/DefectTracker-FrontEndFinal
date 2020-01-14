@@ -271,12 +271,12 @@ export default class DesignationConfig extends React.Component {
   render() {
     const { formErrors } = this.state;
     const columns = [
-      {
-        title: 'Designation Id ',
-        dataIndex: 'designationid',
-        key: 'designationid',
+      // {
+      //   title: 'Designation Id ',
+      //   dataIndex: 'designationid',
+      //   key: 'designationid',
 
-      },
+      // },
       {
         title: 'Designation Name',
         dataIndex: 'designationname',

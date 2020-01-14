@@ -587,7 +587,7 @@ this.fetchModules(value)
                   })(
                     <Select
                       id="Project"
-                      placeholder="Project "
+                      placeholder="Project"
                       defaultValue="Select Project"
                       onChange={this.onChangeProject}
                     >

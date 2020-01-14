@@ -275,12 +275,12 @@ export default class ProjectTypeConfig extends React.Component {
   render() {
     const { formErrors } = this.state;
     const columns = [
-      {
-        title: 'Project-Type Id ',
-        dataIndex: 'projecttypeId',
-        key: 'projecttypeId',
+      // {
+      //   title: 'Project-Type Id ',
+      //   dataIndex: 'projecttypeId',
+      //   key: 'projecttypeId',
 
-      },
+      // },
       {
         title: 'Project-Type Name',
         dataIndex: 'projecttypeName',
