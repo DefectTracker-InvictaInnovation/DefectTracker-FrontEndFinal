@@ -407,7 +407,7 @@ class DefectDashboard extends React.Component {
                                         <h1>Total Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="e41749" type="dashboard" percent={this.state.defectcount} />
+                                            <Progress strokeColor="e41749" type="dashboard" percent={this.state.defectcount} format={percent => `${percent} `} />
                                         </div>
                                     </div>
                                 </div>
@@ -433,7 +433,7 @@ class DefectDashboard extends React.Component {
                                         <h1>Opened Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="454d66" type="dashboard" percent={this.state.StatusOpen} />
+                                            <Progress strokeColor="454d66" type="dashboard" percent={this.state.StatusOpen} format={percent => `${percent} `} />
                                         </div>
                                     </div>
                                 </div>
@@ -458,7 +458,7 @@ class DefectDashboard extends React.Component {
                                         <h1>Fixed Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="ff8a5c" type="dashboard" percent={this.state.StatusFixed} />
+                                            <Progress strokeColor="ff8a5c" type="dashboard" percent={this.state.StatusFixed} format={percent => `${percent} `} />
                                         </div>
                                     </div>
                                 </div>
@@ -483,7 +483,7 @@ class DefectDashboard extends React.Component {
                                         <h1>Reopened Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="58b368" type="dashboard" percent={this.state.StatusReOpen} />
+                                            <Progress strokeColor="58b368" type="dashboard" percent={this.state.StatusReOpen} format={percent => `${percent} `} />
                                         </div>
                                     </div>
                                 </div>
