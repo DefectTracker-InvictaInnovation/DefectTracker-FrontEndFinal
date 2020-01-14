@@ -108,7 +108,7 @@ export default class AllocateMember extends React.Component {
 
   fetchRoleallocation() {
     var _this = this;
-    axios.get(API_BASE_URL + '/getAllRole', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+    axios.get(API_BASE_URL + '/getothers', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         // handle success
         console.log(response.data);
