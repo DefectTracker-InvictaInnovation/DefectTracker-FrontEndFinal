@@ -3,6 +3,8 @@ import React from "react";
 import axios from "axios";
 import { API_BASE_URL, API_BASE_URL_EMP,API_BASE_URL_PRODUCT,ACCESS_TOKEN,CURRENT_USER } from '../../constants/index';
 import { getcuruser } from './../App/Login/util/ApiUtil'
+import html from "./Mail";
+import Mail from "./Mail";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -367,8 +369,8 @@ this.fetchModules(value)
         })
         const emailnoti = {
           email: this.state.email,
-          subject: "This defect assign ",
-          text: "check"
+          // subject: "This defect assign ",
+          // text: "check"
         };
         this.setState({ emailnoti })
         console.log(this.state.assignTo);
@@ -456,7 +458,7 @@ this.fetchModules(value)
     axios
       .post(API_BASE_URL_EMP + "/sendmail", mail,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
       .then(res => {
-
+        return <Mail/>
         console.log(res.data);
       });
   };

@@ -16,10 +16,9 @@ import Highlighter from "react-highlight-words";
 import React from "react";
 import axios from "axios";
 import { API_BASE_URL_EMP, API_BASE_URL, ACCESS_TOKEN } from '../../constants/index';
-import Profile from './Profile';
+// import Profile from './Profile';
 import ProfileScreen from '../SettingComponent/ProfileScreen';
 import EmployeeAddModal from "./EmployeeAddModal";
-import ImportEmployee from "./ImportEmployee";
 
 const { Option } = Select;
 
@@ -167,7 +166,7 @@ class App extends React.Component {
   fetchDesignations() {
     var _this = this;
     axios
-      .get(API_BASE_URL_EMP + "/getAllDesignation", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+      .get(API_BASE_URL_EMP + "/hronly", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         let des = response.data.map(function (item, index) {
           return (
@@ -240,7 +239,7 @@ class App extends React.Component {
   getAllEmployees = () => {
 
     var _this = this;
-    const url = API_BASE_URL_EMP + "/getothers";
+    const url = API_BASE_URL_EMP + "/gethr";
     axios
       .get(url, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
@@ -600,9 +599,6 @@ class App extends React.Component {
                 <Col span={4}>
                   <EmployeeAddModal reload={this.getAllEmployees} />
                 </Col>
-                <Col span={4}>
-                  <ImportEmployee reload={this.getAllEmployees} />
-                </Col>
                 <br />
                 <br />
 
@@ -725,6 +721,7 @@ class App extends React.Component {
                             id="employeeDesignation"
                             onChange={this.onChangeEmployeeDesignation}
                             value={this.state.employeeDesignation}
+                            disabled
                           >
                             {this.state.des}
                           </Select>

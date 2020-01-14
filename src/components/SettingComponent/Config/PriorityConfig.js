@@ -8,6 +8,7 @@ import 'react-dropdown/style.css'
 import axios from 'axios';
 import { ChromePicker } from 'react-color';
 import { API_BASE_URL_PRODUCT, ACCESS_TOKEN } from './../../../constants/index'
+import {getAllPrivileges} from './../../../services/PrivilegeConfig'
 
 
 const options = [
@@ -63,8 +64,42 @@ export default class PriorityConfig extends React.Component {
     }
   };
 
+  state = {
+    AddPriorityStatus: false,
+    DeleteriorityStatus: true,
+    EditriorityStatus: true,
+  }
+
+  privilegeconfig() {
+
+    getAllPrivileges()
+      .then(res => {
+        console.log(res)
+        res.map(post => {
+          if (!post.status) {
+            console.log("debug" + post.privilegeName)
+            if (post.privilegeName == "AddPriority") {
+              console.log("aaaaaaaaaaaaaaaaaaaaaaaa")
+              this.setState({
+                AddPriorityStatus: true
+              })
+            } else if (post.privilegeName == "EditPriority") {
+              this.setState({
+                EditriorityStatus: true
+              })
+            } else if (post.privilegeName == "DeletePriority") {
+              console.log("debug" + post.privilegeName)
+              this.setState({
+                DeleteriorityStatus: true
+              })
+            }
+          }
+        });
+      });
+  }
   componentDidMount() {
     this.getDefectPriority()
+    this.privilegeconfig()
   }
 
   onChangeName(e) {
@@ -336,7 +371,7 @@ export default class PriorityConfig extends React.Component {
             <Col span={10}></Col>
           </Row>
           <br></br>
-          <div><Button id="addPriority" type="primary" onClick={this.showModal}>
+          <div><Button id="addPriority" type="primary" onClick={this.showModal} disabled={this.props.qastatus}>
             Add priority
         </Button></div>
 

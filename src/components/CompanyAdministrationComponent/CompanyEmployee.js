@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Button, Input, Icon, Modal, Row, Col, Pagination, Card } from 'antd';
-import AddEmployee from './AddEmployee';
+import AddEmployee from './EmployeeAddModal';
 import UploadEmployee from './UploadEmployee';
 
 const Search = Input.Search;

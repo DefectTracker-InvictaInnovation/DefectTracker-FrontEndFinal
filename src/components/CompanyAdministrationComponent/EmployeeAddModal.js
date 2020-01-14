@@ -35,6 +35,7 @@ class EmployeeAddModal extends React.Component {
       employeeName: "",
       employeeFirstName: "",
       employeeDesignation: "",
+      employeeDesignationName:"HR",
       employeeEmail: "",
       employeePicture: "",
       visible: false,
@@ -67,7 +68,7 @@ class EmployeeAddModal extends React.Component {
   fetchDesignations() {
     var _this = this;
     axios
-      .get(API_BASE_URL_EMP + "/others", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+      .get(API_BASE_URL_EMP + "/hronly", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
       .then(function (response) {
         console.log(response.data);
         _this.setState({ designations: response.data });
@@ -155,7 +156,7 @@ class EmployeeAddModal extends React.Component {
         name: this.state.employeeName,
         firstname: this.state.employeeFirstName,
         designationid: this.state.employeeDesignation,
-        designationname:this.state.employeeDesignation,
+        designationname:this.state.employeeDesignationName,
         email: this.state.employeeEmail,
         profilePicPath: this.state.employeePicture
 
@@ -199,7 +200,7 @@ class EmployeeAddModal extends React.Component {
       name: this.state.employeeName,
       firstname: this.state.employeeFirstName,
       designationid: this.state.employeeDesignation,
-      designationname:this.state.employeeDesignation,
+      designationname:this.state.employeeDesignationName,
       email: this.state.employeeEmail,
       profilePicPath: this.state.employeePicture
     }
@@ -244,10 +245,10 @@ class EmployeeAddModal extends React.Component {
     return (
       <div>
         <Button id="addEmployee" type="primary" onClick={this.showModal}>
-          Add Employee
+          Add HR
         </Button>
         <Modal
-          title="Add Employee"
+          title="Add HR"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}

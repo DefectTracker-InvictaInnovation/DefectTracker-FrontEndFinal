@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-    Breadcrumb, Row, Col, Progress, Icon, Button, Menu, message, Dropdown
+    Breadcrumb, Row, Col, Progress, Icon, Button, Menu, message, Dropdown,Select
 } from 'antd';
 import { Chart } from 'primereact/chart';
 import DashboardConfig from './DashboardConfig';
 import './index.css';
-import {API_BASE_URL,ACCESS_TOKEN} from '../../../src/constants/index';
-import axios from 'axios';
+import { API_BASE_URL, CURRENT_USER, API_BASE_URL_PRODUCT, ACCESS_TOKEN, LOGIN_API_BASE_URL, EXISTING_EMAIL } from '../../../src/constants/index';import axios from 'axios';
 
 // doughnut data
 const doughnutData = {
@@ -55,7 +54,8 @@ const menu = (
     </Menu>
 );
 
-
+const Option = Select.Option;
+const currentuser = localStorage.getItem(CURRENT_USER);
 class DefectDashboard extends React.Component {
     constructor(props) {
         super(props);
@@ -87,55 +87,159 @@ class DefectDashboard extends React.Component {
           ratio:'',
           projectId:'',  
           value:'' ,
-          value1:'',   
-          value2:'',
-          value3:'',
-          value4:'',
-          value5:''
+        //   value1:'',   
+        //   value2:'',
+        //   value3:'',
+        //   value4:'',
+        //   value5:''
     };
 
-    getdefectcount() {
-        const url = API_BASE_URL+'/getTotalDefectCount';
-        axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+    onChangeRole = (value) => {
+
+        this.setState({ projectId: value })
+        this.getStatusNew(value);
+        this.getStatusOpen(value);
+        this.getStatusReOpen(value);
+        this.getStatusRejected(value);
+        this.getStatusFixed(value);
+        this.getStatusDefered(value);
+        this.getStatusClose(value);
+       
+         this.getdefectcount(value);
+        console.log(value)
     
-          .then(response => {
-              console.log(response.data);
-            
-            this.setState({
-            value: response.data,
-          })})
-          .catch(function (error) {
-            console.log(error);
-          });
-          console.log(this.state.value)
+    }
+
+    handleChange = (pagination, filters, sorter) => {
+        console.log('Various parameters', pagination, filters, sorter);
+        this.setState({
+            filteredInfo: filters,
+            sortedInfo: sorter,
+        });
+      };
+      
+      clearFilters = () => {
+        this.setState({ filteredInfo: null });
+      };
+      
+      clearAll = () => {
+        this.setState({
+            filteredInfo: null,
+            sortedInfo: null,
+        });
+      };
+      
+      setIdSort = () => {
+        this.setState({
+            sortedInfo: {
+                order: 'descend',
+                columnKey: 'id',
+            },
+        });
+      };
+         
+      
+
+    componentDidMount() {
+    
+ 
+        console.log("" + this.state.projectId);
+        this.getAllUsers();
+        this.getallRole();
+      
       }
 
-    getStatusOpen(projectId) {
-        const url = API_BASE_URL+'/getStatusOpen'+ projectId;
-        axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-          .then(response => this.setState({
-            value: response.data,
-          }))
-          .catch(function (error) {
-            console.log(error);
-          });
-    console.log(this.state.value)
-  }
+    getAllUsers = () => {
+        var _this = this;
+        axios.get(LOGIN_API_BASE_URL + '/getAllUsers', { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .then(function (response) {
+                // handle success
+                console.log(response.data);
+                _this.setState({ getall: response.data });
+                // console.log(_this.state.mod);
+            });
+      }
+      
+      getallRole = ()=> {
+        const drop = []
+        var _this = this;
+        axios
+            .get(API_BASE_URL + "/getAllRole", { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+            .then(function (response) {
+                console.log(response.data);
+                let d = response.data.map(post => {
+                    console.log(post.name + "rommi");
+                    console.log(currentuser);
+                    if (currentuser) {
+                        console.log(currentuser);
+                        return <Option value={post.projectId}>{post.projectName}</Option>
+                    }
+                    // localStorage.getItem(CURRENT_USER)
+                })
+                _this.setState({ d })
+                console.log(drop)
+            })
+        }
 
-    getStatusClose(projectId) {
-        const url = API_BASE_URL+'/getStatusClose'+ projectId;
-        axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-          .then(response => this.setState({
-            value1: response.data,
-          }))
-          .catch(function (error) {
-            console.log(error);
-          });
-    console.log(this.state.value1)
-  }
+        getdefectcount(value) {
+            const url = API_BASE_URL + '/getdefectbyprojectcount/' + value;
+            axios.get(url, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+          
+                .then(response => this.setState({
+                    defectcount: response.data,
+          
+                }))
+          
+                .catch(function (error) {
+                    console.log(error);
+                });
+          
+          }
+
+          getStatusNew(value) {
+            axios
+                .get(API_BASE_URL + '/getStatusNew/' + value, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+                .then(res => {
+                    this.setState({
+                        StatusNew: res.data
+                    })
+          
+                })
+          }
+          getStatusOpen(value) {
+            axios
+                .get(API_BASE_URL + '/getStatusOpen/' + value, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+                .then(res => {
+                    this.setState({
+                        StatusOpen: res.data
+                    })
+                })
+          }     
+    
+          getStatusClose(value) {
+            axios
+                .get(API_BASE_URL + '/getStatusClose/' + value, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+                .then(res => {
+                    this.setState({
+                        StatusClose: res.data
+                    })
+                })
+          
+          }
+//     getStatusClose(value) {
+//         const url = API_BASE_URL+'/getStatusClose'+ value;
+//         axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
+//           .then(response => this.setState({
+//             value1: response.data,
+//           }))
+//           .catch(function (error) {
+//             console.log(error);
+//           });
+//     console.log(this.state.value1)
+//   }
   
-    getStatusRejected(projectId) {
-        const url = API_BASE_URL+'/getStatusRejected'+ projectId;
+    getStatusRejected(value) {
+        const url = API_BASE_URL+'/getStatusRejected'+ value;
         axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
           .then(response => this.setState({
             value2: response.data,
@@ -146,32 +250,40 @@ class DefectDashboard extends React.Component {
     console.log(this.state.value2)
   }
 
-    getStatusReOpen(projectId) {
-        const url = API_BASE_URL+'/getStatusReOpen'+ projectId;
-        axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-          .then(response => this.setState({
-            value3: response.data,
-          }))
-          .catch(function (error) {
-            console.log(error);
-          });
-    console.log(this.state.value3)
+  getStatusReOpen(value) {
+    axios
+        .get(API_BASE_URL + '/getStatusReOpen/' + value, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+        .then(res => {
+            this.setState({
+                StatusReOpen: res.data
+            })
+        })
+  
   }
 
-    getStatusFixed(projectId) {
-        const url = API_BASE_URL+'/getStatusFixed'+ projectId;
-        axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
-          .then(response => this.setState({
-            value4: response.data,
-          }))
-          .catch(function (error) {
-            console.log(error);
-          });
-    console.log(this.state.value4)
+  getStatusFixed(value) {
+    axios
+        .get(API_BASE_URL + '/getStatusFixed/' + value, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+        .then(res => {
+            this.setState({
+                StatusFixed: res.data
+            })
+        })
+  
+  }
+  getStatusDefered(value) {
+    axios
+        .get(API_BASE_URL + '/getStatusDefered/' + value, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+        .then(res => {
+            this.setState({
+                StatusDefered: res.data
+            })
+        })
+  
   }
 
-    getStatusDefered(projectId) {
-        const url = API_BASE_URL+'/getStatusDefered'+ projectId;
+    getStatusDefered(value) {
+        const url = API_BASE_URL+'/getStatusDefered'+ value;
         axios.get(url,{ headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN)}})
           .then(response => this.setState({
             value5: response.data,
@@ -182,22 +294,37 @@ class DefectDashboard extends React.Component {
     console.log(this.state.value5)
   }
 
-componentDidMount(){
-    console.log(this.props.match.params.username);
+  getdefectcount(value) {
+    const url = API_BASE_URL + '/getdefectbyprojectcount/' + value;
+    axios.get(url, { headers: { Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN) } })
+  
+        .then(response => this.setState({
+            defectcount: response.data,
+  
+        }))
+  
+        .catch(function (error) {
+            console.log(error);
+        });
+  
+  }
 
-    this.getStatusClose();
-       this.getStatusDefered();
-       this.getStatusFixed();
-    //    this.getStatusNew();
-       this.getStatusOpen();
-       this.getStatusReOpen();
-       this.getStatusRejected();
-       this.getdefectcount();
-}
+// componentDidMount(){
+//     console.log(this.props.match.params.username);
+
+//     this.getStatusClose();
+//        this.getStatusDefered();
+//        this.getStatusFixed();
+//     //    this.getStatusNew();
+//        this.getStatusOpen();
+//        this.getStatusReOpen();
+//        this.getStatusRejected();
+//        this.getdefectcount();
+// }
 
 
-    componentWillMount() {
-    }
+    // componentWillMount() {
+    // }
 
 
 
@@ -229,7 +356,7 @@ componentDidMount(){
 
                 <Row>
                     <br></br>
-                    <Col span={23}>
+                    <Col span={18}>
                         <Breadcrumb style={{
                             marginBottom: '6px',
                             marginTop: '-10px'
@@ -239,7 +366,16 @@ componentDidMount(){
 
                         </Breadcrumb>
                     </Col>
-                    <Col span={1}>
+                    <Col span={4}>
+            <Select
+              placeholder="Select the Project"
+              style={{ width: 120 }}
+               onChange={this.onChangeRole}
+            >
+              {this.state.d}
+            </Select>
+          </Col>
+                    <Col span={2}>
                         <div id="components-dropdown-demo-dropdown-button" style={{ marginLeft: "-2.1em" }}>
                             <DashboardConfig />
                         </div>
@@ -252,7 +388,31 @@ componentDidMount(){
 
                     {/* the embedded and seperatd row  - row1 */}
                     <Row gutter={25}>
-
+                        
+                         {/* Rejected defects box */}
+                         <Col className="gutter-row" span={6}>
+                            <div className="gutter-box">
+                                <div
+                                    style={{
+                                        padding: "10px 0 10px 0",
+                                        background: '#fff',
+                                        border: "#605877",
+                                        textShadow: " 1px 6px 7px #c0c1c4",
+                                        zIndex: "5000",
+                                        borderRadius: "0.7em",
+                                        minHeight: '80%',
+                                        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'
+                                    }}>
+                                    <div>
+                                        <h1>Total Defects</h1>
+                                        <br></br>
+                                        <div>
+                                            <Progress strokeColor="e41749" type="dashboard" percent={this.state.defectcount} />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Col>
                         {/* opened defects box */}
                         <Col className="gutter-row" span={6} style={{ minHeight: "4em" }}>
 
@@ -273,7 +433,7 @@ componentDidMount(){
                                         <h1>Opened Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="e41749" type="dashboard" percent={this.state.defectcount} format={percent => `${percent} `} />
+                                            <Progress strokeColor="454d66" type="dashboard" percent={this.state.StatusOpen} />
                                         </div>
                                     </div>
                                 </div>
@@ -298,7 +458,7 @@ componentDidMount(){
                                         <h1>Fixed Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="454d66" type="dashboard" percent={this.state.StatusOpen} format={percent => `${percent} `}/>
+                                            <Progress strokeColor="ff8a5c" type="dashboard" percent={this.state.StatusFixed} />
                                         </div>
                                     </div>
                                 </div>
@@ -323,37 +483,14 @@ componentDidMount(){
                                         <h1>Reopened Defects</h1>
                                         <br></br>
                                         <div>
-                                            <Progress strokeColor="ff8a5c" type="dashboard" percent={this.state.StatusFixed} format={percent => `${percent} `}/>
+                                            <Progress strokeColor="58b368" type="dashboard" percent={this.state.StatusReOpen} />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </Col>
 
-                        {/* Rejected defects box */}
-                        <Col className="gutter-row" span={6}>
-                            <div className="gutter-box">
-                                <div
-                                    style={{
-                                        padding: "10px 0 10px 0",
-                                        background: '#fff',
-                                        border: "#605877",
-                                        textShadow: " 1px 6px 7px #c0c1c4",
-                                        zIndex: "5000",
-                                        borderRadius: "0.7em",
-                                        minHeight: '80%',
-                                        boxShadow: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)', transition: 'all 0.3s cubic-bezier(.25,.8,.25,1)'
-                                    }}>
-                                    <div>
-                                        <h1>Rejected Defects</h1>
-                                        <br></br>
-                                        <div>
-                                            <Progress strokeColor="58b368" type="dashboard" percent={this.state.StatusReOpen} format={percent => `${percent} `} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
+                       
 
                     </Row>
                 </div>
