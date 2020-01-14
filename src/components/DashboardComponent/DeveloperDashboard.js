@@ -271,9 +271,9 @@ getdefectcount(value) {
       labels: ["New", "Open", "Reject", "Closed","ReOpen","Fixed","Defered"],
       datasets: [
         {
-          data: [this.state.StatusNew, this.state.StatusOpen,this.state.StatusClose,this.state.StatusFixed,this.state.StatusReOpen,this.state.StatusRejected,this.state.getStatusDefered],
+          data: [this.state.StatusNew, this.state.StatusOpen,this.state.StatusRejected,this.state.StatusClose,this.state.StatusReOpen,this.state.StatusFixed,this.state.getStatusDefered],
           backgroundColor: ["#1460db", "#db149c", "#FFCE56", "#cbf207","#4CAF50", "#9c07f2", "#f2071b"],
-          hoverBackgroundColor: ["#FF6384", "#4CAF50", "#FFCE56", "#36A2EB","#4CAF50", "#FFCE56", "#36A2EB"]
+          hoverBackgroundColor: ["#1461db", "#db150c", "#FFCE57", "#cbf210","#4CAF55", "#9c07f4", "#f2075b"]
         }
       ]
     };
@@ -461,10 +461,10 @@ getdefectcount(value) {
                     <Statistic title="Total " value={this.state.defectcount} />
                   </Col>
                   <Col span={8}>
-                    <Statistic title="New" value= {1} suffix="/100"   />
+                    <Statistic title="New" value= {this.state.StatusNew} />
                   </Col>
                   <Col span={8}>
-                    <Statistic title="Closed" value={1} suffix="/ 100" />
+                    <Statistic title="Closed" value={this.state.StatusClose}  />
                   </Col>
                 </Row>
               </div>
